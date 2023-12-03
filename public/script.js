@@ -1,12 +1,55 @@
 document.addEventListener("DOMContentLoaded", function () {
-  var consoleElement = document.getElementById("console");
-  var promptText = "Texordia> ";
-  var currentDirectory = "";
-  var registeredName = "";
-  var goldAmount = 100; // User starts with 100 gold
-  var userInventory = []; // Array to store purchased items
+  const encryptionKey = "Wyvern";
 
-  var lastHuntTime = 0; // Timestamp of the last hunt
+  // Function to encrypt data
+  function encryptData(data) {
+    return CryptoJS.AES.encrypt(data, encryptionKey).toString();
+  }
+
+  // Function to decrypt data
+  function decryptData(encryptedData) {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
+
+  function loadFromLocalStorage(key, defaultValue) {
+    const storedValue = localStorage.getItem(key);
+    if (storedValue !== null) {
+      const decryptedValue = decryptData(storedValue);
+      return (key === 'userInventory' || key === 'gameData') ? JSON.parse(decryptedValue) : decryptedValue;
+    }
+    return defaultValue;
+  }
+
+  function saveToLocalStorage(key, value) {
+    let valueToStore;
+    if (key === 'userInventory' || key === 'gameData') {
+      valueToStore = JSON.stringify(value);
+    } else {
+      valueToStore = value.toString();
+    }
+    localStorage.setItem(key, encryptData(valueToStore));
+  }
+
+  // Load values from local storage
+  var savedData = loadFromLocalStorage('gameData', { goldAmount: 100, lastHuntTime: 0 });
+  var goldAmount = savedData.goldAmount;
+  var lastHuntTime = savedData.lastHuntTime;
+  var currentDirectory = loadFromLocalStorage('currentDirectory', '');
+  var userInventory = loadFromLocalStorage('userInventory', []);
+
+  var consoleElement = document.getElementById("console");
+  var promptText = currentDirectory
+    ? `Texordia\\${currentDirectory}> `
+    : "Texordia> ";
+
+    function saveGameData() {
+      const gameData = {
+        goldAmount: goldAmount,
+        lastHuntTime: lastHuntTime
+      };
+      saveToLocalStorage('gameData', gameData);
+    }
 
   const shopItems = {
     items: [
@@ -110,17 +153,11 @@ document.addEventListener("DOMContentLoaded", function () {
       case "cd":
         changeDirectory(argument);
         break;
-      case "hello":
-        sayHello();
-        break;
       case "inventory":
         showInventory();
         break;
       case "cls":
         clearScreen();
-        break;
-      case "register":
-        registerName(argument);
         break;
       case "tree":
         showDirectoryTree();
@@ -136,30 +173,41 @@ document.addEventListener("DOMContentLoaded", function () {
     return match ? match[1] : null;
   }
 
-  function handleHunting() {
+  async function handleHunting() {
     var currentTime = new Date().getTime();
     if (currentTime - lastHuntTime < 60000) {
-      // 60000 milliseconds = 1 minute
       consoleElement.value +=
         "\nYou need to rest. Try hunting again in a minute.\n";
       return;
     }
 
     var goldEarned = Math.floor(Math.random() * 11) + 5; // Random gold between 5 and 15
-    goldAmount += goldEarned;
+    goldAmount += goldEarned; // Ensure this is a numeric addition
     lastHuntTime = currentTime;
     consoleElement.value += `\nYou went hunting and earned ${goldEarned} gold! Total gold: ${goldAmount}.\n`;
+
+    // Save the gold amount and last hunt time to localStorage
+    goldAmount += goldEarned; 
+    lastHuntTime = currentTime;
+  
+    // Save the game data to local storage
+    saveGameData();
   }
 
   function attemptToPurchaseItem(itemName) {
     const item = shopItems.items.find(
       (item) => item.name.toLowerCase() === itemName.toLowerCase(),
     );
+
     if (item) {
       if (goldAmount >= item.price) {
-        goldAmount -= item.price;
-        userInventory.push(item.name);
+        goldAmount -= item.price; // Deduct the item price from the gold
+        userInventory.push(item.name); // Add the item to the inventory
         consoleElement.value += `\nPurchased ${item.name} for ${item.price} coins. Remaining gold: ${goldAmount}.\n`;
+
+        // Save the updated gold amount and inventory to local storage
+        saveGameData();
+        saveToLocalStorage('userInventory', userInventory);
       } else {
         consoleElement.value += "\nNot enough gold to purchase this item.\n";
       }
@@ -183,12 +231,11 @@ document.addEventListener("DOMContentLoaded", function () {
       consoleElement.value += "\nChanged directory to root.\n";
     } else {
       consoleElement.value += `\nThe system cannot find the path specified.\n`;
+      return;
     }
-  }
 
-  function sayHello() {
-    consoleElement.value +=
-      "\nHello" + (registeredName ? ", " + registeredName : "") + "!";
+    // Save the current directory to local storage
+    saveToLocalStorage("currentDirectory", currentDirectory);
   }
 
   function listShopItems() {
@@ -200,14 +247,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function clearScreen() {
     consoleElement.value = promptText;
-  }
-
-  function registerName(argument) {
-    registeredName = argument;
-    consoleElement.value +=
-      "\nSuccessfully registered a new character with name " +
-      registeredName +
-      ".";
   }
 
   function showDirectoryTree() {
@@ -226,6 +265,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var foundItem = itemsToFind[Math.floor(Math.random() * itemsToFind.length)];
     userInventory.push(foundItem);
     consoleElement.value += `\nYou explored and found ${foundItem}!\n`;
+
+    // Save the updated inventory to local storage
+    localStorage.setItem("userInventory", JSON.stringify(userInventory));
   }
 
   function displayDirectoryTree(currentDirectory) {
