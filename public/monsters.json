@@ -1,0 +1,29 @@
+{
+    "monsters": [
+      {
+        "name": "Zombie",
+        "coinDrop": [5, 10],
+        "damage": [2, 7],
+        "drops": [
+          {
+            "item": "Flesh",
+            "dropChance": 80,
+            "quantityRange": [1, 2]
+          }
+        ]
+      },
+      {
+        "name": "Spider",
+        "coinDrop": [2, 5],
+        "damage": [1, 3],
+        "drops": [
+            {
+              "item": "Spiderweb",
+              "dropChance": 50,
+              "quantityRange": [1, 3]
+            }
+        ]
+      }
+    ]
+  }
+  
