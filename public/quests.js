@@ -1,22 +1,18 @@
-import { loadFromLocalStorage } from "./utilities.js";
+import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
-function getAllDropItems() {
-  const dropItems = new Set();
-  monsters.forEach((monster) => {
-    if (Array.isArray(monster.drops)) {
-      monster.drops.forEach((drop) => dropItems.add(drop.item));
-    }
-  });
-  return Array.from(dropItems);
+function getAllDropItems(itemsData) {
+  const itemNames = new Set();
+  itemsData.forEach((item) => itemNames.add(item.name));
+  return Array.from(itemNames);
 }
 
-function generateRandomQuests() {
-  const dropItems = getAllDropItems();
+function generateRandomQuests(itemsData) {
+  const itemNames = getAllDropItems(itemsData);
   const quests = [];
   for (let i = 1; i <= 3; i++) {
-    const item = dropItems[Math.floor(Math.random() * dropItems.length)];
+    const item = itemNames[Math.floor(Math.random() * itemNames.length)];
     const quantity = Math.floor(Math.random() * 10) + 1;
-    const reward = Math.floor(Math.random() * 16) + 5;
+    const reward = Math.floor(Math.random() * 16) + 10;
     quests.push({
       id: i,
       itemRequirement: `${quantity}x ${item}`,
@@ -26,22 +22,16 @@ function generateRandomQuests() {
   return quests;
 }
 
-function generateAndSaveQuests() {
-  const quests = generateRandomQuests();
+function generateAndSaveQuests(itemsData) {
+  const quests = generateRandomQuests(itemsData);
   saveToLocalStorage("quests", quests);
   return quests;
 }
 
-function refreshQuests(consoleElement) {
-  if (goldAmount >= 20) {
-    goldAmount -= 20;
-    generateAndSaveQuests();
-    showQuests(consoleElement);
-    consoleElement.value += "\nQuests refreshed. 20 gold deducted.\n";
-    saveGameData();
-  } else {
-    consoleElement.value += "\nNot enough gold to refresh quests.\n";
-  }
+function refreshQuests(consoleElement, itemsData) {
+  const quests = generateAndSaveQuests(itemsData);
+  showQuests(consoleElement, quests);
+  consoleElement.value += "\nQuests have been refreshed.\n";
 }
 
 function showQuests(consoleElement) {
@@ -63,7 +53,7 @@ function showQuests(consoleElement) {
     questTable += `| ${questId} | ${itemRequirement} | ${reward} |\n`;
   });
 
-  questTable += "+---------+---------------------+---------+";
+  questTable += "+---------+---------------------+---------+\n";
   consoleElement.value += questTable;
 }
 

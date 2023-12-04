@@ -28,6 +28,15 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.error("Error loading monster data:", error));
 
+  let itemsData = [];
+
+  fetch("items.json")
+    .then((response) => response.json())
+    .then((data) => {
+      itemsData = data.items;
+    })
+    .catch((error) => console.error("Error loading items data:", error));
+
   var consoleElement = document.getElementById("console");
   var promptText = currentDirectory
     ? `Texordia\\${currentDirectory}> `
@@ -108,63 +117,100 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function processCommand(input) {
-    var commandParts = input.split(/\s+/);
-    var fullCommand = commandParts.slice(0, 2).join(" ").toLowerCase();
-    var command = commandParts[0].toLowerCase();
-    var argument = commandParts.slice(1).join(" ").toLowerCase();
+    const [command, ...args] = input.trim().split(/\s+/);
+    const initialCommand = args[0] ? `${command} ${args[0]}` : command;
+    const argument = args.join(" ");
 
-    if (fullCommand === "sudo hunt") {
-      if (currentDirectory === "Guild") {
-        handleHunting();
-      } else {
-        consoleElement.value +=
-          "\nYou must be in the Guild directory to hunt.\n";
-      }
-      return;
-    } else if (fullCommand === "sudo explore") {
+    console.log(`Command: ${command}, Argument: ${argument}`);
+
+    switch (command) {
+      case "sudo":
+        handleSudoCommands(initialCommand);
+        break;
+      case "quests":
+        handleQuestsCommands(argument);
+        break;
+      case "sellall":
+        handleSellAll(argument);
+        break;
+      case "useitem":
+        handleUseItem(argument);
+        break;
+      case "items":
+        handleShopItems(argument, input);
+        break;
+      case "cd":
+        changeDirectory(argument);
+        break;
+      case "stats":
+      case "inventory":
+      case "cls":
+      case "times":
+      case "tree":
+        handleGeneralCommands(command, argument);
+        break;
+      default:
+        consoleElement.value += `\n'${input}' is not recognized as an internal or external command.\n`;
+        break;
+    }
+  }
+
+  function handleSudoCommands(initialCommand) {
+    if (initialCommand === "sudo hunt" && currentDirectory === "Guild") {
+      handleHunting();
+    } else if (initialCommand === "sudo explore") {
       handleExploration();
+    } else {
+      consoleElement.value += `\nInvalid command or wrong directory.\n`;
+    }
+  }
+
+  function handleQuestsCommands(argument) {
+    if (currentDirectory !== "Guild") {
+      consoleElement.value +=
+        "\nYou must be in the Guild directory for quests.\n";
       return;
     }
+    argument === "-refresh"
+      ? refreshQuests(consoleElement, itemsData, hp)
+      : showQuests(consoleElement);
+  }
 
-    if (command === "quests") {
-      if (currentDirectory === "Guild") {
-        if (argument === "-refresh") {
-          refreshQuests(consoleElement);
-        } else {
-          showQuests(consoleElement);
-        }
-      } else {
-        consoleElement.value +=
-          "\nYou must be in the Guild directory to view or refresh quests.\n";
-      }
+  function handleSellAll(argument) {
+    if (currentDirectory !== "Shop") {
+      consoleElement.value +=
+        "\nYou must be in the Shop directory to sell items.\n";
       return;
     }
+    sellAllItems(argument);
+  }
 
-    if (currentDirectory === "Shop" && command === "items") {
-      if (argument.startsWith("-buy")) {
-        var itemName = extractItemNameFromInput(input);
-        if (itemName) {
-          attemptToPurchaseItem(itemName);
-        } else {
-          consoleElement.value +=
-            '\nInvalid format. Use: items -buy "Item Name"';
-        }
-      } else if (argument === "-list") {
-        listShopItems();
-      }
+  function handleUseItem(argument) {
+    if (argument.toLowerCase() === "potion") {
+      usePotion();
+    } else {
+      consoleElement.value += "\nYou don't have that item in your inventory.\n";
+    }
+  }
+
+  function handleShopItems(argument, input) {
+    if (currentDirectory !== "Shop") {
+      consoleElement.value +=
+        "\nYou must be in the Shop directory to interact with items.\n";
       return;
     }
-
-    if (command === "useitem") {
-      if (argument.toLowerCase() === "potion") {
-        usePotion();
-      } else {
-        consoleElement.value +=
-          "\nYou don't have that item in your inventory.\n";
-      }
-      return;
+    if (argument.startsWith("-buy")) {
+      const itemName = extractItemNameFromInput(input);
+      itemName
+        ? attemptToPurchaseItem(itemName)
+        : (consoleElement.value +=
+            '\nInvalid format. Use: items -buy "Item Name"');
+    } else if (argument === "-list") {
+      listShopItems();
     }
+  }
 
+  function handleGeneralCommands(command, argument) {
     switch (command) {
       case "cd":
         changeDirectory(argument);
@@ -185,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showDirectoryTree();
         break;
       default:
-        consoleElement.value += `\n'${input}' is not recognized as an internal or external command.\n`;
+        consoleElement.value += `\n'${command}' is not recognized as an internal or external command.\n`;
         break;
     }
   }
@@ -201,6 +247,31 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       consoleElement.value += `\nReady for hunting!\n`;
     }
+  }
+
+  function sellAllItems(specificItem = null) {
+    let totalSellPrice = 0;
+    specificItem = specificItem ? specificItem.toLowerCase() : null;
+
+    userInventory = userInventory.filter((itemObj) => {
+      if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
+        const itemData = itemsData.find(
+          (item) => item.name.toLowerCase() === itemObj.item.toLowerCase(),
+        );
+        if (itemData) {
+          totalSellPrice += itemData.sellPrice * itemObj.quantity;
+          return false;
+        }
+      }
+      return true;
+    });
+
+    goldAmount += totalSellPrice;
+    consoleElement.value += `\nSold ${
+      specificItem ? specificItem : "all items"
+    } for ${totalSellPrice} gold.\n`;
+    saveToLocalStorage("userInventory", userInventory);
+    saveGameData();
   }
 
   function extractItemNameFromInput(input) {
@@ -295,6 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       checkForDeath();
       saveGameData();
+      saveToLocalStorage("userInventory", userInventory);
     }
   }
 
@@ -344,20 +416,22 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function changeDirectory(argument) {
-    if (
-      (argument === "shop" || argument === "guild") &&
-      currentDirectory === ""
-    ) {
-      currentDirectory = argument.charAt(0).toUpperCase() + argument.slice(1);
-      promptText = `Texordia\\${currentDirectory}> `;
-      consoleElement.value += `\nChanged directory to ${currentDirectory}.\n`;
-    } else if (argument === "~") {
+    if (argument === "~") {
       currentDirectory = "";
       promptText = "Texordia> ";
       consoleElement.value += "\nChanged directory to root.\n";
     } else {
-      consoleElement.value += `\nThe system cannot find the path specified.\n`;
-      return;
+      const availableDirectories = ["Shop", "Guild"];
+      const directoryName =
+        argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
+
+      if (availableDirectories.includes(directoryName)) {
+        currentDirectory = directoryName;
+        promptText = `Texordia\\${currentDirectory}> `;
+        consoleElement.value += `\nChanged directory to ${currentDirectory}.\n`;
+      } else {
+        consoleElement.value += `\nThe system cannot find the path specified: ${directoryName}\n`;
+      }
     }
 
     saveToLocalStorage("currentDirectory", currentDirectory);

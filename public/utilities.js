@@ -4,12 +4,9 @@ export function loadFromLocalStorage(key, defaultValue) {
     const storedValue = localStorage.getItem(key);
     if (storedValue !== null) {
         const decryptedValue = decryptData(storedValue);
-        try {
-            return JSON.parse(decryptedValue);
-        } catch(e) {
-            console.error("Error parsing data from localStorage:", e);
-            return defaultValue;
-        }
+        const parsedValue = JSON.parse(decryptedValue);
+        console.log("Loaded data for key", key, ":", parsedValue); // Debug
+        return parsedValue;
     }
     return defaultValue;
 }
@@ -22,3 +19,13 @@ export function loadFromLocalStorage(key, defaultValue) {
     const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
+
+export function saveToLocalStorage(key, value) {
+  let valueToStore = JSON.stringify(value);
+  localStorage.setItem(key, encryptData(valueToStore));
+}
+
+export function saveGameData(gameData) {
+  console.log("Saving game data:", gameData); // Debug
+  saveToLocalStorage("gameData", gameData);
+}

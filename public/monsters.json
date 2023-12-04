@@ -7,7 +7,7 @@
         "drops": [
           {
             "item": "Flesh",
-            "dropChance": 80,
+            "dropChance": 100,
             "quantityRange": [1, 2]
           }
         ]
@@ -19,7 +19,7 @@
         "drops": [
             {
               "item": "Spiderweb",
-              "dropChance": 50,
+              "dropChance": 100,
               "quantityRange": [1, 3]
             }
         ]

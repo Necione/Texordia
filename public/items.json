@@ -1,0 +1,13 @@
+{
+    "items": [
+      {
+        "name": "Spiderweb",
+        "sellPrice": 5
+      },
+      {
+        "name": "Flesh",
+        "sellPrice": 7
+      }
+    ]
+  }
+  
