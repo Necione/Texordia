@@ -1,3 +1,5 @@
+import { gameData, updateGameData } from './gameData.js';
+
 const encryptionKey = "Wyvern";
 
 export function loadFromLocalStorage(key, defaultValue) {
@@ -25,7 +27,6 @@ export function saveToLocalStorage(key, value) {
   localStorage.setItem(key, encryptData(valueToStore));
 }
 
-export function saveGameData(gameData) {
-  console.log("Saving game data:", gameData); // Debug
+export function saveGameData() {
   saveToLocalStorage("gameData", gameData);
 }
