@@ -1,6 +1,17 @@
-import { gameData, updateGameData } from './gameData.js';
+import { gameData } from './gameData.js';
 
 const encryptionKey = "Wyvern";
+
+export var consoleElement = document.getElementById("console");
+
+export let itemsData = [];
+
+fetch("items.json")
+  .then((response) => response.json())
+  .then((data) => {
+    itemsData = data.items;
+  })
+  .catch((error) => console.error("Error loading items data:", error));
 
 export function loadFromLocalStorage(key, defaultValue) {
     const storedValue = localStorage.getItem(key);

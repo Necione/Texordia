@@ -1,49 +1,22 @@
-import { gameData, updateGameData } from './gameData.js';
+import { gameData } from "./gameData.js";
 import { refreshQuests, showQuests } from "./quests.js";
-import { loadFromLocalStorage, saveToLocalStorage, saveGameData } from "./utilities.js";
+import { handleHunting } from "./commands/hunting.js";
+import { handleShopItems, handleSellAll } from "./commands/shop.js";
+import {
+  saveToLocalStorage,
+  saveGameData,
+  consoleElement,
+  loadFromLocalStorage,
+  itemsData,
+} from "./utilities.js";
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  var savedData = loadFromLocalStorage("gameData", {
-    goldAmount: 100,
-    lastHuntTime: 0,
-    hp: 20,
-    defense: 10,
-  });
-
   var currentDirectory = loadFromLocalStorage("currentDirectory", "");
-  var userInventory = loadFromLocalStorage("userInventory", []);
 
-  let monsters = [];
-
-  fetch("monsters.json")
-    .then((response) => response.json())
-    .then((data) => {
-      monsters = data.monsters;
-    })
-    .catch((error) => console.error("Error loading monster data:", error));
-
-  let itemsData = [];
-
-  fetch("items.json")
-    .then((response) => response.json())
-    .then((data) => {
-      itemsData = data.items;
-    })
-    .catch((error) => console.error("Error loading items data:", error));
-
-  var consoleElement = document.getElementById("console");
   var promptText = currentDirectory
     ? `Texordia\\${currentDirectory}> `
     : "Texordia> ";
-
-  const shopItems = {
-    items: [
-      { name: "Sword", price: 100 },
-      { name: "Shield", price: 150 },
-      { name: "Potion", price: 50 },
-    ],
-  };
 
   const directoryStructure = {
     Root: {
@@ -156,41 +129,15 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     argument === "-refresh"
-      ? refreshQuests(consoleElement, itemsData, hp)
+      ? refreshQuests(consoleElement, itemsData)
       : showQuests(consoleElement);
   }
 
-  function handleSellAll(argument) {
-    if (currentDirectory !== "Shop") {
-      consoleElement.value +=
-        "\nYou must be in the Shop directory to sell items.\n";
-      return;
-    }
-    sellAllItems(argument);
-  }
-
   function handleUseItem(argument) {
-    if (argument.toLowerCase() === "potion") {
+    if (typeof argument === "string" && argument.toLowerCase() === "potion") {
       usePotion();
     } else {
       consoleElement.value += "\nYou don't have that item in your inventory.\n";
-    }
-  }
-
-  function handleShopItems(argument, input) {
-    if (currentDirectory !== "Shop") {
-      consoleElement.value +=
-        "\nYou must be in the Shop directory to interact with items.\n";
-      return;
-    }
-    if (argument.startsWith("-buy")) {
-      const itemName = extractItemNameFromInput(input);
-      itemName
-        ? attemptToPurchaseItem(itemName)
-        : (consoleElement.value +=
-            '\nInvalid format. Use: items -buy "Item Name"');
-    } else if (argument === "-list") {
-      listShopItems();
     }
   }
 
@@ -233,154 +180,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function sellAllItems(specificItem = null) {
-    let totalSellPrice = 0;
-    specificItem = specificItem ? specificItem.toLowerCase() : null;
-
-    userInventory = userInventory.filter((itemObj) => {
-      if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
-        const itemData = itemsData.find(
-          (item) => item.name.toLowerCase() === itemObj.item.toLowerCase(),
-        );
-        if (itemData) {
-          totalSellPrice += itemData.sellPrice * itemObj.quantity;
-          return false;
-        }
-      }
-      return true;
-    });
-
-    goldAmount += totalSellPrice;
-    consoleElement.value += `\nSold ${
-      specificItem ? specificItem : "all items"
-    } for ${totalSellPrice} gold.\n`;
-    saveToLocalStorage("userInventory", userInventory);
-    saveGameData();
-  }
-
-  function extractItemNameFromInput(input) {
-    var match = input.match(/-buy\s+(.+)/);
-    return match ? match[1] : null;
-  }
-
   function usePotion() {
-    const potionIndex = userInventory.findIndex(
-      (item) => item.toLowerCase() === "potion",
+    const potionIndex = gameData.userInventory.findIndex(
+      (itemObj) => itemObj.item.toLowerCase() === "potion",
     );
 
     if (potionIndex !== -1) {
-      userInventory.splice(potionIndex, 1);
+      gameData.userInventory.splice(potionIndex, 1);
 
       const restoredHP = Math.floor(Math.random() * 6) + 5;
 
-      if (hp + restoredHP > 20) {
-        hp = 20;
+      if (gameData.hp + restoredHP > 20) {
+        gameData.hp = 20;
       } else {
-        hp += restoredHP;
+        gameData.hp += restoredHP;
       }
 
-      consoleElement.value += `\nYou used a Potion and restored ${restoredHP} HP. Current HP: ${hp}.\n`;
+      consoleElement.value += `\nYou used a Potion and restored ${restoredHP} HP. Current HP: ${gameData.hp}.\n`;
 
-      saveToLocalStorage("userInventory", userInventory);
+      saveToLocalStorage("userInventory", gameData.userInventory);
       saveGameData();
     } else {
       consoleElement.value +=
         "\nYou don't have any Potions in your inventory.\n";
-    }
-  }
-
-  async function handleHunting() {
-    var currentTime = new Date().getTime();
-    if (currentTime - gameData.lastHuntTime < 60000) {
-      var timeLeft = Math.ceil((60000 - (currentTime - gameData.lastHuntTime)) / 1000);
-      consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
-    } else {
-      const monster = monsters[Math.floor(Math.random() * monsters.length)];
-      const goldEarned =
-        Math.floor(
-          Math.random() * (monster.coinDrop[1] - monster.coinDrop[0] + 1),
-        ) + monster.coinDrop[0];
-      const hpLoss =
-        Math.floor(
-          Math.random() * (monster.damage[1] - monster.damage[0] + 1),
-        ) + monster.damage[0];
-  
-      gameData.goldAmount += goldEarned;
-      gameData.hp -= hpLoss;
-      gameData.lastHuntTime = currentTime;
-  
-      let lootDropped = false;
-      let lootTable =
-        "\nLoot Gained:\n+---------------+--------+\n| Name          | Amount |\n+---------------+--------+\n";
-  
-      if (Array.isArray(monster.drops)) {
-        monster.drops.forEach((drop) => {
-          if (Math.random() * 100 < drop.dropChance) {
-            lootDropped = true;
-            const quantity =
-              Math.floor(
-                Math.random() *
-                  (drop.quantityRange[1] - drop.quantityRange[0] + 1),
-              ) + drop.quantityRange[0];
-  
-            const existingItemIndex = gameData.userInventory.findIndex(
-              (item) => item.item === drop.item,
-            );
-            if (existingItemIndex !== -1) {
-              gameData.userInventory[existingItemIndex].quantity += quantity;
-            } else {
-              gameData.userInventory.push({ item: drop.item, quantity: quantity });
-            }
-  
-            lootTable += `| ${drop.item.padEnd(13)} | ${quantity
-              .toString()
-              .padEnd(6)} |\n`;
-          }
-        });
-      }
-  
-      if (lootDropped) {
-        lootTable += "+---------------+--------+";
-        consoleElement.value += lootTable;
-      } else {
-        consoleElement.value += "\nNo loot gained this time.\n";
-      }
-  
-      consoleElement.value += `\nYou encountered a ${monster.name}! After a fierce battle, you earned ${goldEarned} gold and lost ${hpLoss} HP.\n  Total gold: ${gameData.goldAmount}.\n  Current HP: ${gameData.hp}.\n`;
-  
-      checkForDeath();
-      updateGameData(gameData);
-      saveToLocalStorage("userInventory", gameData.userInventory);
-    }
-  }
-
-  function attemptToPurchaseItem(itemName) {
-    const item = shopItems.items.find(
-      (item) => item.name.toLowerCase() === itemName.toLowerCase(),
-    );
-
-    if (item) {
-      if (gameData.goldAmount >= item.price) {
-        gameData.goldAmount -= item.price;
-
-        const existingItemIndex = gameData.userInventory.findIndex(
-          (invItem) => invItem.item === item.name,
-        );
-        if (existingItemIndex !== -1) {
-          gameData.userInventory[existingItemIndex].quantity += 1;
-        } else {
-          gameData.userInventory.push({ item: item.name, quantity: 1 });
-        }
-
-        consoleElement.value += `\nPurchased ${item.name} for ${item.price} coins. Remaining gold: ${gameData.goldAmount}.\n`;
-
-        saveGameData();
-        saveToLocalStorage("userInventory", gameData.userInventory);
-      } else {
-        consoleElement.value += "\nNot enough gold to purchase this item.\n";
-      }
-    } else {
-      consoleElement.value += "\nItem not found in the shop.\n";
     }
   }
 
@@ -421,28 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
     saveToLocalStorage("currentDirectory", currentDirectory);
   }
 
-  function listShopItems() {
-    consoleElement.value += "\nItems available in the Shop:\n";
-
-    consoleElement.value += "+----------------+-------+\n";
-    consoleElement.value += "| Item           | Price |\n";
-    consoleElement.value += "+----------------+-------+\n";
-
-    shopItems.items.forEach((item) => {
-      let itemString = `| ${item.name}`;
-
-      itemString += " ".repeat(15 - item.name.length);
-      itemString += `| ${item.price}`;
-
-      itemString += " ".repeat(6 - item.price.toString().length);
-      itemString += "|\n";
-
-      consoleElement.value += itemString;
-    });
-
-    consoleElement.value += "+----------------+-------+\n";
-  }
-
   function clearScreen() {
     consoleElement.value = promptText;
   }
@@ -454,20 +254,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showInventory() {
     let inventoryDisplay = "";
-      if (!gameData.userInventory || gameData.userInventory.length === 0) {
+    if (!gameData.userInventory || gameData.userInventory.length === 0) {
       inventoryDisplay = "No items";
     } else {
       inventoryDisplay =
         "\nInventory:\n+---------------+--------+\n| Item          | Amount |\n+---------------+--------+\n";
-  
+
       gameData.userInventory.forEach((itemObj) => {
-        inventoryDisplay += `| ${itemObj.item.padEnd(13)} | ${itemObj.quantity.toString().padEnd(6)} |\n`;
+        inventoryDisplay += `| ${itemObj.item.padEnd(13)} | ${itemObj.quantity
+          .toString()
+          .padEnd(6)} |\n`;
       });
-  
+
       inventoryDisplay += "+---------------+--------+";
     }
     consoleElement.value += `\n${inventoryDisplay}\nGold: ${gameData.goldAmount}\n`;
-  }  
+  }
 
   function displayDirectoryTree(currentDirectory) {
     function buildTree(directory, prefix = "") {
@@ -493,23 +295,6 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         return `No subdirectories were found.\n`;
       }
-    }
-  }
-
-  function checkForDeath() {
-    if (gameData.hp <= 0) { // Use gameData.hp
-      consoleElement.value += "\nYou have died. All progress has been reset.\n";
-      localStorage.clear();
-
-      // Reset gameData values
-      updateGameData({ goldAmount: 100, lastHuntTime: 0, hp: 20, defense: 10 });
-      currentDirectory = "";
-      userInventory = [];
-      saveGameData();
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
     }
   }
 
