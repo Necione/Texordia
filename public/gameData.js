@@ -5,9 +5,10 @@ const defaultData = {
   lastHuntTime: 0,
   attack: 2,
   hp: 20,
-  defense: 10,
+  defense: 0,
   userInventory: [],
-  currentDirectory: ""
+  currentDirectory: "",
+  equippedArmors: [null, null, null, null]
 };
 
 let gameData = loadFromLocalStorage("gameData", defaultData);

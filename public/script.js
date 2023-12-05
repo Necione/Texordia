@@ -1,11 +1,13 @@
 import { gameData, updateGameData } from "./gameData.js";
 import { refreshQuests, showQuests } from "./commands/quests.js";
+import { equipArmor, unequipArmor } from "./commands/armor.js";
 import { handleHunting } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
 import {
   saveGameData,
   consoleElement,
   itemsData,
+  loadArmorsData,
 } from "./utilities.js";
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -91,6 +93,19 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`Command: ${command}, Argument: ${argument}`);
 
     switch (command) {
+      case "armor":
+        loadArmorsData().then(() => {
+        if (argument.startsWith("-equip")) {
+          const itemName = argument.substring(7).trim();
+          equipArmor(itemName);
+        } else if (argument.startsWith("-unequip")) {
+          const itemName = argument.substring(9).trim();
+          unequipArmor(itemName);
+        } else {
+          consoleElement.value += `\nInvalid command structure. Ise: 'armor -[equip|unequip] [argument]'\n`;
+        }
+      })
+        break;
       case "sudo":
         if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
             isAsyncCommandRunning = true;
@@ -221,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "\nYou don't have any Potions in your inventory.\n";
     }
   }
-
+  
   function showStats() {
     const maxHP = 20;
     const hpBarLength = 20;

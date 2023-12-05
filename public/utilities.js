@@ -13,6 +13,18 @@ fetch("data/items.json")
   })
   .catch((error) => console.error("Error loading items data:", error));
 
+export let armorsData = [];
+
+export async function loadArmorsData() {
+  try {
+      const response = await fetch("data/armor.json");
+      const data = await response.json();
+      armorsData = data.armors;
+  } catch (error) {
+      console.error("Error loading armor data:", error);
+  }
+}
+
 export function loadFromLocalStorage(key, defaultValue) {
     const storedValue = localStorage.getItem(key);
     if (storedValue !== null) {

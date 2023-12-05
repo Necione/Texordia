@@ -1,0 +1,15 @@
+{
+    "armors": [
+      {
+        "name": "Fleeting Ring",
+        "price": 25,
+        "defense": 1
+      },
+      {
+        "name": "Iron Boots",
+        "price": 30,
+        "defense": 2
+      }
+    ]
+  }
+  

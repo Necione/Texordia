@@ -102,10 +102,18 @@ export async function handleHunting(finishHuntCallback) {
         }
 
         // Monster's turn
-        const monsterDamage =
-          Math.floor(
-            Math.random() * (monster.damage[1] - monster.damage[0] + 1),
-          ) + monster.damage[0];
+        const monsterAttack = Math.floor(Math.random() * (monster.damage[1] - monster.damage[0] + 1)) + monster.damage[0];
+        let monsterDamage;
+    
+        if (monsterAttack >= gameData.defense) {
+            monsterDamage = monsterAttack * 2 - gameData.defense;
+        } else {
+            monsterDamage = monsterAttack * monsterAttack / gameData.defense;
+        }
+    
+        // Ensure damage is at least 0
+        monsterDamage = Math.max(0, Math.round(monsterDamage));
+
         gameData.hp -= monsterDamage;
         combatLog += `- The ${monster.name} dealt ${monsterDamage} Damage to you\n`;
 
