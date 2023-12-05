@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
       " ".repeat(emptyLength) +
       `] ${gameData.hp}/${maxHP}`;
 
-    consoleElement.value += `\n\nHP: ${hpBar}\nGold: ${gameData.goldAmount}\nDefense: ${gameData.defense}\n`;
+    consoleElement.value += `\n\nHP: ${hpBar}\nDefense: ${gameData.defense}\n`;
   }
 
   function changeDirectory(argument) {
