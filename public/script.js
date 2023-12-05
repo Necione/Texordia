@@ -8,13 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     goldAmount: 100,
     lastHuntTime: 0,
     hp: 20,
-    defense: 10,  // Added defense stat with default value of 10
+    defense: 10,
   });
-
-  var goldAmount = savedData.goldAmount;
-  var lastHuntTime = savedData.lastHuntTime;
-  var hp = savedData.hp;
-  var defense = savedData.defense; 
 
   var currentDirectory = loadFromLocalStorage("currentDirectory", "");
   var userInventory = loadFromLocalStorage("userInventory", []);
@@ -227,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showHuntCooldown() {
     var currentTime = new Date().getTime();
-    var timePassed = Math.floor((currentTime - lastHuntTime) / 1000);
+    var timePassed = Math.floor((currentTime - gameData.lastHuntTime) / 1000);
     var cooldown = 60;
 
     if (timePassed < cooldown) {
@@ -328,13 +323,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   (drop.quantityRange[1] - drop.quantityRange[0] + 1),
               ) + drop.quantityRange[0];
   
-            const existingItemIndex = userInventory.findIndex(
+            const existingItemIndex = gameData.userInventory.findIndex(
               (item) => item.item === drop.item,
             );
             if (existingItemIndex !== -1) {
-              userInventory[existingItemIndex].quantity += quantity;
+              gameData.userInventory[existingItemIndex].quantity += quantity;
             } else {
-              userInventory.push({ item: drop.item, quantity: quantity });
+              gameData.userInventory.push({ item: drop.item, quantity: quantity });
             }
   
             lootTable += `| ${drop.item.padEnd(13)} | ${quantity
@@ -355,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
       checkForDeath();
       updateGameData(gameData);
-      saveToLocalStorage("userInventory", userInventory); // Assuming you still manage inventory locally
+      saveToLocalStorage("userInventory", gameData.userInventory);
     }
   }
 
@@ -365,22 +360,22 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (item) {
-      if (goldAmount >= item.price) {
-        goldAmount -= item.price;
+      if (gameData.goldAmount >= item.price) {
+        gameData.goldAmount -= item.price;
 
-        const existingItemIndex = userInventory.findIndex(
+        const existingItemIndex = gameData.userInventory.findIndex(
           (invItem) => invItem.item === item.name,
         );
         if (existingItemIndex !== -1) {
-          userInventory[existingItemIndex].quantity += 1;
+          gameData.userInventory[existingItemIndex].quantity += 1;
         } else {
-          userInventory.push({ item: item.name, quantity: 1 });
+          gameData.userInventory.push({ item: item.name, quantity: 1 });
         }
 
-        consoleElement.value += `\nPurchased ${item.name} for ${item.price} coins. Remaining gold: ${goldAmount}.\n`;
+        consoleElement.value += `\nPurchased ${item.name} for ${item.price} coins. Remaining gold: ${gameData.goldAmount}.\n`;
 
         saveGameData();
-        saveToLocalStorage("userInventory", userInventory);
+        saveToLocalStorage("userInventory", gameData.userInventory);
       } else {
         consoleElement.value += "\nNot enough gold to purchase this item.\n";
       }
@@ -459,9 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showInventory() {
     let inventoryDisplay = "";
-  
-    // Check if gameData.userInventory exists and has items
-    if (!gameData.userInventory || gameData.userInventory.length === 0) {
+      if (!gameData.userInventory || gameData.userInventory.length === 0) {
       inventoryDisplay = "No items";
     } else {
       inventoryDisplay =
@@ -473,7 +466,6 @@ document.addEventListener("DOMContentLoaded", function () {
   
       inventoryDisplay += "+---------------+--------+";
     }
-  
     consoleElement.value += `\n${inventoryDisplay}\nGold: ${gameData.goldAmount}\n`;
   }  
 
