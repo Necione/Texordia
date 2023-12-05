@@ -35,7 +35,7 @@
         "name": "Spider",
         "coinDrop": [2, 5],
         "damage": [1, 2],
-        "hpRange": [8, 14],
+        "hpRange": [8, 10],
         "drops": [
             {
               "item": "Spiderweb",

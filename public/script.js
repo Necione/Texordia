@@ -1,12 +1,12 @@
 import { gameData, updateGameData } from "./gameData.js";
 import { refreshQuests, showQuests } from "./commands/quests.js";
-import { equipArmor, unequipArmor } from "./commands/armor.js";
 import { handleHunting } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
 import {
   saveGameData,
   consoleElement,
-  itemsData,
+  dropsData,
+  consumableData,
   loadArmorsData,
 } from "./utilities.js";
 
@@ -161,17 +161,29 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     argument === "-refresh"
-      ? refreshQuests(consoleElement, itemsData)
+      ? refreshQuests(consoleElement, dropsData)
       : showQuests(consoleElement);
   }
 
   function handleUseItem(argument) {
-    if (typeof argument === "string" && argument.toLowerCase() === "potion") {
-      usePotion();
+    if (typeof argument !== "string") {
+      consoleElement.value += "\nInvalid item name.\n";
+      return;
+    }
+  
+    const itemName = argument.toLowerCase();
+    const consumableItem = consumableData.find(item => item.name.toLowerCase() === itemName);
+    const inventoryItem = gameData.userInventory.find(item => item.item.toLowerCase() === itemName);
+  
+    if (consumableItem && inventoryItem) {
+      if (itemName === "potion") {
+        usePotion();
+      }
     } else {
       consoleElement.value += "\nYou don't have that item in your inventory.\n";
     }
   }
+  
 
   function handleGeneralCommands(command, argument) {
     switch (command) {

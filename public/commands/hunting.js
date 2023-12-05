@@ -50,7 +50,7 @@ export async function handleHunting(finishHuntCallback) {
       spinnerIndex = (spinnerIndex + 1) % spinner.length;
     }, 250); // Change spinner every 250 milliseconds
 
-    consoleElement.value += "\nGoing on a hunt... ";
+    consoleElement.value += "\nSearching for monsters... ";
     consoleElement.disabled = true;
 
     setTimeout(() => {
@@ -78,8 +78,8 @@ export async function handleHunting(finishHuntCallback) {
         consoleElement.value =
           consoleElement.value.substring(
             0,
-            consoleElement.value.indexOf("Going on a hunt...") +
-              "Going on a hunt...".length,
+            consoleElement.value.indexOf("Searching for monsters...") +
+              "Searching for monsters...".length,
           ) +
           "\n\n" +
           updatedDisplay;
@@ -199,7 +199,7 @@ function handleDeath() {
   consoleElement.value += "\nYou have died. All progress has been reset.\n";
   localStorage.clear();
 
-  updateGameData({ goldAmount: 100, lastHuntTime: 0, hp: 20, defense: 10 });
+  updateGameData({ goldAmount: 100, lastHuntTime: 0, hp: 20, defense: 0 });
   gameData.currentDirectory = "";
   gameData.userInventory = [];
   saveGameData();

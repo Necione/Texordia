@@ -1,13 +1,13 @@
 import { loadFromLocalStorage, saveToLocalStorage } from "../utilities.js";
 
-function getAllDropItems(itemsData) {
+function getAllDropItems(dropsData) {
   const itemNames = new Set();
-  itemsData.forEach((item) => itemNames.add(item.name));
+  dropsData.forEach((item) => itemNames.add(item.name));
   return Array.from(itemNames);
 }
 
-function generateRandomQuests(itemsData) {
-  const itemNames = getAllDropItems(itemsData);
+function generateRandomQuests(dropsData) {
+  const itemNames = getAllDropItems(dropsData);
   const quests = [];
   for (let i = 1; i <= 3; i++) {
     const item = itemNames[Math.floor(Math.random() * itemNames.length)];
@@ -22,14 +22,14 @@ function generateRandomQuests(itemsData) {
   return quests;
 }
 
-function generateAndSaveQuests(itemsData) {
-  const quests = generateRandomQuests(itemsData);
+function generateAndSaveQuests(dropsData) {
+  const quests = generateRandomQuests(dropsData);
   saveToLocalStorage("quests", quests);
   return quests;
 }
 
-function refreshQuests(consoleElement, itemsData) {
-  const quests = generateAndSaveQuests(itemsData);
+function refreshQuests(consoleElement, dropsData) {
+  const quests = generateAndSaveQuests(dropsData);
   showQuests(consoleElement, quests);
   consoleElement.value += "\nQuests have been refreshed.\n";
 }
