@@ -1,21 +1,19 @@
-import { gameData } from "./gameData.js";
+import { gameData, updateGameData } from "./gameData.js";
 import { refreshQuests, showQuests } from "./quests.js";
 import { handleHunting } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
 import {
-  saveToLocalStorage,
   saveGameData,
   consoleElement,
-  loadFromLocalStorage,
   itemsData,
 } from "./utilities.js";
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  var currentDirectory = loadFromLocalStorage("currentDirectory", "");
+  let isAsyncCommandRunning = false;
 
-  var promptText = currentDirectory
-    ? `Texordia\\${currentDirectory}> `
+  var promptText = gameData.currentDirectory
+    ? `Texordia\\${gameData.currentDirectory}> `
     : "Texordia> ";
 
   const directoryStructure = {
@@ -59,13 +57,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.key === "Enter") {
       event.preventDefault();
       var input = this.value.substring(currentLineStart).trim();
-
+  
       processCommand(input);
-
-      if (input.toLowerCase() !== "cls") {
-        this.value += "\n" + promptText;
-      }
-
+  
       this.scrollTop = this.scrollHeight;
       this.setSelectionRange(this.value.length, this.value.length);
     }
@@ -74,6 +68,20 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("click", function () {
     consoleElement.focus();
   });
+
+  function appendPrompt() {
+    const prompt = gameData.currentDirectory ? `Texordia\\${gameData.currentDirectory}> ` : "Texordia> ";
+
+    consoleElement.value += `\n${prompt}`;
+    consoleElement.scrollTop = consoleElement.scrollHeight;
+    consoleElement.setSelectionRange(consoleElement.value.length, consoleElement.value.length);
+
+    consoleElement.focus();
+  }
+
+  function finishHunt() {
+    isAsyncCommandRunning = false;
+  }
 
   function processCommand(input) {
     const [command, ...args] = input.trim().split(/\s+/);
@@ -84,7 +92,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (command) {
       case "sudo":
-        handleSudoCommands(initialCommand);
+        if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
+            isAsyncCommandRunning = true;
+            handleHunting(finishHunt); 
+          } else {
+            handleSudoCommands(initialCommand);
+        }
         break;
       case "quests":
         handleQuestsCommands(argument);
@@ -112,10 +125,14 @@ document.addEventListener("DOMContentLoaded", function () {
         consoleElement.value += `\n'${input}' is not recognized as an internal or external command.\n`;
         break;
     }
-  }
+
+    if (!isAsyncCommandRunning) {
+        appendPrompt();
+    }
+}
 
   function handleSudoCommands(initialCommand) {
-    if (initialCommand === "sudo hunt" && currentDirectory === "Guild") {
+    if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
       handleHunting();
     } else {
       consoleElement.value += `\nInvalid command or wrong directory.\n`;
@@ -123,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function handleQuestsCommands(argument) {
-    if (currentDirectory !== "Guild") {
+    if (gameData.currentDirectory !== "Guild") {
       consoleElement.value +=
         "\nYou must be in the Guild directory for quests.\n";
       return;
@@ -198,7 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       consoleElement.value += `\nYou used a Potion and restored ${restoredHP} HP. Current HP: ${gameData.hp}.\n`;
 
-      saveToLocalStorage("userInventory", gameData.userInventory);
       saveGameData();
     } else {
       consoleElement.value +=
@@ -222,33 +238,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function changeDirectory(argument) {
-    if (argument === "~") {
-      currentDirectory = "";
-      promptText = "Texordia> ";
-      consoleElement.value += "\nChanged directory to root.\n";
-    } else {
+    let newDirectory = "";
+  
+    if (argument !== "~") {
       const availableDirectories = ["Shop", "Guild"];
-      const directoryName =
-        argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
-
+      const directoryName = argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
+  
       if (availableDirectories.includes(directoryName)) {
-        currentDirectory = directoryName;
-        promptText = `Texordia\\${currentDirectory}> `;
-        consoleElement.value += `\nChanged directory to ${currentDirectory}.\n`;
+        newDirectory = directoryName;
       } else {
         consoleElement.value += `\nThe system cannot find the path specified: ${directoryName}\n`;
+        return;
       }
     }
-
-    saveToLocalStorage("currentDirectory", currentDirectory);
+  
+    updateGameData({ currentDirectory: newDirectory });
+  
+    promptText = `Texordia${newDirectory ? '\\' + newDirectory : ''}> `;
+    consoleElement.value += `\nChanged directory to ${newDirectory || 'root'}.\n`;
   }
-
+  
   function clearScreen() {
-    consoleElement.value = promptText;
+    consoleElement.value =
+    "Welcome back to Texordia. [ Ver 0.1 ]\n";
   }
 
   function showDirectoryTree() {
-    const tree = displayDirectoryTree(currentDirectory);
+    const tree = displayDirectoryTree(gameData.currentDirectory);
     consoleElement.value += "\n" + tree;
   }
 
@@ -271,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
     consoleElement.value += `\n${inventoryDisplay}\nGold: ${gameData.goldAmount}\n`;
   }
 
-  function displayDirectoryTree(currentDirectory) {
+  function displayDirectoryTree() {
     function buildTree(directory, prefix = "") {
       let tree = "";
       for (const key in directory) {
@@ -283,12 +299,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return tree;
     }
 
-    if (currentDirectory === "") {
+    if (gameData.currentDirectory === "") {
       return buildTree(directoryStructure.Root);
     } else {
       const subdirectory = getSubdirectory(
         directoryStructure,
-        currentDirectory.split("\\"),
+        gameData.currentDirectory.split("\\"),
       );
       if (subdirectory) {
         return buildTree(subdirectory, "  ");

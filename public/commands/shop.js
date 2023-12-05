@@ -1,6 +1,4 @@
 import {
-    saveToLocalStorage,
-    loadFromLocalStorage,
     saveGameData,
     consoleElement,
     itemsData,
@@ -9,14 +7,10 @@ import {
   
   export const shopItems = {
     items: [
-      { name: "Sword", price: 100 },
-      { name: "Shield", price: 150 },
       { name: "Potion", price: 50 },
     ],
   };
   
-var currentDirectory = loadFromLocalStorage("currentDirectory", "");
-
   function extractItemNameFromInput(input) {
     var match = input.match(/-buy\s+(.+)/);
     return match ? match[1] : null;
@@ -65,7 +59,6 @@ var currentDirectory = loadFromLocalStorage("currentDirectory", "");
         consoleElement.value += `\nPurchased ${item.name} for ${item.price} coins. Remaining gold: ${gameData.goldAmount}.\n`;
   
         saveGameData();
-        saveToLocalStorage("userInventory", gameData.userInventory);
       } else {
         consoleElement.value += "\nNot enough gold to purchase this item.\n";
       }
@@ -95,12 +88,11 @@ var currentDirectory = loadFromLocalStorage("currentDirectory", "");
     consoleElement.value += `\nSold ${
       specificItem ? specificItem : "all items"
     } for ${totalSellPrice} gold.\n`;
-    saveToLocalStorage("userInventory", gameData.userInventory);
     saveGameData();
 }
 
 export function handleSellAll(argument) {
-    if (currentDirectory !== "Shop") {
+    if (gameData.currentDirectory !== "Shop") {
       consoleElement.value +=
         "\nYou must be in the Shop directory to sell items.\n";
       return;
@@ -109,7 +101,7 @@ export function handleSellAll(argument) {
 }
   
   export function handleShopItems(argument, input) {
-    if (currentDirectory !== "Shop") {
+    if (gameData.currentDirectory !== "Shop") {
       consoleElement.value +=
         "\nYou must be in the Shop directory to interact with items.\n";
       return;
