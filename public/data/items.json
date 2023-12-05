@@ -7,6 +7,14 @@
       {
         "name": "Flesh",
         "sellPrice": 7
+      },
+      {
+        "name": "Zombie Hide",
+        "sellPrice": 9
+      },
+      {
+        "name": "Spider Eye",
+        "sellPrice": 10
       }
     ]
   }

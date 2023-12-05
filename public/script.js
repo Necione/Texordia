@@ -1,5 +1,5 @@
 import { gameData, updateGameData } from "./gameData.js";
-import { refreshQuests, showQuests } from "./quests.js";
+import { refreshQuests, showQuests } from "./commands/quests.js";
 import { handleHunting } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
 import {

@@ -3,7 +3,7 @@ import { saveGameData, consoleElement } from "../utilities.js";
 
 let monsters = [];
 
-fetch("monsters.json")
+fetch("data/monsters.json")
   .then((response) => response.json())
   .then((data) => {
     monsters = data.monsters;

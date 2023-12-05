@@ -6,7 +6,7 @@ export var consoleElement = document.getElementById("console");
 
 export let itemsData = [];
 
-fetch("items.json")
+fetch("data/items.json")
   .then((response) => response.json())
   .then((data) => {
     itemsData = data.items;

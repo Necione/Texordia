@@ -3,11 +3,16 @@
       {
         "name": "Zombie",
         "coinDrop": [5, 10],
-        "damage": [2, 7],
+        "damage": [3, 6],
         "drops": [
           {
             "item": "Flesh",
-            "dropChance": 100,
+            "dropChance": 90,
+            "quantityRange": [1, 2]
+          },
+          {
+            "item": "Zombie Hide",
+            "dropChance": 50,
             "quantityRange": [1, 2]
           }
         ]
@@ -21,6 +26,11 @@
               "item": "Spiderweb",
               "dropChance": 100,
               "quantityRange": [1, 3]
+            },
+            {
+              "item": "Spider Eye",
+              "dropChance": 20,
+              "quantityRange": [1, 2]
             }
         ]
       }
