@@ -1,13 +1,15 @@
 import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
 const defaultData = {
-  goldAmount: 100,
+  goldAmount: 0,
   lastHuntTime: 0,
   attack: 2,
   hp: 20,
-  defense: 10,
+  maxHp: 20,
+  defense: 0,
   userInventory: [],
-  currentDirectory: ""
+  currentDirectory: "",
+  equippedArmors: [null, null, null, null],
 };
 
 let gameData = loadFromLocalStorage("gameData", defaultData);

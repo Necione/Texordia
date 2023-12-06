@@ -2,7 +2,6 @@
     "monsters": [
       {
         "name": "Zombie",
-        "coinDrop": [5, 10],
         "hpRange": [5, 7],
         "damage": [1, 4],
         "drops": [
@@ -20,7 +19,6 @@
       },
       {
         "name": "Slime",
-        "coinDrop": [2, 5],
         "damage": [2, 4],
         "hpRange": [3, 5],
         "drops": [
@@ -28,14 +26,18 @@
             "item": "Slimeball",
             "dropChance": 90,
             "quantityRange": [1, 2]
+          },
+          {
+            "item": "Condensate",
+            "dropChance": 10,
+            "quantityRange": [1, 2]
           }
         ]
       },
       {
         "name": "Spider",
-        "coinDrop": [2, 5],
         "damage": [1, 2],
-        "hpRange": [8, 14],
+        "hpRange": [8, 10],
         "drops": [
             {
               "item": "Spiderweb",
