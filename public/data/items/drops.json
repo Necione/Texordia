@@ -29,6 +29,12 @@
       "sellPrice": 6,
       "buyPrice": 12,
       "purchasable": true
+    },
+    {
+      "name": "Condensate",
+      "sellPrice": 14,
+      "buyPrice": 0,
+      "purchasable": false
     }
   ]
 }

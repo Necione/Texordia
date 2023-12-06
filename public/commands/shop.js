@@ -28,7 +28,7 @@ function attemptToPurchaseItem(itemName, gameData, consoleElement) {
 
   // Check if the player has enough gold
   if (gameData.goldAmount < item.buyPrice) {
-    consoleElement.value += `\nNot enough gold to purchase '${itemName}'.\n`;
+    consoleElement.value += `\nNot enough Gold to purchase '${itemName}'.\n`;
     return;
   }
 
@@ -45,7 +45,7 @@ function attemptToPurchaseItem(itemName, gameData, consoleElement) {
 
   // Save game data and update the console
   saveGameData();
-  consoleElement.value += `\nPurchased '${item.name}' for ${item.buyPrice} gold.\n`;
+  consoleElement.value += `\nPurchased '${item.name}' for ${item.buyPrice} Gold.\n`;
 }
 
 function createTable(data, title) {

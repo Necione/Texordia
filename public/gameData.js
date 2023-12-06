@@ -1,7 +1,7 @@
 import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
 const defaultData = {
-  goldAmount: 100,
+  goldAmount: 0,
   lastHuntTime: 0,
   attack: 2,
   hp: 20,
