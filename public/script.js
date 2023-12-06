@@ -11,9 +11,9 @@ import { showInventory } from "./commands/inventory.js";
 import {
   saveGameData,
   consoleElement,
-  dropsData,
   consumableData,
 } from "./utilities.js";
+import { showStats } from "./commands/stats.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   let isAsyncCommandRunning = false;
@@ -246,22 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
       consoleElement.value +=
         "\nYou don't have any Potions in your inventory.\n";
     }
-  }
-
-  function showStats() {
-    const hpBarLength = 20;
-    const filledLength = Math.round(
-      (gameData.hp / gameData.maxHp) * hpBarLength,
-    );
-    const emptyLength = hpBarLength - filledLength;
-
-    const hpBar =
-      "[" +
-      "█".repeat(filledLength) +
-      " ".repeat(emptyLength) +
-      `] ${gameData.hp}/${gameData.maxHp}`; // Using gameData.maxHp
-
-    consoleElement.value += `\n\nHP: ${hpBar}\nDefense: ${gameData.defense}\n`;
   }
 
   function changeDirectory(argument) {

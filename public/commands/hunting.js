@@ -31,9 +31,9 @@ function generateHealthBar(currentHP, maxHP) {
 
 export async function handleHunting(finishHuntCallback) {
   var currentTime = new Date().getTime();
-  if (currentTime - gameData.lastHuntTime < 60000) {
+  if (currentTime - gameData.lastHuntTime < 30000) {
     var timeLeft = Math.ceil(
-      (60000 - (currentTime - gameData.lastHuntTime)) / 1000,
+      (30000 - (currentTime - gameData.lastHuntTime)) / 1000,
     );
     consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
 
@@ -184,6 +184,14 @@ function handleCombatVictory(monster, finishHuntCallback) {
   }
 
   gameData.lastHuntTime = new Date().getTime();
+
+  // Calculate and award EXP
+  const xpAwarded =
+    Math.floor(Math.random() * (monster.expRange[1] - monster.expRange[0] + 1)) +
+    monster.expRange[0];
+  gameData.exp += xpAwarded;
+  consoleElement.value += `\nYou gained ${xpAwarded} EXP.\n`;
+
   updateGameData(gameData);
   saveGameData();
 
@@ -217,7 +225,7 @@ function handleDeath() {
 export function showHuntCooldown() {
   var currentTime = new Date().getTime();
   var timePassed = Math.floor((currentTime - gameData.lastHuntTime) / 1000);
-  var cooldown = 60;
+  var cooldown = 30;
 
   if (timePassed < cooldown) {
     var timeLeft = cooldown - timePassed;
