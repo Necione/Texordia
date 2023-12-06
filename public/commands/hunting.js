@@ -10,22 +10,23 @@ fetch("data/monsters.json")
   })
   .catch((error) => console.error("Error loading monster data:", error));
 
-function generateHealthBar(currentHP, maxHP) {
-  const hpBarLength = 20;
+  function generateHealthBar(currentHP, maxHP) {
+    currentHP = Math.min(currentHP, maxHP);
+    const hpBarLength = 20;
 
-  if (currentHP <= 0) {
-    return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
-  }
+    if (currentHP <= 0) {
+        return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
+    }
 
-  const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
-  const emptyLength = hpBarLength - filledLength;
+    const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
+    const emptyLength = hpBarLength - filledLength;
 
-  return (
-    "[" +
-    "█".repeat(filledLength) +
-    " ".repeat(emptyLength) +
-    `] ${currentHP}/${maxHP}`
-  );
+    return (
+        "[" +
+        "█".repeat(filledLength) +
+        " ".repeat(emptyLength) +
+        `] ${currentHP}/${maxHP}`
+    );
 }
 
 export async function handleHunting(finishHuntCallback) {
@@ -68,7 +69,7 @@ export async function handleHunting(finishHuntCallback) {
 
       const updateCombatDisplay = () => {
         const updatedDisplay =
-          `Your HP: ${generateHealthBar(gameData.hp, 20)}\n` +
+          `Your HP: ${generateHealthBar(gameData.hp, gameData.maxHp)}\n` +
           `${monster.name} HP: ${generateHealthBar(
             monsterHP,
             monsterMaxHP,
@@ -102,17 +103,15 @@ export async function handleHunting(finishHuntCallback) {
         }
 
         // Monster's turn
-        const monsterAttack = Math.floor(Math.random() * (monster.damage[1] - monster.damage[0] + 1)) + monster.damage[0];
-        let monsterDamage;
-    
-        if (monsterAttack >= gameData.defense) {
-            monsterDamage = monsterAttack * 2 - gameData.defense;
-        } else {
-            monsterDamage = monsterAttack * monsterAttack / gameData.defense;
-        }
-    
-        // Ensure damage is at least 0
-        monsterDamage = Math.max(0, Math.round(monsterDamage));
+        const monsterAttackRange = monster.damage;
+        const monsterAttack = Math.floor(Math.random() * (monsterAttackRange[1] - monsterAttackRange[0] + 1)) + monsterAttackRange[0];
+        const playerDefense = gameData.defense;
+        
+        // Calculate damage using the provided formula
+        let monsterDamage = Math.round(monsterAttack * monsterAttack / (monsterAttack + playerDefense));
+
+        // Ensure damage is at least 1
+        monsterDamage = Math.max(1, monsterDamage);
 
         gameData.hp -= monsterDamage;
         combatLog += `- The ${monster.name} dealt ${monsterDamage} Damage to you\n`;
@@ -199,12 +198,20 @@ function handleDeath() {
   consoleElement.value += "\nYou have died. All progress has been reset.\n";
   localStorage.clear();
 
-  updateGameData({ goldAmount: 100, lastHuntTime: 0, hp: 20, defense: 0 });
-  gameData.currentDirectory = "";
-  gameData.userInventory = [];
-  saveGameData();
-
   setTimeout(() => {
-    window.location.reload();
+      window.location.reload();
   }, 2000);
+}
+
+export function showHuntCooldown() {
+  var currentTime = new Date().getTime();
+  var timePassed = Math.floor((currentTime - gameData.lastHuntTime) / 1000);
+  var cooldown = 60;
+
+  if (timePassed < cooldown) {
+    var timeLeft = cooldown - timePassed;
+    consoleElement.value += `\nTime remaining until next hunt: ${timeLeft} seconds\n`;
+  } else {
+    consoleElement.value += `\nReady for hunting!\n`;
+  }
 }

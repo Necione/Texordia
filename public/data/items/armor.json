@@ -1,18 +1,19 @@
 {
-    "armor": [
-      {
-        "name": "Iron Armor",
-        "defenseIncrease": 10,
-        "buyPrice": 50,
-        "sellPrice": 25,
-        "purchasable": true
-      },
-      {
-        "name": "Leather Armor",
-        "defenseIncrease": 5,
-        "buyPrice": 30,
-        "sellPrice": 15,
-        "purchasable": true
-      }
-    ]
-  }
+  "armor": [
+    {
+      "name": "Iron Armor",
+      "defenseIncrease": 3,
+      "hpIncrease": 5,
+      "buyPrice": 50,
+      "sellPrice": 25,
+      "purchasable": true
+    },
+    {
+      "name": "Leather Armor",
+      "defenseIncrease": 1,
+      "buyPrice": 30,
+      "sellPrice": 15,
+      "purchasable": true
+    }
+  ]
+}

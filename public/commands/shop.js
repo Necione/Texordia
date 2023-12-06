@@ -97,22 +97,17 @@ function listShopItems(consoleElement) {
   consoleElement.value += output;
 }
 
-export function sellAllItems(
-  specificItem,
-  gameData,
-  dropsData,
-  consoleElement,
-) {
+export function sellAllItems(specificItem) {
   let totalSellPrice = 0;
   specificItem = specificItem ? specificItem.toLowerCase() : null;
 
   gameData.userInventory = gameData.userInventory.filter((itemObj) => {
     if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
-      const dropsData = dropsData.find(
+      const itemData = dropsData.find(
         (item) => item.name.toLowerCase() === itemObj.item.toLowerCase(),
       );
-      if (dropsData) {
-        totalSellPrice += dropsData.sellPrice * itemObj.quantity;
+      if (itemData) {
+        totalSellPrice += itemData.sellPrice * itemObj.quantity;
         return false;
       }
     }
@@ -126,13 +121,14 @@ export function sellAllItems(
   saveGameData();
 }
 
+
 export function handleSellAll(argument) {
   if (gameData.currentDirectory !== "Shop") {
     consoleElement.value +=
       "\nYou must be in the Shop directory to sell items.\n";
     return;
   }
-  sellAllItems(argument, gameData, dropsData, consoleElement);
+  sellAllItems(argument);
 }
 
 export function handleShopItems(argument, input) {

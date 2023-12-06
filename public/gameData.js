@@ -5,6 +5,7 @@ const defaultData = {
   lastHuntTime: 0,
   attack: 2,
   hp: 20,
+  maxHp: 20,
   defense: 0,
   userInventory: [],
   currentDirectory: "",

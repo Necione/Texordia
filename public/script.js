@@ -1,17 +1,17 @@
 import { gameData, updateGameData } from "./gameData.js";
 import { refreshQuests, showQuests } from "./commands/quests.js";
-import { handleHunting } from "./commands/hunting.js";
+import { handleHunting, showHuntCooldown } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
+import { equipArmor, unequipArmor, showEquippedArmor } from "./commands/equip.js";
+import { showInventory } from "./commands/inventory.js";
 import {
   saveGameData,
   consoleElement,
   dropsData,
   consumableData,
-  loadArmorsData,
 } from "./utilities.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-
   let isAsyncCommandRunning = false;
 
   var promptText = gameData.currentDirectory
@@ -59,9 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.key === "Enter") {
       event.preventDefault();
       var input = this.value.substring(currentLineStart).trim();
-  
+
       processCommand(input);
-  
+
       this.scrollTop = this.scrollHeight;
       this.setSelectionRange(this.value.length, this.value.length);
     }
@@ -72,11 +72,16 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function appendPrompt() {
-    const prompt = gameData.currentDirectory ? `Texordia\\${gameData.currentDirectory}> ` : "Texordia> ";
+    const prompt = gameData.currentDirectory
+      ? `Texordia\\${gameData.currentDirectory}> `
+      : "Texordia> ";
 
     consoleElement.value += `\n${prompt}`;
     consoleElement.scrollTop = consoleElement.scrollHeight;
-    consoleElement.setSelectionRange(consoleElement.value.length, consoleElement.value.length);
+    consoleElement.setSelectionRange(
+      consoleElement.value.length,
+      consoleElement.value.length,
+    );
 
     consoleElement.focus();
   }
@@ -93,25 +98,15 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`Command: ${command}, Argument: ${argument}`);
 
     switch (command) {
-      case "armor":
-        loadArmorsData().then(() => {
-        if (argument.startsWith("-equip")) {
-          const itemName = argument.substring(7).trim();
-          equipArmor(itemName);
-        } else if (argument.startsWith("-unequip")) {
-          const itemName = argument.substring(9).trim();
-          unequipArmor(itemName);
-        } else {
-          consoleElement.value += `\nInvalid command structure. Ise: 'armor -[equip|unequip] [argument]'\n`;
-        }
-      })
-        break;
       case "sudo":
-        if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
-            isAsyncCommandRunning = true;
-            handleHunting(finishHunt); 
-          } else {
-            handleSudoCommands(initialCommand);
+        if (
+          initialCommand === "sudo hunt" &&
+          gameData.currentDirectory === "Guild"
+        ) {
+          isAsyncCommandRunning = true;
+          handleHunting(finishHunt);
+        } else {
+          handleSudoCommands(initialCommand);
         }
         break;
       case "quests":
@@ -125,6 +120,15 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
       case "items":
         handleShopItems(argument, input);
+        break;
+      case "equip":
+        equipArmor(argument);
+        break;
+      case "equipment":
+        showEquippedArmor(argument);
+        break;
+      case "unequip":
+        unequipArmor(argument);
         break;
       case "cd":
         changeDirectory(argument);
@@ -142,12 +146,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (!isAsyncCommandRunning) {
-        appendPrompt();
+      appendPrompt();
     }
-}
+  }
 
   function handleSudoCommands(initialCommand) {
-    if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
+    if (
+      initialCommand === "sudo hunt" &&
+      gameData.currentDirectory === "Guild"
+    ) {
       handleHunting();
     } else {
       consoleElement.value += `\nInvalid command or wrong directory.\n`;
@@ -170,11 +177,15 @@ document.addEventListener("DOMContentLoaded", function () {
       consoleElement.value += "\nInvalid item name.\n";
       return;
     }
-  
+
     const itemName = argument.toLowerCase();
-    const consumableItem = consumableData.find(item => item.name.toLowerCase() === itemName);
-    const inventoryItem = gameData.userInventory.find(item => item.item.toLowerCase() === itemName);
-  
+    const consumableItem = consumableData.find(
+      (item) => item.name.toLowerCase() === itemName,
+    );
+    const inventoryItem = gameData.userInventory.find(
+      (item) => item.item.toLowerCase() === itemName,
+    );
+
     if (consumableItem && inventoryItem) {
       if (itemName === "potion") {
         usePotion();
@@ -183,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
       consoleElement.value += "\nYou don't have that item in your inventory.\n";
     }
   }
-  
 
   function handleGeneralCommands(command, argument) {
     switch (command) {
@@ -211,19 +221,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function showHuntCooldown() {
-    var currentTime = new Date().getTime();
-    var timePassed = Math.floor((currentTime - gameData.lastHuntTime) / 1000);
-    var cooldown = 60;
-
-    if (timePassed < cooldown) {
-      var timeLeft = cooldown - timePassed;
-      consoleElement.value += `\nTime remaining until next hunt: ${timeLeft} seconds\n`;
-    } else {
-      consoleElement.value += `\nReady for hunting!\n`;
-    }
-  }
-
   function usePotion() {
     const potionIndex = gameData.userInventory.findIndex(
       (itemObj) => itemObj.item.toLowerCase() === "potion",
@@ -234,8 +231,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const restoredHP = Math.floor(Math.random() * 6) + 5;
 
-      if (gameData.hp + restoredHP > 20) {
-        gameData.hp = 20;
+      if (gameData.hp + restoredHP > gameData.maxHp) {
+        gameData.hp = gameData.maxHp;
       } else {
         gameData.hp += restoredHP;
       }
@@ -248,29 +245,29 @@ document.addEventListener("DOMContentLoaded", function () {
         "\nYou don't have any Potions in your inventory.\n";
     }
   }
-  
+
   function showStats() {
-    const maxHP = 20;
     const hpBarLength = 20;
-    const filledLength = Math.round((gameData.hp / maxHP) * hpBarLength);
+    const filledLength = Math.round((gameData.hp / gameData.maxHp) * hpBarLength);
     const emptyLength = hpBarLength - filledLength;
 
     const hpBar =
       "[" +
       "█".repeat(filledLength) +
       " ".repeat(emptyLength) +
-      `] ${gameData.hp}/${maxHP}`;
+      `] ${gameData.hp}/${gameData.maxHp}`; // Using gameData.maxHp
 
     consoleElement.value += `\n\nHP: ${hpBar}\nDefense: ${gameData.defense}\n`;
-  }
+}
 
   function changeDirectory(argument) {
     let newDirectory = "";
-  
+
     if (argument !== "~") {
       const availableDirectories = ["Shop", "Guild"];
-      const directoryName = argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
-  
+      const directoryName =
+        argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
+
       if (availableDirectories.includes(directoryName)) {
         newDirectory = directoryName;
       } else {
@@ -278,40 +275,22 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
     }
-  
+
     updateGameData({ currentDirectory: newDirectory });
-  
-    promptText = `Texordia${newDirectory ? '\\' + newDirectory : ''}> `;
-    consoleElement.value += `\nChanged directory to ${newDirectory || 'root'}.\n`;
+
+    promptText = `Texordia${newDirectory ? "\\" + newDirectory : ""}> `;
+    consoleElement.value += `\nChanged directory to ${
+      newDirectory || "root"
+    }.\n`;
   }
-  
+
   function clearScreen() {
-    consoleElement.value =
-    "Welcome back to Texordia. [ Ver 0.1 ]\n";
+    consoleElement.value = "Welcome back to Texordia. [ Ver 0.1 ]\n";
   }
 
   function showDirectoryTree() {
     const tree = displayDirectoryTree(gameData.currentDirectory);
     consoleElement.value += "\n" + tree;
-  }
-
-  function showInventory() {
-    let inventoryDisplay = "";
-    if (!gameData.userInventory || gameData.userInventory.length === 0) {
-      inventoryDisplay = "No items";
-    } else {
-      inventoryDisplay =
-        "\nInventory:\n+---------------+--------+\n| Item          | Amount |\n+---------------+--------+\n";
-
-      gameData.userInventory.forEach((itemObj) => {
-        inventoryDisplay += `| ${itemObj.item.padEnd(13)} | ${itemObj.quantity
-          .toString()
-          .padEnd(6)} |\n`;
-      });
-
-      inventoryDisplay += "+---------------+--------+";
-    }
-    consoleElement.value += `\n${inventoryDisplay}\nGold: ${gameData.goldAmount}\n`;
   }
 
   function displayDirectoryTree() {

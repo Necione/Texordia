@@ -1,4 +1,4 @@
-import { loadFromLocalStorage, saveToLocalStorage } from "../utilities.js";
+import { loadFromLocalStorage, saveToLocalStorage, consoleElement } from "../utilities.js";
 
 function getAllDropItems(dropsData) {
   const itemNames = new Set();
@@ -28,13 +28,13 @@ function generateAndSaveQuests(dropsData) {
   return quests;
 }
 
-function refreshQuests(consoleElement, dropsData) {
+function refreshQuests(dropsData) {
   const quests = generateAndSaveQuests(dropsData);
   showQuests(consoleElement, quests);
   consoleElement.value += "\nQuests have been refreshed.\n";
 }
 
-function showQuests(consoleElement) {
+function showQuests() {
   let quests = loadFromLocalStorage("quests", null);
   if (!quests || !Array.isArray(quests)) {
     consoleElement.value +=
