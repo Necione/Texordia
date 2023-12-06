@@ -27,6 +27,12 @@ export function equipArmor(argument) {
     (a) => a.name.toLowerCase() === lowercasedArgument,
   );
 
+  // Check if the armor is already equipped
+  if (gameData.equippedArmors.includes(armorStats.name)) {
+    consoleElement.value += `\n'${armorStats.name}' is already equipped.\n`;
+    return;
+  }
+
   if (!armorStats) {
     consoleElement.value += `\nArmor stats not found for '${argument}'.\n`;
     return;
