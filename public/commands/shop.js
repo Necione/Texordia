@@ -156,6 +156,6 @@ export function handleShopItems(argument, input) {
   } else if (argument === "-list") {
     listShopItems(consoleElement);
   } else {
-    consoleElement.value += `\nInvalid command structure. Ise: 'items -[list|buy] (argument)'\n`;
+    consoleElement.value += `\nInvalid command structure. Use: 'items -[list|buy] (argument)'\n`;
   }
 }

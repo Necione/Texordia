@@ -1,5 +1,5 @@
 import { gameData, updateGameData } from "./gameData.js";
-import { refreshQuests, showQuests } from "./commands/quests.js";
+import { handleQuestsCommands } from "./commands/quests.js";
 import { handleHunting, showHuntCooldown } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
 import {
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         break;
       case "quests":
-        handleQuestsCommands(argument);
+        handleQuest(argument, input);
         break;
       case "sellall":
         handleSellAll(argument);
@@ -165,15 +165,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function handleQuestsCommands(argument) {
+  function handleQuest(argument, input) {
     if (gameData.currentDirectory !== "Guild") {
       consoleElement.value +=
         "\nYou must be in the Guild directory for quests.\n";
       return;
     }
-    argument === "-refresh"
-      ? refreshQuests(consoleElement, dropsData)
-      : showQuests(consoleElement);
+    handleQuestsCommands(argument, input);
   }
 
   function handleUseItem(argument) {
