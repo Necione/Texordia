@@ -1,4 +1,8 @@
-import { loadFromLocalStorage, saveToLocalStorage, consoleElement } from "../utilities.js";
+import {
+  loadFromLocalStorage,
+  saveToLocalStorage,
+  consoleElement,
+} from "../utilities.js";
 
 function getAllDropItems(dropsData) {
   const itemNames = new Set();

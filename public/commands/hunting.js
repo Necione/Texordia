@@ -10,23 +10,23 @@ fetch("data/monsters.json")
   })
   .catch((error) => console.error("Error loading monster data:", error));
 
-  function generateHealthBar(currentHP, maxHP) {
-    currentHP = Math.min(currentHP, maxHP);
-    const hpBarLength = 20;
+function generateHealthBar(currentHP, maxHP) {
+  currentHP = Math.min(currentHP, maxHP);
+  const hpBarLength = 20;
 
-    if (currentHP <= 0) {
-        return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
-    }
+  if (currentHP <= 0) {
+    return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
+  }
 
-    const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
-    const emptyLength = hpBarLength - filledLength;
+  const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
+  const emptyLength = hpBarLength - filledLength;
 
-    return (
-        "[" +
-        "█".repeat(filledLength) +
-        " ".repeat(emptyLength) +
-        `] ${currentHP}/${maxHP}`
-    );
+  return (
+    "[" +
+    "█".repeat(filledLength) +
+    " ".repeat(emptyLength) +
+    `] ${currentHP}/${maxHP}`
+  );
 }
 
 export async function handleHunting(finishHuntCallback) {
@@ -84,7 +84,13 @@ export async function handleHunting(finishHuntCallback) {
           ) +
           "\n\n" +
           updatedDisplay;
+
+        adjustConsoleScroll();
       };
+
+      function adjustConsoleScroll() {
+        consoleElement.scrollTop = consoleElement.scrollHeight;
+      }
 
       updateCombatDisplay(); // Initial display update
 
@@ -104,11 +110,16 @@ export async function handleHunting(finishHuntCallback) {
 
         // Monster's turn
         const monsterAttackRange = monster.damage;
-        const monsterAttack = Math.floor(Math.random() * (monsterAttackRange[1] - monsterAttackRange[0] + 1)) + monsterAttackRange[0];
+        const monsterAttack =
+          Math.floor(
+            Math.random() * (monsterAttackRange[1] - monsterAttackRange[0] + 1),
+          ) + monsterAttackRange[0];
         const playerDefense = gameData.defense;
-        
+
         // Calculate damage using the provided formula
-        let monsterDamage = Math.round(monsterAttack * monsterAttack / (monsterAttack + playerDefense));
+        let monsterDamage = Math.round(
+          (monsterAttack * monsterAttack) / (monsterAttack + playerDefense),
+        );
 
         // Ensure damage is at least 1
         monsterDamage = Math.max(1, monsterDamage);
@@ -199,7 +210,7 @@ function handleDeath() {
   localStorage.clear();
 
   setTimeout(() => {
-      window.location.reload();
+    window.location.reload();
   }, 2000);
 }
 

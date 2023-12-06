@@ -9,7 +9,7 @@ const defaultData = {
   defense: 0,
   userInventory: [],
   currentDirectory: "",
-  equippedArmors: [null, null, null, null]
+  equippedArmors: [null, null, null, null],
 };
 
 let gameData = loadFromLocalStorage("gameData", defaultData);

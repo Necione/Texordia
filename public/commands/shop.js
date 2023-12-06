@@ -51,30 +51,40 @@ function attemptToPurchaseItem(itemName, gameData, consoleElement) {
 function createTable(data, title) {
   let maxLength = 0;
   data.forEach((item) => {
-      if (item.name.length > maxLength) {
-          maxLength = item.name.length;
-      }
+    if (item.name.length > maxLength) {
+      maxLength = item.name.length;
+    }
   });
 
   const minNameWidth = 10;
   const nameWidth = Math.max(maxLength, minNameWidth);
   let table = `\n\n${title}\n`;
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
-  table += `| ${"Item Name".padEnd(nameWidth)} | Buy Price    | Sell Price    |\n`;
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15,
+  )}+\n`;
+  table += `| ${"Item Name".padEnd(
+    nameWidth,
+  )} | Buy Price    | Sell Price    |\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15,
+  )}+\n`;
 
   data.forEach((item) => {
-      const buyPriceDisplay = item.purchasable ? item.buyPrice.toString() : 'X';
-      const sellPriceDisplay = item.sellPrice.toString();
-      table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(12)} | ${sellPriceDisplay.padEnd(13)} |\n`;
+    const buyPriceDisplay = item.purchasable ? item.buyPrice.toString() : "X";
+    const sellPriceDisplay = item.sellPrice.toString();
+    table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(
+      12,
+    )} | ${sellPriceDisplay.padEnd(13)} |\n`;
   });
 
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15,
+  )}+\n`;
   return table;
 }
 
 function listShopItems(consoleElement) {
-  let output = '';
+  let output = "";
 
   if (dropsData && dropsData.length > 0) {
     output += createTable(dropsData, "Drops");
@@ -120,7 +130,6 @@ export function sellAllItems(specificItem) {
   } for ${totalSellPrice} gold.\n`;
   saveGameData();
 }
-
 
 export function handleSellAll(argument) {
   if (gameData.currentDirectory !== "Shop") {

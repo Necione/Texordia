@@ -2,7 +2,11 @@ import { gameData, updateGameData } from "./gameData.js";
 import { refreshQuests, showQuests } from "./commands/quests.js";
 import { handleHunting, showHuntCooldown } from "./commands/hunting.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
-import { equipArmor, unequipArmor, showEquippedArmor } from "./commands/equip.js";
+import {
+  equipArmor,
+  unequipArmor,
+  showEquippedArmor,
+} from "./commands/equip.js";
 import { showInventory } from "./commands/inventory.js";
 import {
   saveGameData,
@@ -248,7 +252,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showStats() {
     const hpBarLength = 20;
-    const filledLength = Math.round((gameData.hp / gameData.maxHp) * hpBarLength);
+    const filledLength = Math.round(
+      (gameData.hp / gameData.maxHp) * hpBarLength,
+    );
     const emptyLength = hpBarLength - filledLength;
 
     const hpBar =
@@ -258,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
       `] ${gameData.hp}/${gameData.maxHp}`; // Using gameData.maxHp
 
     consoleElement.value += `\n\nHP: ${hpBar}\nDefense: ${gameData.defense}\n`;
-}
+  }
 
   function changeDirectory(argument) {
     let newDirectory = "";
