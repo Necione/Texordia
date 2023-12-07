@@ -1,34 +1,26 @@
 import { gameData, updateGameData } from "../gameData.js";
 import { saveGameData, consoleElement } from "../utilities.js";
+import { monsters } from "../data/monsters.js";
 
-let monsters = [];
-
-fetch("data/monsters.json")
-  .then((response) => response.json())
-  .then((data) => {
-    monsters = data.monsters;
-  })
-  .catch((error) => console.error("Error loading monster data:", error));
-
-function generateHealthBar(currentHP, maxHP) {
-  currentHP = Math.min(currentHP, maxHP);
-  const hpBarLength = 20;
-
-  if (currentHP <= 0) {
-    return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
+  function generateHealthBar(currentHP, maxHP) {
+    currentHP = Math.min(currentHP, maxHP);
+    const hpBarLength = 20;
+  
+    if (currentHP <= 0) {
+      return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
+    }
+  
+    const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
+    const emptyLength = hpBarLength - filledLength;
+  
+    return (
+      "[" +
+      "█".repeat(filledLength) +
+      " ".repeat(emptyLength) +
+      `] ${currentHP}/${maxHP}`
+    );
   }
-
-  const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
-  const emptyLength = hpBarLength - filledLength;
-
-  return (
-    "[" +
-    "█".repeat(filledLength) +
-    " ".repeat(emptyLength) +
-    `] ${currentHP}/${maxHP}`
-  );
-}
-
+  
 export async function handleHunting(finishHuntCallback) {
   var currentTime = new Date().getTime();
   if (currentTime - gameData.lastHuntTime < 30000) {
@@ -68,23 +60,33 @@ export async function handleHunting(finishHuntCallback) {
       let combatLog = "";
 
       const updateCombatDisplay = () => {
-        const updatedDisplay =
-          `Your HP: ${generateHealthBar(gameData.hp, gameData.maxHp)}\n` +
-          `${monster.name} HP: ${generateHealthBar(
-            monsterHP,
-            monsterMaxHP,
-          )}\n\n` +
+        const playerName = "Your HP";
+        const monsterName = monster.name + " HP";
+        
+        // Determine the maximum name length
+        const maxNameLength = Math.max(playerName.length, monsterName.length);
+      
+        // Pad the names to the maximum length
+        const paddedPlayerName = playerName.padEnd(maxNameLength);
+        const paddedMonsterName = monsterName.padEnd(maxNameLength);
+      
+        const playerHealthBar = generateHealthBar(gameData.hp, gameData.maxHp);
+        const monsterHealthBar = generateHealthBar(monsterHP, monsterMaxHP);
+      
+        const updatedDisplay = 
+          `${paddedPlayerName} ${playerHealthBar}\n` +
+          `${paddedMonsterName} ${monsterHealthBar}\n\n` +
           `[ Combat Log ]\n` +
           combatLog;
-        consoleElement.value =
+      
+        consoleElement.value = 
           consoleElement.value.substring(
-            0,
-            consoleElement.value.indexOf("Searching for monsters...") +
-              "Searching for monsters...".length,
+            0, 
+            consoleElement.value.indexOf("Searching for monsters...") + "Searching for monsters...".length
           ) +
           "\n\n" +
           updatedDisplay;
-
+      
         adjustConsoleScroll();
       };
 
@@ -220,17 +222,4 @@ function handleDeath() {
   setTimeout(() => {
     window.location.reload();
   }, 2000);
-}
-
-export function showHuntCooldown() {
-  var currentTime = new Date().getTime();
-  var timePassed = Math.floor((currentTime - gameData.lastHuntTime) / 1000);
-  var cooldown = 30;
-
-  if (timePassed < cooldown) {
-    var timeLeft = cooldown - timePassed;
-    consoleElement.value += `\nTime remaining until next hunt: ${timeLeft} seconds\n`;
-  } else {
-    consoleElement.value += `\nReady for hunting!\n`;
-  }
 }

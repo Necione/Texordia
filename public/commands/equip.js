@@ -1,9 +1,10 @@
 import { gameData } from "../gameData.js";
-import { consoleElement, armorData, saveGameData } from "../utilities.js";
+import { consoleElement, saveGameData } from "../utilities.js";
+import { armors } from "../data/items/armor.js";
 
 export function equipArmor(argument) {
   // Load armor data if not already loaded
-  if (armorData.length === 0) {
+  if (armors.length === 0) {
     console.error("Armor data is not loaded.");
     return;
   }
@@ -14,7 +15,7 @@ export function equipArmor(argument) {
   const armor = gameData.userInventory.find(
     (item) =>
       item.item.toLowerCase() === lowercasedArgument &&
-      armorData.some((a) => a.name.toLowerCase() === lowercasedArgument),
+      armors.some((a) => a.name.toLowerCase() === lowercasedArgument),
   );
 
   if (!armor) {
@@ -23,7 +24,7 @@ export function equipArmor(argument) {
   }
 
   // Get the armor stats from the armor data
-  const armorStats = armorData.find(
+  const armorStats = armors.find(
     (a) => a.name.toLowerCase() === lowercasedArgument,
   );
 
@@ -69,7 +70,7 @@ export function equipArmor(argument) {
 
 export function unequipArmor(argument) {
   // Load armor data if not already loaded
-  if (armorData.length === 0) {
+  if (armors.length === 0) {
     console.error("Armor data is not loaded.");
     return;
   }
@@ -86,7 +87,7 @@ export function unequipArmor(argument) {
   }
 
   // Get the armor stats from the armor data
-  const armorStats = armorData.find(
+  const armorStats = armors.find(
     (a) => a.name.toLowerCase() === lowercasedArgument,
   );
 
@@ -119,7 +120,7 @@ export function unequipArmor(argument) {
 
 export function showEquippedArmor() {
   // Load armor data if not already loaded
-  if (armorData.length === 0) {
+  if (armors.length === 0) {
     console.error("Armor data is not loaded.");
     return;
   }
@@ -129,7 +130,7 @@ export function showEquippedArmor() {
 
   gameData.equippedArmors.forEach((argument, index) => {
     if (argument) {
-      const armorStats = armorData.find((a) => a.name === argument);
+      const armorStats = armors.find((a) => a.name === argument);
       if (armorStats) {
         equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${
           armorStats.defenseIncrease

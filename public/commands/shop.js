@@ -1,11 +1,11 @@
 import {
   saveGameData,
   consoleElement,
-  dropsData,
-  consumableData,
-  armorData,
 } from "../utilities.js";
 import { gameData } from "../gameData.js";
+import { drops } from "../data/items/drops.js";
+import { armors } from "../data/items/armor.js";
+import { consumables } from "../data/items/consumable.js";
 
 function extractItemNameFromInput(input) {
   var match = input.match(/-buy\s+(.+)/);
@@ -13,7 +13,7 @@ function extractItemNameFromInput(input) {
 }
 
 function attemptToPurchaseItem(itemName, gameData, consoleElement) {
-  const allItems = [...dropsData, ...consumableData, ...armorData];
+  const allItems = [...drops, ...consumables, ...armors];
 
   // Find the item data
   const item = allItems.find(
@@ -86,20 +86,20 @@ function createTable(data, title) {
 function listShopItems(consoleElement) {
   let output = "";
 
-  if (dropsData && dropsData.length > 0) {
-    output += createTable(dropsData, "Drops");
+  if (drops && drops.length > 0) {
+    output += createTable(drops, "Drops");
   } else {
     output += "\nNo drops available.\n";
   }
 
-  if (consumableData && consumableData.length > 0) {
-    output += createTable(consumableData, "Consumables");
+  if (consumables && consumables.length > 0) {
+    output += createTable(consumables, "Consumables");
   } else {
     output += "\nNo consumables available.\n";
   }
 
-  if (armorData && armorData.length > 0) {
-    output += createTable(armorData, "Armor");
+  if (armors && armors.length > 0) {
+    output += createTable(armors, "Armor");
   } else {
     output += "\nNo armor available.\n";
   }
@@ -113,7 +113,7 @@ export function sellAllItems(specificItem) {
 
   gameData.userInventory = gameData.userInventory.filter((itemObj) => {
     if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
-      const itemData = dropsData.find(
+      const itemData = [...drops, ...consumables, ...armors].find(
         (item) => item.name.toLowerCase() === itemObj.item.toLowerCase(),
       );
       if (itemData) {

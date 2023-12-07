@@ -1,7 +1,10 @@
 import { gameData, updateGameData } from "./gameData.js";
 import { handleQuestsCommands } from "./commands/quests.js";
-import { handleHunting, showHuntCooldown } from "./commands/hunting.js";
+import { handleHunting } from "./commands/hunting.js";
+import { showCooldowns } from "./commands/cooldowns.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
+import { startExploration, collectTreasure } from "./commands/explore.js";
+import { consumables } from "./data/items/consumable.js";
 import {
   equipArmor,
   unequipArmor,
@@ -11,7 +14,6 @@ import { showInventory } from "./commands/inventory.js";
 import {
   saveGameData,
   consoleElement,
-  consumableData,
 } from "./utilities.js";
 import { showStats } from "./commands/stats.js";
 
@@ -103,16 +105,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (command) {
       case "sudo":
-        if (
-          initialCommand === "sudo hunt" &&
-          gameData.currentDirectory === "Guild"
-        ) {
+        if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
           isAsyncCommandRunning = true;
           handleHunting(finishHunt);
+        } else if (initialCommand === "sudo explore" && gameData.currentDirectory === "Guild") {
+          startExploration();
         } else {
           handleSudoCommands(initialCommand);
         }
         break;
+        case "collect":
+          if (gameData.currentDirectory === "Guild") {
+            collectTreasure();
+          } else {
+            consoleElement.value += "\nYou need to be in the Guild directory to collect treasures.\n";
+          }
+          break;
       case "quests":
         handleQuest(argument, input);
         break;
@@ -181,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const itemName = argument.toLowerCase();
-    const consumableItem = consumableData.find(
+    const consumableItem = consumables.find(
       (item) => item.name.toLowerCase() === itemName,
     );
     const inventoryItem = gameData.userInventory.find(
@@ -212,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
         clearScreen();
         break;
       case "times":
-        showHuntCooldown();
+        showCooldowns();
         break;
       case "tree":
         showDirectoryTree();

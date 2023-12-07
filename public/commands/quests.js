@@ -3,18 +3,12 @@ import {
   saveToLocalStorage,
   consoleElement,
   saveGameData,
-  dropsData,
 } from "../utilities.js";
 import { gameData } from "../gameData.js";
+import { drops } from "../data/items/drops.js";
 
-export function getAllDropItems(dropsData) {
-  const itemNames = new Set();
-  dropsData.forEach((item) => itemNames.add(item.name));
-  return Array.from(itemNames);
-}
-
-export function generateRandomQuests(dropsData) {
-  const itemNames = getAllDropItems(dropsData);
+export function generateRandomQuests() {
+  const itemNames = drops.map(drop => drop.name);
   const quests = [];
   for (let i = 1; i <= 3; i++) {
     const item = itemNames[Math.floor(Math.random() * itemNames.length)];
@@ -29,8 +23,8 @@ export function generateRandomQuests(dropsData) {
   return quests;
 }
 
-export function generateAndSaveQuests(dropsData) {
-  const quests = generateRandomQuests(dropsData);
+export function generateAndSaveQuests() {
+  const quests = generateRandomQuests();
   saveToLocalStorage("quests", quests);
   return quests;
 }
@@ -87,7 +81,7 @@ export function handleQuestsCommands(argument, input) {
     const questId = input.split(" ")[2];
     submitQuest(questId);
   } else if (argument === "-refresh") {
-    refreshQuests(dropsData);
+    refreshQuests();
   } else if (argument === "-list") {
     showQuests();
   } else {
@@ -95,16 +89,10 @@ export function handleQuestsCommands(argument, input) {
   }
 }
 
-export function refreshQuests(callback) {
-  // Check if dropsData is loaded
-  if (dropsData.length > 0) {
-    const quests = generateAndSaveQuests(dropsData);
-    showQuests();
-    consoleElement.value += "\nQuests have been refreshed.\n";
-  } else {
-    // If dropsData is not loaded, set up a callback to call refreshQuests later
-    callback();
-  }
+export function refreshQuests() {
+  const quests = generateAndSaveQuests();
+  showQuests();
+  consoleElement.value += "\nQuests have been refreshed.\n";
 }
 
 export function showQuests() {
