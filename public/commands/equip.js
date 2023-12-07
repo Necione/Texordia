@@ -39,6 +39,16 @@ export function equipArmor(argument) {
     return;
   }
 
+  // Find a free armor slot
+  const freeSlotIndex = gameData.equippedArmors.findIndex(
+    (slot) => slot === null
+  );
+  if (freeSlotIndex === -1) {
+    consoleElement.value +=
+      "\nNo free armor slots available. Please unequip an armor first.\n";
+    return;
+  }
+
   // Equip the armor
   gameData.equippedArmors[freeSlotIndex] = armorStats.name;
 
