@@ -1,5 +1,5 @@
 import { gameData, updateGameData } from "./gameData.js";
-import { handleQuestsCommands } from "./commands/quests.js";
+import { handleQuest } from "./commands/quests.js";
 import { handleHunting } from "./commands/hunting.js";
 import { showCooldowns } from "./commands/cooldowns.js";
 import { handleShopItems, handleSellAll } from "./commands/shop.js";
@@ -171,15 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       consoleElement.value += `\nInvalid command or wrong directory.\n`;
     }
-  }
-
-  function handleQuest(argument, input) {
-    if (gameData.currentDirectory !== "Guild") {
-      consoleElement.value +=
-        "\nYou must be in the Guild directory for quests.\n";
-      return;
-    }
-    handleQuestsCommands(argument, input);
   }
 
   function handleUseItem(argument) {

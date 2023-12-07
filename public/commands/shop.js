@@ -83,29 +83,22 @@ function createTable(data, title) {
   return table;
 }
 
-function listShopItems(consoleElement) {
+function listShopItems(consoleElement, category) {
   let output = "";
 
-  if (drops && drops.length > 0) {
+  if (category === "drops" && drops && drops.length > 0) {
     output += createTable(drops, "Drops");
-  } else {
-    output += "\nNo drops available.\n";
-  }
-
-  if (consumables && consumables.length > 0) {
+  } else if (category === "consumables" && consumables && consumables.length > 0) {
     output += createTable(consumables, "Consumables");
-  } else {
-    output += "\nNo consumables available.\n";
-  }
-
-  if (armors && armors.length > 0) {
+  } else if (category === "armors" && armors && armors.length > 0) {
     output += createTable(armors, "Armor");
   } else {
-    output += "\nNo armor available.\n";
+    output += `\nNo ${category} available.\n`;
   }
 
   consoleElement.value += output;
 }
+
 
 export function sellAllItems(specificItem) {
   let totalSellPrice = 0;
@@ -142,19 +135,32 @@ export function handleSellAll(argument) {
 
 export function handleShopItems(argument, input) {
   if (gameData.currentDirectory !== "Shop") {
-    consoleElement.value +=
-      "\nYou must be in the Shop directory to interact with items.\n";
+    consoleElement.value += "\nYou must be in the Shop directory to interact with items.\n";
     return;
   }
-  if (argument.startsWith("-buy")) {
+
+  const args = input.split(/\s+/); // Split the input by spaces
+
+  if (args[0] === "items" && args[1] === "-list") {
+    const category = args[2] || "all";
+    if (["drops", "armors", "consumables", "all"].includes(category)) {
+      if (category === "all") {
+        listShopItems(consoleElement, "drops");
+        listShopItems(consoleElement, "consumables");
+        listShopItems(consoleElement, "armors");
+      } else {
+        listShopItems(consoleElement, category);
+      }
+    } else {
+      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|armors|consumables|all]'\n`;
+    }
+  } else if (args[0] === "items" && args[1] === "-buy") {
     const itemName = extractItemNameFromInput(input);
     if (itemName) {
       attemptToPurchaseItem(itemName, gameData, consoleElement);
     } else {
       consoleElement.value += '\nInvalid format. Use: items -buy "Item Name"\n';
     }
-  } else if (argument === "-list") {
-    listShopItems(consoleElement);
   } else {
     consoleElement.value += `\nInvalid command structure. Use: 'items -[list|buy] (argument)'\n`;
   }

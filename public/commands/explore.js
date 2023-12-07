@@ -10,7 +10,7 @@ export function startExploration() {
   
     gameData.ongoingExploration = true;
     gameData.explorationEndTime = new Date().getTime() + 120000;
-    consoleElement.value += "\nExploration started! You can collect the treasure in 2 minutes.\n";
+    consoleElement.value += "\nExploration started! You can collect the treasure in 2 minutes with 'collect'\n";
 
     saveGameData();
   }

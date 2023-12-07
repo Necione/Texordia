@@ -49,13 +49,23 @@ export async function handleHunting(finishHuntCallback) {
     setTimeout(() => {
       clearInterval(spinnerInterval); // Clear the spinner
 
-      const monster = monsters[Math.floor(Math.random() * monsters.length)];
-      const monsterHPRange = monster.hpRange; // Fetching hpRange from the monster data
-      let monsterHP =
-        Math.floor(
-          Math.random() * (monsterHPRange[1] - monsterHPRange[0] + 1),
-        ) + monsterHPRange[0];
-      const monsterMaxHP = monsterHP;
+    // Filter monsters based on the player's level
+ 
+    const levelAppropriateMonsters = monsters.filter(monster =>
+      gameData.level >= monster.encounterRange[0] && gameData.level <= monster.encounterRange[1]
+    );
+
+    const monster = levelAppropriateMonsters[Math.floor(Math.random() * levelAppropriateMonsters.length)];
+
+    // Calculate additional HP based on player's level
+    const levelDifference = Math.max(0, gameData.level - monster.encounterRange[0]);
+    const additionalHP = levelDifference * 3; // 3 HP per level outside the minimum encounter level
+
+    let monsterHPRange = monster.hpRange.map(hp => hp + additionalHP);
+    let monsterHP = Math.floor(
+      Math.random() * (monsterHPRange[1] - monsterHPRange[0] + 1),
+    ) + monsterHPRange[0];
+    const monsterMaxHP = monsterHP;
 
       let combatLog = "";
 

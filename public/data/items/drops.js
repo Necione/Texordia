@@ -12,6 +12,18 @@ export const drops = [
     "purchasable": true
   },
   {
+    "name": "Hardened Skin",
+    "sellPrice": 7,
+    "buyPrice": 0,
+    "purchasable": false
+  },
+  {
+    "name": "Old Tape",
+    "sellPrice": 7,
+    "buyPrice": 14,
+    "purchasable": true
+  },
+  {
     "name": "Zombie Hide",
     "sellPrice": 9,
     "buyPrice": 18,
