@@ -15,7 +15,11 @@ const defaultData = {
   level: 1,
   exp: 0,
   nextLevelExp: 35, // EXP required for level 2
-  skills: ["Vigilance"],
+  skills: [],
+  // Leech Related
+  leechCounter: 0,
+  // Other Combat
+  isStunned: false,
   isFirstAttack: true
 };
 

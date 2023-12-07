@@ -1,7 +1,6 @@
 import { gameData, updateGameData } from "../gameData.js";
 import { saveGameData, consoleElement } from "../utilities.js";
 import { monsters } from "../data/monsters.js";
-import { skills } from "../data/skills.js";
 
 function generateHealthBar(currentHP, maxHP) {
     currentHP = Math.min(currentHP, maxHP);
@@ -18,6 +17,7 @@ function generateHealthBar(currentHP, maxHP) {
 }
 
 export async function handleHunting(finishHuntCallback) {
+
   var currentTime = new Date().getTime();
   if (currentTime - gameData.lastHuntTime < 30000) {
       var timeLeft = Math.ceil((30000 - (currentTime - gameData.lastHuntTime)) / 1000);
@@ -122,12 +122,23 @@ function playerAttack(isFirstAttack, monster, gameData) {
   }
 
   monster.hp -= playerDamage;
+
+    // Check for Leech skill
+    if (gameData.skills.includes("Leech")) {
+      gameData.leechCounter++;
+      if (gameData.leechCounter >= 2) {
+          gameData.hp = Math.min(gameData.hp + 0.5, gameData.maxHp); // Heal 1 HP, but do not exceed max HP
+          gameData.leechCounter = 0; // Reset counter after healing
+      }      
+  }
+
   return { combatLog: `+ You dealt ${playerDamage} Damage to the ${monster.name}!\n`, isFirstAttack: false };
 }
 
 function monsterAttack(monster, gameData) {
   const monsterAttack = Math.floor(Math.random() * (monster.damage[1] - monster.damage[0] + 1)) + monster.damage[0];
   gameData.hp -= monsterAttack;
+
   return `- The ${monster.name} dealt ${monsterAttack} Damage to you\n`;
 }
 
