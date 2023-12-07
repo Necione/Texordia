@@ -19,7 +19,6 @@ const defaultData = {
   // Leech Related
   leechCounter: 0,
   // Other Combat
-  isStunned: false,
   isFirstAttack: true,
 };
 

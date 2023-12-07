@@ -143,7 +143,7 @@ function playerAttack(isFirstAttack, monster, gameData) {
   if (gameData.skills.includes("Leech")) {
     gameData.leechCounter++;
     if (gameData.leechCounter >= 2) {
-      gameData.hp = Math.min(gameData.hp + 0.5, gameData.maxHp); // Heal 1 HP, but do not exceed max HP
+      gameData.hp = Math.min(gameData.hp + 1, gameData.maxHp); // Heal 1 HP, but do not exceed max HP
       gameData.leechCounter = 0; // Reset counter after healing
     }
   }
