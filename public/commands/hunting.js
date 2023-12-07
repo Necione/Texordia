@@ -1,156 +1,134 @@
 import { gameData, updateGameData } from "../gameData.js";
 import { saveGameData, consoleElement } from "../utilities.js";
 import { monsters } from "../data/monsters.js";
+import { skills } from "../data/skills.js";
 
-  function generateHealthBar(currentHP, maxHP) {
+function generateHealthBar(currentHP, maxHP) {
     currentHP = Math.min(currentHP, maxHP);
     const hpBarLength = 20;
-  
+
     if (currentHP <= 0) {
-      return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
+        return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
     }
-  
+
     const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
     const emptyLength = hpBarLength - filledLength;
-  
-    return (
-      "[" +
-      "█".repeat(filledLength) +
-      " ".repeat(emptyLength) +
-      `] ${currentHP}/${maxHP}`
-    );
-  }
-  
+
+    return "[" + "█".repeat(filledLength) + " ".repeat(emptyLength) + `] ${currentHP}/${maxHP}`;
+}
+
 export async function handleHunting(finishHuntCallback) {
   var currentTime = new Date().getTime();
   if (currentTime - gameData.lastHuntTime < 30000) {
-    var timeLeft = Math.ceil(
-      (30000 - (currentTime - gameData.lastHuntTime)) / 1000,
-    );
-    consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
+      var timeLeft = Math.ceil((30000 - (currentTime - gameData.lastHuntTime)) / 1000);
+      consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
+      if (typeof finishHuntCallback === "function") {
+          finishHuntCallback();
+      }
+      return;
+  }
 
-    if (typeof finishHuntCallback === "function") {
-      finishHuntCallback();
-    }
-  } else {
-    let spinner = ["-", "/", "|", "\\"];
-    let spinnerIndex = 0;
+  let spinner = ["-", "/", "|", "\\"];
+  let spinnerIndex = 0;
 
-    // Start the spinner
-    const spinnerInterval = setInterval(() => {
-      consoleElement.value =
-        consoleElement.value.replace(/[-/|\\]$/, "") + spinner[spinnerIndex];
+  const spinnerInterval = setInterval(() => {
+      consoleElement.value = consoleElement.value.replace(/[-/|\\]$/, "") + spinner[spinnerIndex];
       spinnerIndex = (spinnerIndex + 1) % spinner.length;
-    }, 250); // Change spinner every 250 milliseconds
+  }, 250);
 
-    consoleElement.value += "\nSearching for monsters... ";
-    consoleElement.disabled = true;
+  consoleElement.value += "\nSearching for monsters... ";
+  consoleElement.disabled = true;
 
-    setTimeout(() => {
-      clearInterval(spinnerInterval); // Clear the spinner
+  setTimeout(() => {
+      clearInterval(spinnerInterval);
 
-    // Filter monsters based on the player's level
- 
-    const levelAppropriateMonsters = monsters.filter(monster =>
-      gameData.level >= monster.encounterRange[0] && gameData.level <= monster.encounterRange[1]
-    );
+        // Filter monsters based on the player's level and their encounter range
+        const levelAppropriateMonsters = monsters.filter(monster =>
+          gameData.level >= monster.encounterRange[0] && gameData.level <= monster.encounterRange[1]
+      );
 
-    const monster = levelAppropriateMonsters[Math.floor(Math.random() * levelAppropriateMonsters.length)];
-
-    // Calculate additional HP based on player's level
-    const levelDifference = Math.max(0, gameData.level - monster.encounterRange[0]);
-    const additionalHP = levelDifference * 3; // 3 HP per level outside the minimum encounter level
-
-    let monsterHPRange = monster.hpRange.map(hp => hp + additionalHP);
-    let monsterHP = Math.floor(
-      Math.random() * (monsterHPRange[1] - monsterHPRange[0] + 1),
-    ) + monsterHPRange[0];
-    const monsterMaxHP = monsterHP;
+      // Select a random monster from the filtered list
+      const monster = levelAppropriateMonsters[Math.floor(Math.random() * levelAppropriateMonsters.length)];
+      monster.hp = Math.floor(Math.random() * (monster.hpRange[1] - monster.hpRange[0] + 1)) + monster.hpRange[0];
+      const monsterMaxHP = monster.hp;
 
       let combatLog = "";
+      let isFirstAttack = true;
+
+      const combatStartIndex = consoleElement.value.length;
 
       const updateCombatDisplay = () => {
         const playerName = "Your HP";
         const monsterName = monster.name + " HP";
-        
-        // Determine the maximum name length
+
+        // Determine the maximum name length for alignment
         const maxNameLength = Math.max(playerName.length, monsterName.length);
-      
+
         // Pad the names to the maximum length
         const paddedPlayerName = playerName.padEnd(maxNameLength);
         const paddedMonsterName = monsterName.padEnd(maxNameLength);
-      
+
         const playerHealthBar = generateHealthBar(gameData.hp, gameData.maxHp);
-        const monsterHealthBar = generateHealthBar(monsterHP, monsterMaxHP);
-      
-        const updatedDisplay = 
-          `${paddedPlayerName} ${playerHealthBar}\n` +
-          `${paddedMonsterName} ${monsterHealthBar}\n\n` +
-          `[ Combat Log ]\n` +
-          combatLog;
-      
-        consoleElement.value = 
-          consoleElement.value.substring(
-            0, 
-            consoleElement.value.indexOf("Searching for monsters...") + "Searching for monsters...".length
-          ) +
-          "\n\n" +
-          updatedDisplay;
-      
+        const monsterHealthBar = generateHealthBar(monster.hp, monsterMaxHP);
+        
+        const combatDisplay = `\n\n${paddedPlayerName} ${playerHealthBar}\n${paddedMonsterName} ${monsterHealthBar}\n\n[ Combat Log ]\n${combatLog}`;
+        consoleElement.value = consoleElement.value.substring(0, combatStartIndex) + combatDisplay;
         adjustConsoleScroll();
+    };
+
+      const adjustConsoleScroll = () => {
+          consoleElement.scrollTop = consoleElement.scrollHeight;
       };
 
-      function adjustConsoleScroll() {
-        consoleElement.scrollTop = consoleElement.scrollHeight;
-      }
-
-      updateCombatDisplay(); // Initial display update
+      updateCombatDisplay();
 
       const combatInterval = setInterval(() => {
-        // Player's turn
-        const playerDamage = gameData.attack; // Assuming gameData.attack is defined
-        monsterHP -= playerDamage;
-        combatLog += `+ You dealt ${playerDamage} Damage to the ${monster.name}!\n`;
+          if (monster.hp > 0) {
+              const attackResult = playerAttack(isFirstAttack, monster, gameData);
+              combatLog += attackResult.combatLog;
+              isFirstAttack = attackResult.isFirstAttack;
 
-        if (monsterHP <= 0) {
-          clearInterval(combatInterval);
-          combatLog += `You defeated the ${monster.name}!\n`;
+              if (monster.hp <= 0) {
+                  clearInterval(combatInterval);
+                  combatLog += `You defeated the ${monster.name}!\n`;
+                  updateCombatDisplay();
+                  handleCombatVictory(monster, finishHuntCallback);
+                  return;
+              }
+
+              combatLog += monsterAttack(monster, gameData);
+
+              if (gameData.hp <= 0) {
+                  clearInterval(combatInterval);
+                  combatLog += `You have been defeated by the ${monster.name}!\n`;
+                  updateCombatDisplay();
+                  handleCombatDefeat();
+                  return;
+              }
+          }
+
           updateCombatDisplay();
-          handleCombatVictory(monster, finishHuntCallback);
-          return;
-        }
+      }, 1000);
 
-        // Monster's turn
-        const monsterAttackRange = monster.damage;
-        const monsterAttack =
-          Math.floor(
-            Math.random() * (monsterAttackRange[1] - monsterAttackRange[0] + 1),
-          ) + monsterAttackRange[0];
-        const playerDefense = gameData.defense;
+      gameData.lastHuntTime = new Date().getTime();
+  }, 5000);
+}
 
-        // Calculate damage using the provided formula
-        let monsterDamage = Math.round(
-          (monsterAttack * monsterAttack) / (monsterAttack + playerDefense),
-        );
+function playerAttack(isFirstAttack, monster, gameData) {
+  let playerDamage = gameData.attack;
 
-        // Ensure damage is at least 1
-        monsterDamage = Math.max(1, monsterDamage);
-
-        gameData.hp -= monsterDamage;
-        combatLog += `- The ${monster.name} dealt ${monsterDamage} Damage to you\n`;
-
-        if (gameData.hp <= 0) {
-          clearInterval(combatInterval);
-          combatLog += `You have been defeated by the ${monster.name}!\n`;
-          updateCombatDisplay();
-          handleCombatDefeat();
-          return;
-        }
-
-        updateCombatDisplay();
-      }, 1000); // 1 second interval between turns
-    }, 5000); // 5 seconds for initial spinner
+  if (isFirstAttack && gameData.skills.includes("Vigilance")) {
+      playerDamage *= 2; // Double damage for the first attack
   }
+
+  monster.hp -= playerDamage;
+  return { combatLog: `+ You dealt ${playerDamage} Damage to the ${monster.name}!\n`, isFirstAttack: false };
+}
+
+function monsterAttack(monster, gameData) {
+  const monsterAttack = Math.floor(Math.random() * (monster.damage[1] - monster.damage[0] + 1)) + monster.damage[0];
+  gameData.hp -= monsterAttack;
+  return `- The ${monster.name} dealt ${monsterAttack} Damage to you\n`;
 }
 
 function handleCombatVictory(monster, finishHuntCallback) {

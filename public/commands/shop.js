@@ -177,7 +177,7 @@ export function showItemInfo(itemName) {
     drops.find((item) => item.name.toLowerCase() === lowercasedItemName);
 
   if (!item) {
-    consoleElement.value += `\nItem '${itemName}' not found.\n`;
+    consoleElement.value += `\nItem not found, are you sure it's spelt correctly?\n`;
     return;
   }
 

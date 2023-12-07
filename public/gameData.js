@@ -15,6 +15,8 @@ const defaultData = {
   level: 1,
   exp: 0,
   nextLevelExp: 35, // EXP required for level 2
+  skills: ["Vigilance"],
+  isFirstAttack: true
 };
 
 function updateLevel() {

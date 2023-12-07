@@ -2,8 +2,13 @@ import { gameData, updateGameData } from "./gameData.js";
 import { handleQuest } from "./commands/quests.js";
 import { handleHunting } from "./commands/hunting.js";
 import { showCooldowns } from "./commands/cooldowns.js";
-import { handleShopItems, handleSellAll, showItemInfo } from "./commands/shop.js";
+import {
+  handleShopItems,
+  handleSellAll,
+  showItemInfo,
+} from "./commands/shop.js";
 import { startExploration, collectTreasure } from "./commands/explore.js";
+import { showHelp } from "./commands/help.js";
 import { consumables } from "./data/items/consumable.js";
 import {
   equipArmor,
@@ -11,11 +16,8 @@ import {
   showEquippedArmor,
 } from "./commands/equip.js";
 import { showInventory } from "./commands/inventory.js";
-import {
-  saveGameData,
-  consoleElement,
-} from "./utilities.js";
-import { showStats } from "./commands/stats.js";
+import { saveGameData, consoleElement } from "./utilities.js";
+import { showStats, showSkills } from "./commands/stats.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   let isAsyncCommandRunning = false;
@@ -32,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   consoleElement.value =
-    "Welcome back to Texordia. [ Ver 0.1 ]\n\n" + promptText;
+    "Welcome back to Texordia. [ Ver 0.1 ]\nUse 'help' to get started\n\n" +
+    promptText;
   consoleElement.focus();
   consoleElement.setSelectionRange(
     consoleElement.value.length,
@@ -105,22 +108,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (command) {
       case "sudo":
-        if (initialCommand === "sudo hunt" && gameData.currentDirectory === "Guild") {
+        if (
+          initialCommand === "sudo hunt" &&
+          gameData.currentDirectory === "Guild"
+        ) {
           isAsyncCommandRunning = true;
           handleHunting(finishHunt);
-        } else if (initialCommand === "sudo explore" && gameData.currentDirectory === "Guild") {
+        } else if (
+          initialCommand === "sudo explore" &&
+          gameData.currentDirectory === "Guild"
+        ) {
           startExploration();
         } else {
           handleSudoCommands(initialCommand);
         }
         break;
-        case "collect":
-          if (gameData.currentDirectory === "Guild") {
-            collectTreasure();
-          } else {
-            consoleElement.value += "\nYou need to be in the Guild directory to collect treasures.\n";
-          }
-          break;
+      case "collect":
+        if (gameData.currentDirectory === "Guild") {
+          collectTreasure();
+        } else {
+          consoleElement.value +=
+            "\nYou need to be in the Guild directory to collect treasures.\n";
+        }
+        break;
       case "quests":
         handleQuest(argument, input);
         break;
@@ -136,6 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
       case "items":
         handleShopItems(argument, input);
         break;
+      case "help":
+        showHelp();
+        break;
+        case "skills":
+          showSkills();
+          break;
       case "equip":
         equipArmor(argument);
         break;
