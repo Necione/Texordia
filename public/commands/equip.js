@@ -23,10 +23,15 @@ export function equipArmor(argument) {
     return;
   }
 
-  // Get the armor stats from the armor data
+  // Find the armor stats from the armor data
   const armorStats = armors.find(
     (a) => a.name.toLowerCase() === lowercasedArgument
   );
+
+  if (!armorStats) {
+    consoleElement.value += `\nArmor stats not found for '${argument}'.\n`;
+    return;
+  }
 
   // Check if the armor is already equipped
   if (gameData.equippedArmors.includes(armorStats.name)) {
@@ -34,31 +39,13 @@ export function equipArmor(argument) {
     return;
   }
 
-  if (!armorStats) {
-    consoleElement.value += `\nArmor stats not found for '${argument}'.\n`;
-    return;
-  }
-
-  // Find a free armor slot
-  const freeSlotIndex = gameData.equippedArmors.findIndex(
-    (slot) => slot === null
-  );
-  if (freeSlotIndex === -1) {
-    consoleElement.value +=
-      "\nNo free armor slots available. Please unequip an armor first.\n";
-    return;
-  }
-
+  // Equip the armor
   gameData.equippedArmors[freeSlotIndex] = armorStats.name;
-  gameData.defense += armorStats.defenseIncrease;
 
-  if (armorStats.hpIncrease) {
-    gameData.maxHp += armorStats.hpIncrease;
-  }
-
-  if (armorStats.attackIncrease) {
-    gameData.attack += armorStats.attackIncrease;
-  }
+  // Add stats from the armor
+  gameData.defense += armorStats.defenseIncrease || 0; // Add defense if it exists, otherwise add 0
+  gameData.maxHp += armorStats.hpIncrease || 0; // Add HP if it exists, otherwise add 0
+  gameData.attack += armorStats.attackIncrease || 0; // Add attack if it exists, otherwise add 0
 
   consoleElement.value += `\nEquipped '${armorStats.name}'.\n`;
 
