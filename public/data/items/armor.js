@@ -13,5 +13,12 @@ export const armors = [
     "buyPrice": 15,
     "sellPrice": 10,
     "purchasable": true
+  },
+  {
+    "name": "Blood Ring",
+    "attackIncrease": 2,
+    "buyPrice": 20,
+    "sellPrice": 10,
+    "purchasable": true
   }
 ];

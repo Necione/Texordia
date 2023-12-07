@@ -24,7 +24,7 @@ function updateLevel() {
 
   while (gameData.exp >= gameData.nextLevelExp && gameData.level - 1 < expForNextLevel.length) {
     gameData.level++;
-    gameData.attack += 1.5; // Increase base attack
+    gameData.attack += 1; // Increase base attack
     gameData.nextLevelExp = expForNextLevel[gameData.level - 1];
   }
 }

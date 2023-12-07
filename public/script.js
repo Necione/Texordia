@@ -2,7 +2,7 @@ import { gameData, updateGameData } from "./gameData.js";
 import { handleQuest } from "./commands/quests.js";
 import { handleHunting } from "./commands/hunting.js";
 import { showCooldowns } from "./commands/cooldowns.js";
-import { handleShopItems, handleSellAll } from "./commands/shop.js";
+import { handleShopItems, handleSellAll, showItemInfo } from "./commands/shop.js";
 import { startExploration, collectTreasure } from "./commands/explore.js";
 import { consumables } from "./data/items/consumable.js";
 import {
@@ -123,6 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
       case "quests":
         handleQuest(argument, input);
+        break;
+      case "info":
+        showItemInfo(argument);
         break;
       case "sellall":
         handleSellAll(argument);

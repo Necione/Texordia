@@ -1,7 +1,4 @@
-import {
-  saveGameData,
-  consoleElement,
-} from "../utilities.js";
+import { saveGameData, consoleElement } from "../utilities.js";
 import { gameData } from "../gameData.js";
 import { drops } from "../data/items/drops.js";
 import { armors } from "../data/items/armor.js";
@@ -88,17 +85,20 @@ function listShopItems(consoleElement, category) {
 
   if (category === "drops" && drops && drops.length > 0) {
     output += createTable(drops, "Drops");
-  } else if (category === "consumables" && consumables && consumables.length > 0) {
-    output += createTable(consumables, "Consumables");
-  } else if (category === "armors" && armors && armors.length > 0) {
-    output += createTable(armors, "Armor");
+  } else if (
+    category === "consumable" &&
+    consumables &&
+    consumables.length > 0
+  ) {
+    output += createTable(consumables, "Consumable");
+  } else if (category === "equipment" && armors && armors.length > 0) {
+    output += createTable(armors, "Equipment");
   } else {
     output += `\nNo ${category} available.\n`;
   }
 
   consoleElement.value += output;
 }
-
 
 export function sellAllItems(specificItem) {
   let totalSellPrice = 0;
@@ -135,7 +135,8 @@ export function handleSellAll(argument) {
 
 export function handleShopItems(argument, input) {
   if (gameData.currentDirectory !== "Shop") {
-    consoleElement.value += "\nYou must be in the Shop directory to interact with items.\n";
+    consoleElement.value +=
+      "\nYou must be in the Shop directory to interact with items.\n";
     return;
   }
 
@@ -143,16 +144,16 @@ export function handleShopItems(argument, input) {
 
   if (args[0] === "items" && args[1] === "-list") {
     const category = args[2] || "all";
-    if (["drops", "armors", "consumables", "all"].includes(category)) {
+    if (["drops", "equipment", "consumable", "all"].includes(category)) {
       if (category === "all") {
         listShopItems(consoleElement, "drops");
-        listShopItems(consoleElement, "consumables");
-        listShopItems(consoleElement, "armors");
+        listShopItems(consoleElement, "consumable");
+        listShopItems(consoleElement, "equipment");
       } else {
         listShopItems(consoleElement, category);
       }
     } else {
-      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|armors|consumables|all]'\n`;
+      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|equipment|consumable|all]'\n`;
     }
   } else if (args[0] === "items" && args[1] === "-buy") {
     const itemName = extractItemNameFromInput(input);
@@ -164,4 +165,30 @@ export function handleShopItems(argument, input) {
   } else {
     consoleElement.value += `\nInvalid command structure. Use: 'items -[list|buy] (argument)'\n`;
   }
+}
+
+export function showItemInfo(itemName) {
+  const lowercasedItemName = itemName.toLowerCase();
+  const item =
+    armors.find((item) => item.name.toLowerCase() === lowercasedItemName) ||
+    consumables.find(
+      (item) => item.name.toLowerCase() === lowercasedItemName,
+    ) ||
+    drops.find((item) => item.name.toLowerCase() === lowercasedItemName);
+
+  if (!item) {
+    consoleElement.value += `\nItem '${itemName}' not found.\n`;
+    return;
+  }
+
+  let infoDisplay = `\n\nInfo for '${item.name}':\n`;
+  if (item.defenseIncrease)
+    infoDisplay += `- Defense Increase: ${item.defenseIncrease}\n`;
+  if (item.hpIncrease) infoDisplay += `- HP Increase: ${item.hpIncrease}\n`;
+  if (item.attackIncrease)
+    infoDisplay += `- Attack Increase: ${item.attackIncrease}\n`;
+  if (item.buyPrice) infoDisplay += `- Buy Price: ${item.buyPrice}\n`;
+  if (item.sellPrice) infoDisplay += `- Sell Price: ${item.sellPrice}\n`;
+
+  consoleElement.value += infoDisplay;
 }

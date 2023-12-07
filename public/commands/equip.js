@@ -56,6 +56,10 @@ export function equipArmor(argument) {
     gameData.maxHp += armorStats.hpIncrease;
   }
 
+  if (armorStats.attackIncrease) {
+    gameData.attack += armorStats.attackIncrease;
+  }
+
   consoleElement.value += `\nEquipped '${armorStats.name}'.\n`;
 
   // Remove armor from inventory
@@ -104,6 +108,10 @@ export function unequipArmor(argument) {
     gameData.maxHp -= armorStats.hpIncrease;
   }
 
+  if (armorStats.attackIncrease) {
+    gameData.attack -= armorStats.attackIncrease;
+  }
+
   // Add the armor back to inventory
   const inventoryItem = gameData.userInventory.find(
     (item) => item.item.toLowerCase() === lowercasedArgument,
@@ -125,21 +133,21 @@ export function showEquippedArmor() {
     return;
   }
 
-  let equippedArmorDisplay = "\n\nEquipped Armor:\n\n";
+  let equippedArmorDisplay = "\n\nCurrently Equipped:\n\n";
   let totalDefenseIncrease = 0;
+  let totalHpIncrease = 0;
+  let totalAttackIncrease = 0;
 
   gameData.equippedArmors.forEach((argument, index) => {
     if (argument) {
       const armorStats = armors.find((a) => a.name === argument);
       if (armorStats) {
-        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${
-          armorStats.defenseIncrease
-        })\n`;
+        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${armorStats.defenseIncrease}, HP +${armorStats.hpIncrease || 0}, Attack +${armorStats.attackIncrease || 0})\n`;
         totalDefenseIncrease += armorStats.defenseIncrease;
+        totalHpIncrease += armorStats.hpIncrease || 0;
+        totalAttackIncrease += armorStats.attackIncrease || 0;
       } else {
-        equippedArmorDisplay += `Slot ${
-          index + 1
-        }: ${argument} (Stats not found)\n`;
+        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Stats not found)\n`;
       }
     } else {
       equippedArmorDisplay += `Slot ${index + 1}: X\n`;
@@ -147,9 +155,11 @@ export function showEquippedArmor() {
   });
 
   equippedArmorDisplay += `\nTotal Defense Increase: ${totalDefenseIncrease}\n`;
+  equippedArmorDisplay += `Total HP Increase: ${totalHpIncrease}\n`;
+  equippedArmorDisplay += `Total Attack Increase: ${totalAttackIncrease}\n`;
 
   consoleElement.value += equippedArmorDisplay;
 
-  // Save game data
   saveGameData();
 }
+
