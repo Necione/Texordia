@@ -1,1 +1,165 @@
-(function(_0xa3d807,_0x447527){const _0x5c4023=_0xea88,_0x22be81=_0xa3d807();while(!![]){try{const _0x17aa5a=parseInt(_0x5c4023(0x12c))/0x1+parseInt(_0x5c4023(0x109))/0x2+-parseInt(_0x5c4023(0xfe))/0x3+-parseInt(_0x5c4023(0x107))/0x4+-parseInt(_0x5c4023(0x11e))/0x5+-parseInt(_0x5c4023(0x114))/0x6+parseInt(_0x5c4023(0x105))/0x7*(parseInt(_0x5c4023(0x118))/0x8);if(_0x17aa5a===_0x447527)break;else _0x22be81['push'](_0x22be81['shift']());}catch(_0x446a8e){_0x22be81['push'](_0x22be81['shift']());}}}(_0xccfd,0x397a3));function _0xccfd(){const _0xc8661d=['\x20(Stats\x20not\x20found)\x0a','SjmQV','log',',\x20Attack\x20+','defense','iikVS','\x27.\x0a','\x0aArmor\x20stats\x20not\x20found\x20for\x20\x27','length','error','423323JGUWae','\x20(Defense\x20+','Armor\x20data\x20is\x20not\x20loaded.','toLowerCase','filter','attack','1332642YlFOxy','name','item','Slot\x20','attackIncrease','\x27\x20is\x20not\x20currently\x20equipped.\x0a','value','182HthVRy','jrovf','203948mJSdnY','defenseIncrease','47346vlJbsf','\x0aNo\x20free\x20armor\x20slots\x20available.\x20Please\x20unequip\x20an\x20armor\x20first.\x0a','includes','\x0aTotal\x20Defense\x20Increase:\x20','chIpS',':\x20X\x0a','push','Total\x20Attack\x20Increase:\x20','cmRDE','\x0aItem\x20\x27','\x0a\x0aCurrently\x20Equipped:\x0a\x0a','1733712bwcBax','Total\x20HP\x20Increase:\x20','WiMYv','PVAeY','306808eueFqT','find','equippedArmors',',\x20HP\x20+','maxHp','hpIncrease','2122710UUzGlo','UIDHz','findIndex','userInventory'];_0xccfd=function(){return _0xc8661d;};return _0xccfd();}import{gameData}from'../gameData.js';import{consoleElement,saveGameData}from'../utilities.js';import{armors}from'../data/items/armor.js';function _0xea88(_0x33a09c,_0x43d2a3){const _0xccfd26=_0xccfd();return _0xea88=function(_0xea889b,_0x1af1c2){_0xea889b=_0xea889b-0xfa;let _0x3f85bd=_0xccfd26[_0xea889b];return _0x3f85bd;},_0xea88(_0x33a09c,_0x43d2a3);}export function equipArmor(_0x5a1321){const _0x5931f9=_0xea88,_0x293972={'McyVO':function(_0x14b805,_0x491003){return _0x14b805===_0x491003;},'UIDHz':_0x5931f9(0xfa),'NKtgw':function(_0x55dc0f,_0x4929c0){return _0x55dc0f===_0x4929c0;},'MXmkF':_0x5931f9(0x10a),'mGMai':function(_0x2da523){return _0x2da523();}};if(_0x293972['McyVO'](armors[_0x5931f9(0x12a)],0x0)){console['error'](_0x293972[_0x5931f9(0x11f)]);return;}const _0x33a49c=_0x5a1321[_0x5931f9(0xfb)](),_0xcacc84=gameData[_0x5931f9(0x121)][_0x5931f9(0x119)](_0x31f352=>_0x31f352[_0x5931f9(0x100)][_0x5931f9(0xfb)]()===_0x33a49c&&armors['some'](_0xa00342=>_0xa00342['name'][_0x5931f9(0xfb)]()===_0x33a49c));if(!_0xcacc84){consoleElement[_0x5931f9(0x104)]+=_0x5931f9(0x112)+_0x5a1321+'\x27\x20was\x20not\x20found,\x20are\x20you\x20sure\x20this\x20is\x20typed\x20correctly?\x0a';return;}const _0x2e0f59=armors[_0x5931f9(0x119)](_0x66b396=>_0x66b396[_0x5931f9(0xff)][_0x5931f9(0xfb)]()===_0x33a49c);if(gameData[_0x5931f9(0x11a)][_0x5931f9(0x10b)](_0x2e0f59[_0x5931f9(0xff)])){consoleElement[_0x5931f9(0x104)]+='\x0a\x27'+_0x2e0f59[_0x5931f9(0xff)]+'\x27\x20is\x20already\x20equipped.\x0a';return;}if(!_0x2e0f59){consoleElement[_0x5931f9(0x104)]+=_0x5931f9(0x129)+_0x5a1321+'\x27.\x0a';return;}const _0x7dfd0c=gameData[_0x5931f9(0x11a)][_0x5931f9(0x120)](_0x490d42=>_0x490d42===null);if(_0x293972['NKtgw'](_0x7dfd0c,-0x1)){consoleElement[_0x5931f9(0x104)]+=_0x293972['MXmkF'];return;}gameData[_0x5931f9(0x11a)][_0x7dfd0c]=_0x2e0f59[_0x5931f9(0xff)],gameData[_0x5931f9(0x126)]+=_0x2e0f59[_0x5931f9(0x108)],_0x2e0f59['hpIncrease']&&(gameData[_0x5931f9(0x11c)]+=_0x2e0f59[_0x5931f9(0x11d)]),_0x2e0f59['attackIncrease']&&(gameData[_0x5931f9(0xfd)]+=_0x2e0f59['attackIncrease']),consoleElement[_0x5931f9(0x104)]+='\x0aEquipped\x20\x27'+_0x2e0f59[_0x5931f9(0xff)]+_0x5931f9(0x128),gameData[_0x5931f9(0x121)]=gameData[_0x5931f9(0x121)][_0x5931f9(0xfc)](_0xc691df=>_0xc691df['item'][_0x5931f9(0xfb)]()!==_0x33a49c),_0x293972['mGMai'](saveGameData),console[_0x5931f9(0x124)](gameData[_0x5931f9(0x11c)]);}export function unequipArmor(_0x50c4e7){const _0x33a929=_0xea88,_0x574276={'WDeyI':function(_0x337293,_0x4b4078){return _0x337293===_0x4b4078;},'chIpS':_0x33a929(0xfa),'PVAeY':function(_0x6d4034,_0x2ef652){return _0x6d4034===_0x2ef652;},'cmRDE':function(_0x4d5e65){return _0x4d5e65();}};if(_0x574276['WDeyI'](armors[_0x33a929(0x12a)],0x0)){console[_0x33a929(0x12b)](_0x574276[_0x33a929(0x10d)]);return;}const _0x4a6104=_0x50c4e7[_0x33a929(0xfb)](),_0x76a8f8=gameData[_0x33a929(0x11a)][_0x33a929(0x120)](_0x2870a4=>_0x2870a4&&_0x2870a4[_0x33a929(0xfb)]()===_0x4a6104);if(_0x574276[_0x33a929(0x117)](_0x76a8f8,-0x1)){consoleElement[_0x33a929(0x104)]+='\x0a\x27'+_0x50c4e7+_0x33a929(0x103);return;}const _0x46f5d9=armors[_0x33a929(0x119)](_0x5ac56e=>_0x5ac56e[_0x33a929(0xff)][_0x33a929(0xfb)]()===_0x4a6104);if(!_0x46f5d9){consoleElement[_0x33a929(0x104)]+=_0x33a929(0x129)+_0x50c4e7+_0x33a929(0x128);return;}gameData[_0x33a929(0x11a)][_0x76a8f8]=null,gameData[_0x33a929(0x126)]-=_0x46f5d9[_0x33a929(0x108)];_0x46f5d9['hpIncrease']&&(gameData[_0x33a929(0x11c)]-=_0x46f5d9['hpIncrease']);_0x46f5d9[_0x33a929(0x102)]&&(gameData['attack']-=_0x46f5d9[_0x33a929(0x102)]);const _0x11dbeb=gameData[_0x33a929(0x121)][_0x33a929(0x119)](_0x5b7d31=>_0x5b7d31[_0x33a929(0x100)][_0x33a929(0xfb)]()===_0x4a6104);_0x11dbeb?_0x11dbeb['quantity']+=0x1:gameData[_0x33a929(0x121)][_0x33a929(0x10f)]({'item':_0x46f5d9[_0x33a929(0xff)],'quantity':0x1}),_0x574276[_0x33a929(0x111)](saveGameData);}export function showEquippedArmor(){const _0x242122=_0xea88,_0x38703b={'SjmQV':function(_0x1d9a17,_0x3fe7cc){return _0x1d9a17+_0x3fe7cc;},'iikVS':function(_0x262aca,_0x5e1d4d){return _0x262aca+_0x5e1d4d;},'jrovf':function(_0x3b4fbd,_0xa4a6ec){return _0x3b4fbd===_0xa4a6ec;},'WiMYv':_0x242122(0x113)};if(_0x38703b[_0x242122(0x106)](armors[_0x242122(0x12a)],0x0)){console['error']('Armor\x20data\x20is\x20not\x20loaded.');return;}let _0x1deb42=_0x38703b[_0x242122(0x116)],_0x30e01c=0x0,_0x4325cc=0x0,_0x591c90=0x0;gameData[_0x242122(0x11a)]['forEach']((_0x158609,_0x4c3c15)=>{const _0x1479de=_0x242122;if(_0x158609){const _0x2a34db=armors[_0x1479de(0x119)](_0x329b68=>_0x329b68[_0x1479de(0xff)]===_0x158609);_0x2a34db?(_0x1deb42+=_0x1479de(0x101)+_0x38703b[_0x1479de(0x123)](_0x4c3c15,0x1)+':\x20'+_0x158609+_0x1479de(0x12d)+_0x2a34db[_0x1479de(0x108)]+_0x1479de(0x11b)+(_0x2a34db[_0x1479de(0x11d)]||0x0)+_0x1479de(0x125)+(_0x2a34db[_0x1479de(0x102)]||0x0)+')\x0a',_0x30e01c+=_0x2a34db[_0x1479de(0x108)],_0x4325cc+=_0x2a34db[_0x1479de(0x11d)]||0x0,_0x591c90+=_0x2a34db[_0x1479de(0x102)]||0x0):_0x1deb42+=_0x1479de(0x101)+_0x38703b[_0x1479de(0x127)](_0x4c3c15,0x1)+':\x20'+_0x158609+_0x1479de(0x122);}else _0x1deb42+=_0x1479de(0x101)+(_0x4c3c15+0x1)+_0x1479de(0x10e);}),_0x1deb42+=_0x242122(0x10c)+_0x30e01c+'\x0a',_0x1deb42+=_0x242122(0x115)+_0x4325cc+'\x0a',_0x1deb42+=_0x242122(0x110)+_0x591c90+'\x0a',consoleElement['value']+=_0x1deb42,saveGameData();}
+import { gameData } from "../gameData.js";
+import { consoleElement, saveGameData } from "../utilities.js";
+import { armors } from "../data/items/armor.js";
+
+export function equipArmor(argument) {
+  // Load armor data if not already loaded
+  if (armors.length === 0) {
+    console.error("Armor data is not loaded.");
+    return;
+  }
+
+  const lowercasedArgument = argument.toLowerCase();
+
+  // Find the armor in the user's inventory
+  const armor = gameData.userInventory.find(
+    (item) =>
+      item.item.toLowerCase() === lowercasedArgument &&
+      armors.some((a) => a.name.toLowerCase() === lowercasedArgument),
+  );
+
+  if (!armor) {
+    consoleElement.value += `\nItem '${argument}' was not found, are you sure this is typed correctly?\n`;
+    return;
+  }
+
+  // Get the armor stats from the armor data
+  const armorStats = armors.find(
+    (a) => a.name.toLowerCase() === lowercasedArgument,
+  );
+
+  // Check if the armor is already equipped
+  if (gameData.equippedArmors.includes(armorStats.name)) {
+    consoleElement.value += `\n'${armorStats.name}' is already equipped.\n`;
+    return;
+  }
+
+  if (!armorStats) {
+    consoleElement.value += `\nArmor stats not found for '${argument}'.\n`;
+    return;
+  }
+
+  // Find a free armor slot
+  const freeSlotIndex = gameData.equippedArmors.findIndex(
+    (slot) => slot === null,
+  );
+  if (freeSlotIndex === -1) {
+    consoleElement.value +=
+      "\nNo free armor slots available. Please unequip an armor first.\n";
+    return;
+  }
+
+  gameData.equippedArmors[freeSlotIndex] = armorStats.name;
+  gameData.defense += armorStats.defenseIncrease;
+
+  if (armorStats.hpIncrease) {
+    gameData.maxHp += armorStats.hpIncrease;
+  }
+
+  if (armorStats.attackIncrease) {
+    gameData.attack += armorStats.attackIncrease;
+  }
+
+  consoleElement.value += `\nEquipped '${armorStats.name}'.\n`;
+
+  // Remove armor from inventory
+  gameData.userInventory = gameData.userInventory.filter(
+    (item) => item.item.toLowerCase() !== lowercasedArgument,
+  );
+
+  // Save game data
+  saveGameData();
+  console.log(gameData.maxHp);
+}
+
+export function unequipArmor(argument) {
+  // Load armor data if not already loaded
+  if (armors.length === 0) {
+    console.error("Armor data is not loaded.");
+    return;
+  }
+
+  const lowercasedArgument = argument.toLowerCase();
+
+  // Find if the armor is equipped
+  const equippedIndex = gameData.equippedArmors.findIndex(
+    (slot) => slot && slot.toLowerCase() === lowercasedArgument,
+  );
+  if (equippedIndex === -1) {
+    consoleElement.value += `\n'${argument}' is not currently equipped.\n`;
+    return;
+  }
+
+  // Get the armor stats from the armor data
+  const armorStats = armors.find(
+    (a) => a.name.toLowerCase() === lowercasedArgument,
+  );
+
+  if (!armorStats) {
+    consoleElement.value += `\nArmor stats not found for '${argument}'.\n`;
+    return;
+  }
+
+  // Unequip the armor
+  gameData.equippedArmors[equippedIndex] = null;
+  gameData.defense -= armorStats.defenseIncrease;
+
+  if (armorStats.hpIncrease) {
+    gameData.maxHp -= armorStats.hpIncrease;
+  }
+
+  if (armorStats.attackIncrease) {
+    gameData.attack -= armorStats.attackIncrease;
+  }
+
+  // Add the armor back to inventory
+  const inventoryItem = gameData.userInventory.find(
+    (item) => item.item.toLowerCase() === lowercasedArgument,
+  );
+  if (inventoryItem) {
+    inventoryItem.quantity += 1;
+  } else {
+    gameData.userInventory.push({ item: armorStats.name, quantity: 1 });
+  }
+
+  // Save game data
+  saveGameData();
+}
+
+export function showEquippedArmor() {
+  // Load armor data if not already loaded
+  if (armors.length === 0) {
+    console.error("Armor data is not loaded.");
+    return;
+  }
+
+  let equippedArmorDisplay = "\n\nCurrently Equipped:\n\n";
+  let totalDefenseIncrease = 0;
+  let totalHpIncrease = 0;
+  let totalAttackIncrease = 0;
+
+  gameData.equippedArmors.forEach((argument, index) => {
+    if (argument) {
+      const armorStats = armors.find((a) => a.name === argument);
+      if (armorStats) {
+        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${armorStats.defenseIncrease}, HP +${armorStats.hpIncrease || 0}, Attack +${armorStats.attackIncrease || 0})\n`;
+        totalDefenseIncrease += armorStats.defenseIncrease;
+        totalHpIncrease += armorStats.hpIncrease || 0;
+        totalAttackIncrease += armorStats.attackIncrease || 0;
+      } else {
+        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Stats not found)\n`;
+      }
+    } else {
+      equippedArmorDisplay += `Slot ${index + 1}: X\n`;
+    }
+  });
+
+  equippedArmorDisplay += `\nTotal Defense Increase: ${totalDefenseIncrease}\n`;
+  equippedArmorDisplay += `Total HP Increase: ${totalHpIncrease}\n`;
+  equippedArmorDisplay += `Total Attack Increase: ${totalAttackIncrease}\n`;
+
+  consoleElement.value += equippedArmorDisplay;
+
+  saveGameData();
+}
+

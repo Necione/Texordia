@@ -1,1 +1,128 @@
-(function(_0x2ba302,_0x5ba20b){const _0x427d22=_0x1582,_0x4960a2=_0x2ba302();while(!![]){try{const _0x1524c0=-parseInt(_0x427d22(0xd5))/0x1*(parseInt(_0x427d22(0x9e))/0x2)+-parseInt(_0x427d22(0xb8))/0x3+parseInt(_0x427d22(0xaf))/0x4*(-parseInt(_0x427d22(0xb3))/0x5)+parseInt(_0x427d22(0xd0))/0x6+-parseInt(_0x427d22(0xde))/0x7*(parseInt(_0x427d22(0xad))/0x8)+parseInt(_0x427d22(0xdf))/0x9*(-parseInt(_0x427d22(0xb6))/0xa)+parseInt(_0x427d22(0xb5))/0xb*(parseInt(_0x427d22(0xbf))/0xc);if(_0x1524c0===_0x5ba20b)break;else _0x4960a2['push'](_0x4960a2['shift']());}catch(_0x151cb3){_0x4960a2['push'](_0x4960a2['shift']());}}}(_0x1e02,0x9dad3));function _0x1e02(){const _0x4949db=['RSZyR','kNeHI','currentDirectory','floor','random','forEach','-submit','+---------+---------------------+---------+\x0a','name','pCGSN','value','\x0aYou\x20do\x20not\x20have\x20enough\x20of\x20the\x20required\x20item\x20to\x20complete\x20this\x20quest.\x0a','248LnaBNW','isArray','116lWqdqI','\x0aInvalid\x20command\x20structure.\x20Use:\x20\x27quests\x20-[list|refresh|submit]\x20(argument)\x27\x0a','length','quests','53020MYBqEw','uzzTu','44627JMJyFn','956370ZqwUPt','qXdKz','1873482qyXItT','\x0a\x0aAvailable\x20Quests:\x0a+---------+---------------------+---------+\x0a|\x20QuestID\x20|\x20Item\x20Requirement\x20\x20\x20\x20|\x20Rewards\x20|\x0a+---------+---------------------+---------+\x0a','JdLaO','-list','Guild','lHGdK','reward','10068nhkwYq','split','itemRequirement','\x20completed!\x20You\x20earned\x20','PkHfi','aitVj','nUcIL','goldAmount','\x20|\x20','\x20|\x0a','\x0aQuests\x20have\x20been\x20refreshed.\x0a','nCtLy','IwpKq','MPekL','KVwvg','AIzjL','jfVue','999810gtngkU','find','quantity','sTKYQ','UGyhA','1214251TXYGuA','userInventory','fHcsR','\x0aQuest\x20','-refresh','startsWith','map','padEnd','filter','110971HEkaXd','27xFbmPV','eCblp','nzSMm','\x20Gold.\x0a','2StnOly','VnMbP','\x20Gold'];_0x1e02=function(){return _0x4949db;};return _0x1e02();}import{loadFromLocalStorage,saveToLocalStorage,consoleElement,saveGameData}from'../utilities.js';import{gameData}from'../gameData.js';import{drops}from'../data/items/drops.js';export function handleQuest(_0x2d628f,_0x20d77f){const _0x37f26b=_0x1582,_0x414c30={'eCblp':function(_0x4f97b8,_0x34dc02){return _0x4f97b8!==_0x34dc02;},'jfVue':_0x37f26b(0xbc),'FNKix':'\x0aYou\x20must\x20be\x20in\x20the\x20Guild\x20directory\x20for\x20quests.\x0a'};if(_0x414c30[_0x37f26b(0xe0)](gameData[_0x37f26b(0xa3)],_0x414c30[_0x37f26b(0xcf)])){consoleElement[_0x37f26b(0xab)]+=_0x414c30['FNKix'];return;}handleQuestsCommands(_0x2d628f,_0x20d77f);}export function generateRandomQuests(){const _0x3dd825=_0x1582,_0x204ebd={'qXdKz':function(_0x376323,_0x5b064b){return _0x376323*_0x5b064b;},'aitVj':function(_0x49f6e2,_0x5f0632){return _0x49f6e2+_0x5f0632;},'IwpKq':function(_0x4c1c18,_0x591265){return _0x4c1c18*_0x591265;}},_0xa976a=drops['map'](_0x25355e=>_0x25355e[_0x3dd825(0xa9)]),_0x2b6f82=[];for(let _0x388219=0x1;_0x388219<=0x3;_0x388219++){const _0x4ba198=_0xa976a[Math[_0x3dd825(0xa4)](_0x204ebd[_0x3dd825(0xb7)](Math['random'](),_0xa976a[_0x3dd825(0xb1)]))],_0x400b40=_0x204ebd[_0x3dd825(0xc4)](Math[_0x3dd825(0xa4)](Math[_0x3dd825(0xa5)]()*0xa),0x1),_0x3aee47=Math[_0x3dd825(0xa4)](_0x204ebd[_0x3dd825(0xcb)](Math[_0x3dd825(0xa5)](),0x15))+0xa;_0x2b6f82['push']({'id':_0x388219,'itemRequirement':_0x400b40+'x\x20'+_0x4ba198,'reward':_0x3aee47+_0x3dd825(0xa0)});}return _0x2b6f82;}export function generateAndSaveQuests(){const _0x51acd1=_0x1582,_0x5c6d25={'sTKYQ':_0x51acd1(0xb2)},_0x2fa358=generateRandomQuests();return saveToLocalStorage(_0x5c6d25[_0x51acd1(0xd3)],_0x2fa358),_0x2fa358;}export function submitQuest(_0xc7aba5){const _0x267213=_0x1582,_0x4b9289={'JZUNo':function(_0x394932,_0x5ec438,_0x20896e){return _0x394932(_0x5ec438,_0x20896e);},'MPekL':_0x267213(0xb2),'nUcIL':function(_0xb56744,_0x30c660){return _0xb56744<_0x30c660;},'uzzTu':function(_0x1b8417,_0x472776){return _0x1b8417(_0x472776);},'nCtLy':function(_0x133e36,_0x565557){return _0x133e36(_0x565557);},'AIzjL':function(_0x4e3f22,_0x1fb13a){return _0x4e3f22<=_0x1fb13a;},'UGyhA':function(_0x5ca262,_0x5b8aa5,_0x503a0e){return _0x5ca262(_0x5b8aa5,_0x503a0e);},'nzSMm':function(_0x3d596f){return _0x3d596f();}};let _0x3a3c9b=_0x4b9289['JZUNo'](loadFromLocalStorage,_0x4b9289[_0x267213(0xcc)],[]);const _0x4dff94=_0x3a3c9b[_0x267213(0xd1)](_0x5ed6b3=>_0x5ed6b3['id']===parseInt(_0xc7aba5));if(!_0x4dff94){consoleElement[_0x267213(0xab)]+='\x0aNo\x20quest\x20found\x20with\x20ID\x20'+_0xc7aba5+'.\x0a';return;}const [_0x528fdf,_0x1a6497]=_0x4dff94[_0x267213(0xc1)][_0x267213(0xc0)]('x\x20')[_0x267213(0xdb)](_0x48f809=>_0x48f809['trim']()),_0x121434=gameData[_0x267213(0xd6)][_0x267213(0xd1)](_0x5c6364=>_0x5c6364['item']===_0x1a6497);if(!_0x121434||_0x4b9289[_0x267213(0xc5)](_0x121434[_0x267213(0xd2)],_0x4b9289[_0x267213(0xb4)](parseInt,_0x528fdf))){consoleElement['value']+=_0x267213(0xac);return;}_0x121434[_0x267213(0xd2)]-=_0x4b9289[_0x267213(0xca)](parseInt,_0x528fdf);_0x4b9289[_0x267213(0xce)](_0x121434[_0x267213(0xd2)],0x0)&&(gameData[_0x267213(0xd6)]=gameData[_0x267213(0xd6)]['filter'](_0x20563e=>_0x20563e[_0x267213(0xd2)]>0x0));const _0x3842e1=_0x4b9289[_0x267213(0xca)](parseInt,_0x4dff94['reward']['split']('\x20')[0x0]);gameData[_0x267213(0xc6)]+=_0x3842e1,_0x3a3c9b=_0x3a3c9b[_0x267213(0xdd)](_0x546d0f=>_0x546d0f['id']!==parseInt(_0xc7aba5)),_0x4b9289[_0x267213(0xd4)](saveToLocalStorage,_0x4b9289[_0x267213(0xcc)],_0x3a3c9b),_0x4b9289[_0x267213(0x9c)](saveGameData),consoleElement['value']+=_0x267213(0xd8)+_0xc7aba5+_0x267213(0xc2)+_0x3842e1+_0x267213(0x9d);}function _0x1582(_0x58ad38,_0x409487){const _0x1e02eb=_0x1e02();return _0x1582=function(_0x1582b9,_0x566d9e){_0x1582b9=_0x1582b9-0x9c;let _0x17fd31=_0x1e02eb[_0x1582b9];return _0x17fd31;},_0x1582(_0x58ad38,_0x409487);}export function handleQuestsCommands(_0x112c2e,_0xca729b){const _0x8d8e18=_0x1582,_0xe0b1a7={'CsRSV':_0x8d8e18(0xa7),'JdLaO':function(_0x38537,_0x7ea646){return _0x38537===_0x7ea646;},'PkHfi':_0x8d8e18(0xd9),'pCGSN':function(_0x12b877){return _0x12b877();},'KVwvg':_0x8d8e18(0xbb),'VnMbP':function(_0x55d734){return _0x55d734();}};if(_0x112c2e[_0x8d8e18(0xda)](_0xe0b1a7['CsRSV'])){const _0x2e75b9=_0xca729b[_0x8d8e18(0xc0)]('\x20')[0x2];submitQuest(_0x2e75b9);}else{if(_0xe0b1a7[_0x8d8e18(0xba)](_0x112c2e,_0xe0b1a7[_0x8d8e18(0xc3)]))_0xe0b1a7[_0x8d8e18(0xaa)](refreshQuests);else _0xe0b1a7['JdLaO'](_0x112c2e,_0xe0b1a7[_0x8d8e18(0xcd)])?_0xe0b1a7[_0x8d8e18(0x9f)](showQuests):consoleElement[_0x8d8e18(0xab)]+=_0x8d8e18(0xb0);}}export function refreshQuests(){const _0x4205d3=_0x1582,_0x1bbcde={'FYcsr':function(_0x563a75){return _0x563a75();},'RSZyR':_0x4205d3(0xc9)},_0x3fbab8=_0x1bbcde['FYcsr'](generateAndSaveQuests);showQuests(),consoleElement['value']+=_0x1bbcde[_0x4205d3(0xa1)];}export function showQuests(){const _0xad26a5=_0x1582,_0x58c08d={'fHcsR':function(_0x5356c8,_0x58ce1e,_0x38ab66){return _0x5356c8(_0x58ce1e,_0x38ab66);},'lHGdK':_0xad26a5(0xb2),'kNeHI':'\x0aNo\x20quests\x20available.\x20Use\x20\x27quests\x20-refresh\x27\x20to\x20generate\x20new\x20quests.\x0a','eMhme':_0xad26a5(0xb9)};let _0x455152=_0x58c08d[_0xad26a5(0xd7)](loadFromLocalStorage,_0x58c08d[_0xad26a5(0xbd)],null);if(!_0x455152||!Array[_0xad26a5(0xae)](_0x455152)){consoleElement[_0xad26a5(0xab)]+=_0x58c08d[_0xad26a5(0xa2)];return;}let _0x15c76a=_0x58c08d['eMhme'];_0x455152[_0xad26a5(0xa6)](_0x4846d4=>{const _0xbbce61=_0xad26a5;let _0x3f870c=_0x4846d4['id']['toString']()[_0xbbce61(0xdc)](0x7),_0x576a00=_0x4846d4[_0xbbce61(0xc1)]['padEnd'](0x13),_0x3deaa9=_0x4846d4[_0xbbce61(0xbe)][_0xbbce61(0xdc)](0x6);_0x15c76a+='|\x20'+_0x3f870c+_0xbbce61(0xc7)+_0x576a00+'\x20|\x20'+_0x3deaa9+_0xbbce61(0xc8);}),_0x15c76a+=_0xad26a5(0xa8),consoleElement[_0xad26a5(0xab)]+=_0x15c76a;}
+import {
+  loadFromLocalStorage,
+  saveToLocalStorage,
+  consoleElement,
+  saveGameData,
+} from "../utilities.js";
+import { gameData } from "../gameData.js";
+import { drops } from "../data/items/drops.js";
+
+export function handleQuest(argument, input) {
+  if (gameData.currentDirectory !== "Guild") {
+    consoleElement.value +=
+      "\nYou must be in the Guild directory for quests.\n";
+    return;
+  }
+  handleQuestsCommands(argument, input);
+}
+
+export function generateRandomQuests() {
+  const itemNames = drops.map(drop => drop.name);
+  const quests = [];
+  for (let i = 1; i <= 3; i++) {
+    const item = itemNames[Math.floor(Math.random() * itemNames.length)];
+    const quantity = Math.floor(Math.random() * 10) + 1;
+    const reward = Math.floor(Math.random() * 21) + 10;
+    quests.push({
+      id: i,
+      itemRequirement: `${quantity}x ${item}`,
+      reward: `${reward} Gold`,
+    });
+  }
+  return quests;
+}
+
+export function generateAndSaveQuests() {
+  const quests = generateRandomQuests();
+  saveToLocalStorage("quests", quests);
+  return quests;
+}
+
+export function submitQuest(questId) {
+  // Load the quests and find the one with the matching ID
+  let quests = loadFromLocalStorage("quests", []);
+  const quest = quests.find((q) => q.id === parseInt(questId));
+
+  if (!quest) {
+    consoleElement.value += `\nNo quest found with ID ${questId}.\n`;
+    return;
+  }
+
+  // Parse the item requirement to get the name and quantity
+  const [quantityRequired, itemName] = quest.itemRequirement
+    .split("x ")
+    .map((el) => el.trim());
+  const inventoryItem = gameData.userInventory.find(
+    (item) => item.item === itemName,
+  );
+
+  if (!inventoryItem || inventoryItem.quantity < parseInt(quantityRequired)) {
+    consoleElement.value += `\nYou do not have enough of the required item to complete this quest.\n`;
+    return;
+  }
+
+  // Remove the required items from the player's inventory
+  inventoryItem.quantity -= parseInt(quantityRequired);
+
+  // If the quantity of the item reaches 0, remove the item from the inventory
+  if (inventoryItem.quantity <= 0) {
+    gameData.userInventory = gameData.userInventory.filter(
+      (item) => item.quantity > 0,
+    );
+  }
+
+  // Parse the reward to add the gold to the player's total
+  const rewardAmount = parseInt(quest.reward.split(" ")[0]);
+  gameData.goldAmount += rewardAmount;
+
+  // Remove the quest from the list of available quests
+  quests = quests.filter((q) => q.id !== parseInt(questId));
+  saveToLocalStorage("quests", quests);
+
+  // Save the game data
+  saveGameData();
+
+  consoleElement.value += `\nQuest ${questId} completed! You earned ${rewardAmount} Gold.\n`;
+}
+
+export function handleQuestsCommands(argument, input) {
+  if (argument.startsWith("-submit")) {
+    const questId = input.split(" ")[2];
+    submitQuest(questId);
+  } else if (argument === "-refresh") {
+    refreshQuests();
+  } else if (argument === "-list") {
+    showQuests();
+  } else {
+    consoleElement.value += `\nInvalid command structure. Use: 'quests -[list|refresh|submit] (argument)'\n`;
+  }
+}
+
+export function refreshQuests() {
+  const quests = generateAndSaveQuests();
+  showQuests();
+  consoleElement.value += "\nQuests have been refreshed.\n";
+}
+
+export function showQuests() {
+  let quests = loadFromLocalStorage("quests", null);
+  if (!quests || !Array.isArray(quests)) {
+    consoleElement.value +=
+      "\nNo quests available. Use 'quests -refresh' to generate new quests.\n";
+    return;
+  }
+
+  let questTable =
+    "\n\nAvailable Quests:\n+---------+---------------------+---------+\n| QuestID | Item Requirement    | Rewards |\n+---------+---------------------+---------+\n";
+
+  quests.forEach((quest) => {
+    let questId = quest.id.toString().padEnd(7);
+    let itemRequirement = quest.itemRequirement.padEnd(19);
+    let reward = quest.reward.padEnd(6);
+
+    questTable += `| ${questId} | ${itemRequirement} | ${reward} |\n`;
+  });
+
+  questTable += "+---------+---------------------+---------+\n";
+  consoleElement.value += questTable;
+}

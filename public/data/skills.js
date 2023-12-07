@@ -1,1 +1,43 @@
-function _0x8960(_0x454f9f,_0x1ae9ec){const _0x1269a0=_0x1269();return _0x8960=function(_0x89605e,_0x1c3c00){_0x89605e=_0x89605e-0x191;let _0x3d2014=_0x1269a0[_0x89605e];return _0x3d2014;},_0x8960(_0x454f9f,_0x1ae9ec);}const _0x3613a3=_0x8960;(function(_0x20324e,_0x51d897){const _0x5eb7c2=_0x8960,_0x8087d6=_0x20324e();while(!![]){try{const _0x282262=parseInt(_0x5eb7c2(0x1a2))/0x1*(-parseInt(_0x5eb7c2(0x1a8))/0x2)+-parseInt(_0x5eb7c2(0x1a6))/0x3*(-parseInt(_0x5eb7c2(0x1a3))/0x4)+parseInt(_0x5eb7c2(0x194))/0x5*(-parseInt(_0x5eb7c2(0x1a1))/0x6)+parseInt(_0x5eb7c2(0x1a7))/0x7+parseInt(_0x5eb7c2(0x198))/0x8*(-parseInt(_0x5eb7c2(0x196))/0x9)+parseInt(_0x5eb7c2(0x19a))/0xa*(parseInt(_0x5eb7c2(0x1a9))/0xb)+parseInt(_0x5eb7c2(0x192))/0xc;if(_0x282262===_0x51d897)break;else _0x8087d6['push'](_0x8087d6['shift']());}catch(_0x1203a8){_0x8087d6['push'](_0x8087d6['shift']());}}}(_0x1269,0xe3414));function _0x1269(){const _0x3d6bc0=['8HzSSkV','11rCPbRG','\x27\x20not\x20found.','Skill\x20\x27','Heals\x201\x20HP\x20every\x202\x20attacks','kqxJH','4118100EpYgZn','entries','147410emFRxR','error','9BkrrTY','goldAmount','5219440IgHjzV','push','16550390pZzaXs','\x27.\x20Required:\x20','unlocked','find','toLowerCase','\x27\x20is\x20already\x20unlocked.','cost','102KsLTPZ','404751FJnVAw','2439100IqDiDt','Not\x20enough\x20gold\x20to\x20unlock\x20\x27','skills','3INWRUl','7668325TDJaDU'];_0x1269=function(){return _0x3d6bc0;};return _0x1269();}import{gameData}from'../gameData.js';export const skillData={'Vigilance':{'name':'Vigilance','description':'Deals\x202x\x20damage\x20for\x20the\x20first\x20attack\x20in\x20a\x20hunt','cost':0x32,'unlocked':![]},'Leech':{'name':'Leech','description':_0x3613a3(0x1ac),'cost':0x1e,'unlocked':![]}};export function unlockSkill(_0x109ae8){const _0x8dbd4=_0x3613a3,_0x29daf7={'kqxJH':function(_0x239522,_0x486cae){return _0x239522>=_0x486cae;}},_0xc942e0=Object[_0x8dbd4(0x193)](skillData)[_0x8dbd4(0x19d)](([_0xa21e46,_0x4a2925])=>_0xa21e46[_0x8dbd4(0x19e)]()===_0x109ae8);if(!_0xc942e0)return console[_0x8dbd4(0x195)](_0x8dbd4(0x1ab)+_0x109ae8+_0x8dbd4(0x1aa)),![];const [_0x1fe615,_0x5ed8a8]=_0xc942e0;if(_0x5ed8a8[_0x8dbd4(0x19c)])return console[_0x8dbd4(0x195)](_0x8dbd4(0x1ab)+_0x1fe615+_0x8dbd4(0x19f)),![];return _0x29daf7[_0x8dbd4(0x191)](gameData[_0x8dbd4(0x197)],_0x5ed8a8[_0x8dbd4(0x1a0)])?(gameData[_0x8dbd4(0x197)]-=_0x5ed8a8[_0x8dbd4(0x1a0)],_0x5ed8a8[_0x8dbd4(0x19c)]=!![],gameData[_0x8dbd4(0x1a5)][_0x8dbd4(0x199)](_0x1fe615),!![]):(console[_0x8dbd4(0x195)](_0x8dbd4(0x1a4)+_0x1fe615+_0x8dbd4(0x19b)+_0x5ed8a8['cost']+',\x20Available:\x20'+gameData[_0x8dbd4(0x197)]),![]);}
+import { gameData } from "../gameData.js";
+
+export const skillData = {
+    "Vigilance": {
+        name: "Vigilance",
+        description: "Deals 2x damage for the first attack in a hunt",
+        cost: 50,
+        unlocked: false
+    },
+    "Leech": {
+        name: "Leech",
+        description: "Heals 1 HP every 2 attacks",
+        cost: 30,
+        unlocked: false
+    }
+};
+
+export function unlockSkill(skillName) {
+    // Find the skill with the matching lowercase name
+    const skill = Object.entries(skillData).find(([name, data]) => name.toLowerCase() === skillName);
+
+    if (!skill) {
+        console.error(`Skill '${skillName}' not found.`);
+        return false;
+    }
+
+    const [skillKey, skillDetails] = skill;
+
+    if (skillDetails.unlocked) {
+        console.error(`Skill '${skillKey}' is already unlocked.`);
+        return false;
+    }
+
+    if (gameData.goldAmount >= skillDetails.cost) {
+        gameData.goldAmount -= skillDetails.cost;
+        skillDetails.unlocked = true;
+        gameData.skills.push(skillKey); // Store the original skill name
+        return true;
+    } else {
+        console.error(`Not enough gold to unlock '${skillKey}'. Required: ${skillDetails.cost}, Available: ${gameData.goldAmount}`);
+        return false;
+    }
+}

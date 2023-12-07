@@ -1,1 +1,53 @@
-(function(_0x1d1d90,_0xeb2183){const _0x5d6c31=_0x4f9c,_0x6bda8=_0x1d1d90();while(!![]){try{const _0x983768=parseInt(_0x5d6c31(0x187))/0x1*(parseInt(_0x5d6c31(0x185))/0x2)+-parseInt(_0x5d6c31(0x197))/0x3*(-parseInt(_0x5d6c31(0x172))/0x4)+parseInt(_0x5d6c31(0x186))/0x5+parseInt(_0x5d6c31(0x178))/0x6+-parseInt(_0x5d6c31(0x188))/0x7+-parseInt(_0x5d6c31(0x16c))/0x8+-parseInt(_0x5d6c31(0x180))/0x9*(parseInt(_0x5d6c31(0x196))/0xa);if(_0x983768===_0xeb2183)break;else _0x6bda8['push'](_0x6bda8['shift']());}catch(_0x5cec09){_0x6bda8['push'](_0x6bda8['shift']());}}}(_0x23c3,0x72ae6));import{gameData}from'../gameData.js';import{treasures}from'../data/treasure.js';import{saveGameData,consoleElement}from'../utilities.js';function _0x4f9c(_0x2363c5,_0x205e73){const _0x23c362=_0x23c3();return _0x4f9c=function(_0x4f9ceb,_0x9b54fa){_0x4f9ceb=_0x4f9ceb-0x16a;let _0x2e5b56=_0x23c362[_0x4f9ceb];return _0x2e5b56;},_0x4f9c(_0x2363c5,_0x205e73);}export function startExploration(){const _0x9ef21c=_0x4f9c,_0x4006dd={'LaDgv':'2|3|1|0|4','LDzVi':_0x9ef21c(0x174),'miFyK':function(_0x368f16,_0x2e9368){return _0x368f16+_0x2e9368;},'jPGjB':_0x9ef21c(0x17e),'MgYLm':function(_0x49b4d9){return _0x49b4d9();}},_0x5c4844=_0x4006dd[_0x9ef21c(0x18d)]['split']('|');let _0x4c3e50=0x0;while(!![]){switch(_0x5c4844[_0x4c3e50++]){case'0':consoleElement['value']+=_0x4006dd[_0x9ef21c(0x193)];continue;case'1':gameData['explorationEndTime']=_0x4006dd[_0x9ef21c(0x18a)](new Date()['getTime'](),0x1d4c0);continue;case'2':if(gameData[_0x9ef21c(0x170)]){consoleElement['value']+=_0x4006dd[_0x9ef21c(0x173)];return;}continue;case'3':gameData['ongoingExploration']=!![];continue;case'4':_0x4006dd[_0x9ef21c(0x16f)](saveGameData);continue;}break;}}export function collectTreasure(){const _0x4ff44e=_0x4f9c,_0x449934={'LpreV':'\x0aNo\x20ongoing\x20exploration\x20to\x20collect\x20from.\x0a','VRNSm':function(_0x19f874,_0x1309de){return _0x19f874<_0x1309de;},'IxtOQ':_0x4ff44e(0x17f),'hhSCQ':function(_0x5a7809,_0x4966d9){return _0x5a7809*_0x4966d9;},'ygWhd':function(_0xfa6a7a,_0x5be6c0){return _0xfa6a7a+_0x5be6c0;},'VEPCn':function(_0x4768c1,_0x4623d5){return _0x4768c1-_0x4623d5;},'udEFa':function(_0x4da1b9,_0x18d7ad){return _0x4da1b9+_0x18d7ad;},'FeGnx':function(_0x29b437,_0x5b0199){return _0x29b437+_0x5b0199;},'PmNxw':function(_0xaae959,_0x4b805d){return _0xaae959>=_0x4b805d;},'MslCF':function(_0x59142a){return _0x59142a();}};if(!gameData[_0x4ff44e(0x170)]){consoleElement['value']+=_0x449934[_0x4ff44e(0x18b)];return;}const _0x5639b8=new Date()[_0x4ff44e(0x192)]();if(_0x449934[_0x4ff44e(0x16e)](_0x5639b8,gameData[_0x4ff44e(0x194)])){consoleElement['value']+=_0x449934['IxtOQ'];return;}const _0x11b740=treasures[Math[_0x4ff44e(0x17b)](_0x449934['hhSCQ'](Math[_0x4ff44e(0x191)](),treasures['length']))],_0x292574=_0x449934[_0x4ff44e(0x17d)](Math[_0x4ff44e(0x17b)](Math[_0x4ff44e(0x191)]()*(_0x449934[_0x4ff44e(0x18e)](_0x11b740[_0x4ff44e(0x18f)],_0x11b740[_0x4ff44e(0x16b)])+0x1)),_0x11b740['minAmount']),_0x1528a7=_0x449934[_0x4ff44e(0x183)](Math[_0x4ff44e(0x17b)](Math[_0x4ff44e(0x191)]()*_0x449934[_0x4ff44e(0x195)](_0x449934[_0x4ff44e(0x18e)](_0x11b740['maxCoins'],_0x11b740[_0x4ff44e(0x182)]),0x1)),_0x11b740[_0x4ff44e(0x182)]),_0x7c0495=_0x449934[_0x4ff44e(0x195)](Math['floor'](_0x449934['hhSCQ'](Math[_0x4ff44e(0x191)](),_0x449934[_0x4ff44e(0x18e)](_0x11b740[_0x4ff44e(0x181)],_0x11b740[_0x4ff44e(0x176)])+0x1)),_0x11b740[_0x4ff44e(0x176)]);gameData['ongoingExploration']=![];const _0x403495=gameData[_0x4ff44e(0x16d)][_0x4ff44e(0x177)](_0x5f159d=>_0x5f159d[_0x4ff44e(0x16a)]===_0x11b740[_0x4ff44e(0x16a)]);_0x449934[_0x4ff44e(0x17a)](_0x403495,0x0)?gameData[_0x4ff44e(0x16d)][_0x403495][_0x4ff44e(0x18c)]+=_0x292574:gameData[_0x4ff44e(0x16d)][_0x4ff44e(0x17c)]({'item':_0x11b740[_0x4ff44e(0x16a)],'quantity':_0x292574}),gameData[_0x4ff44e(0x171)]+=_0x1528a7,gameData[_0x4ff44e(0x190)]+=_0x7c0495,consoleElement[_0x4ff44e(0x179)]+=_0x4ff44e(0x175)+_0x292574+'\x20'+_0x11b740[_0x4ff44e(0x16a)]+_0x4ff44e(0x189)+_0x1528a7+'\x20coins,\x20and\x20'+_0x7c0495+_0x4ff44e(0x184),_0x449934['MslCF'](saveGameData);}function _0x23c3(){const _0x4c025c=['miFyK','LpreV','quantity','LaDgv','VEPCn','maxAmount','exp','random','getTime','LDzVi','explorationEndTime','FeGnx','296930pCNGvR','3LeTzgf','item','minAmount','2823232XlbwMS','userInventory','VRNSm','MgYLm','ongoingExploration','goldAmount','2790212YUAxwV','jPGjB','\x0aExploration\x20started!\x20You\x20can\x20collect\x20the\x20treasure\x20in\x202\x20minutes\x20with\x20\x27collect\x27\x0a','\x0aTreasure\x20Collected!\x20You\x20found\x20','minExp','findIndex','2431812zZlQrw','value','PmNxw','floor','push','ygWhd','\x0aAn\x20exploration\x20is\x20already\x20ongoing.\x0a','\x0aThe\x20exploration\x20is\x20not\x20yet\x20complete.\x20Please\x20wait.\x0a','261rYaqNV','maxExp','minCoins','udEFa','\x20experience\x20points.\x0a','160SPwlyc','844950sRtJVV','6826NKgMOc','939330aKNSgh','(s),\x20'];_0x23c3=function(){return _0x4c025c;};return _0x23c3();}
+import { gameData } from "../gameData.js";
+import { treasures } from "../data/treasure.js";
+import { saveGameData, consoleElement } from "../utilities.js";
+
+export function startExploration() {
+    if (gameData.ongoingExploration) {
+      consoleElement.value += "\nAn exploration is already ongoing.\n";
+      return;
+    }
+  
+    gameData.ongoingExploration = true;
+    gameData.explorationEndTime = new Date().getTime() + 120000;
+    consoleElement.value += "\nExploration started! You can collect the treasure in 2 minutes with 'collect'\n";
+
+    saveGameData();
+  }
+
+export function collectTreasure() {
+    if (!gameData.ongoingExploration) {
+        consoleElement.value += "\nNo ongoing exploration to collect from.\n";
+        return;
+      }
+  
+    const currentTime = new Date().getTime();
+    if (currentTime < gameData.explorationEndTime) {
+      consoleElement.value += "\nThe exploration is not yet complete. Please wait.\n";
+      return;
+    }
+  
+    const treasure = treasures[Math.floor(Math.random() * treasures.length)];
+    const amount = Math.floor(Math.random() * (treasure.maxAmount - treasure.minAmount + 1)) + treasure.minAmount;
+    const coins = Math.floor(Math.random() * (treasure.maxCoins - treasure.minCoins + 1)) + treasure.minCoins;
+    const exp = Math.floor(Math.random() * (treasure.maxExp - treasure.minExp + 1)) + treasure.minExp;
+  
+    gameData.ongoingExploration = false;
+  
+    // Add treasure to inventory
+    const itemIndex = gameData.userInventory.findIndex(i => i.item === treasure.item);
+    if (itemIndex >= 0) {
+      gameData.userInventory[itemIndex].quantity += amount;
+    } else {
+      gameData.userInventory.push({ item: treasure.item, quantity: amount });
+    }
+  
+    // Update coins and experience
+    gameData.goldAmount += coins;
+    gameData.exp += exp;
+  
+    consoleElement.value += `\nTreasure Collected! You found ${amount} ${treasure.item}(s), ${coins} coins, and ${exp} experience points.\n`;
+  
+    saveGameData();
+  }
+  

@@ -1,1 +1,34 @@
-const _0x1bb0d2=_0x2884;function _0x2884(_0x16fb6c,_0x13c447){const _0x31fb24=_0x31fb();return _0x2884=function(_0x28840a,_0x41f90f){_0x28840a=_0x28840a-0x133;let _0x2aa4ea=_0x31fb24[_0x28840a];return _0x2aa4ea;},_0x2884(_0x16fb6c,_0x13c447);}(function(_0x467c49,_0x3a97d1){const _0x57c8e7=_0x2884,_0x5f5ac4=_0x467c49();while(!![]){try{const _0x34c4f3=parseInt(_0x57c8e7(0x14b))/0x1+parseInt(_0x57c8e7(0x135))/0x2*(-parseInt(_0x57c8e7(0x14a))/0x3)+parseInt(_0x57c8e7(0x134))/0x4*(-parseInt(_0x57c8e7(0x137))/0x5)+parseInt(_0x57c8e7(0x136))/0x6*(parseInt(_0x57c8e7(0x143))/0x7)+-parseInt(_0x57c8e7(0x149))/0x8+parseInt(_0x57c8e7(0x142))/0x9*(-parseInt(_0x57c8e7(0x13f))/0xa)+parseInt(_0x57c8e7(0x146))/0xb;if(_0x34c4f3===_0x3a97d1)break;else _0x5f5ac4['push'](_0x5f5ac4['shift']());}catch(_0x2e5642){_0x5f5ac4['push'](_0x5f5ac4['shift']());}}}(_0x31fb,0x59065));import{gameData}from'./gameData.js';const encryptionKey=_0x1bb0d2(0x13c);export var consoleElement=document[_0x1bb0d2(0x145)](_0x1bb0d2(0x133));export function loadFromLocalStorage(_0x47862f,_0x26c173){const _0x5c720c=_0x1bb0d2,_0x1c75a8={'GylXf':function(_0xeb69b6,_0x470860){return _0xeb69b6(_0x470860);},'wEuso':_0x5c720c(0x13d)},_0x51a2b3=localStorage[_0x5c720c(0x13e)](_0x47862f);if(_0x51a2b3!==null){const _0x23c53e=_0x1c75a8[_0x5c720c(0x148)](decryptData,_0x51a2b3),_0x3e08f3=JSON['parse'](_0x23c53e);return console[_0x5c720c(0x147)](_0x1c75a8[_0x5c720c(0x138)],_0x47862f,':',_0x3e08f3),_0x3e08f3;}return _0x26c173;}export function encryptData(_0x3d016f){const _0x165e75=_0x1bb0d2;return CryptoJS['AES']['encrypt'](_0x3d016f,encryptionKey)[_0x165e75(0x140)]();}export function decryptData(_0x4b4366){const _0x7c2528=_0x1bb0d2,_0x3e370a=CryptoJS[_0x7c2528(0x144)]['decrypt'](_0x4b4366,encryptionKey);return _0x3e370a[_0x7c2528(0x140)](CryptoJS['enc'][_0x7c2528(0x141)]);}export function saveToLocalStorage(_0x315bc2,_0x349a62){const _0x399ddc=_0x1bb0d2,_0x3150a4={'lXdse':function(_0x279873,_0x3d427c){return _0x279873(_0x3d427c);}};let _0x4c5d6d=JSON['stringify'](_0x349a62);localStorage[_0x399ddc(0x13a)](_0x315bc2,_0x3150a4['lXdse'](encryptData,_0x4c5d6d));}export function saveGameData(){const _0x938840=_0x1bb0d2,_0x3f5e86={'cxWzl':function(_0x40f93d,_0x568f63,_0x3320f7){return _0x40f93d(_0x568f63,_0x3320f7);},'BMKOS':_0x938840(0x139)};_0x3f5e86['cxWzl'](saveToLocalStorage,_0x3f5e86[_0x938840(0x13b)],gameData);}function _0x31fb(){const _0x30596e=['Loaded\x20data\x20for\x20key','getItem','12590mshqEe','toString','Utf8','315IszIUn','7QCbLSz','AES','getElementById','21236963asJHUO','log','GylXf','2280720KOvliL','3fBZTCs','2479vMTaxy','console','8xhzHXq','1314428jyJLRK','21852HEWxld','1464350qQAHFt','wEuso','gameData','setItem','BMKOS','Wyvern'];_0x31fb=function(){return _0x30596e;};return _0x31fb();}
+import { gameData } from './gameData.js';
+
+const encryptionKey = "Wyvern";
+
+export var consoleElement = document.getElementById("console");
+
+export function loadFromLocalStorage(key, defaultValue) {
+    const storedValue = localStorage.getItem(key);
+    if (storedValue !== null) {
+        const decryptedValue = decryptData(storedValue);
+        const parsedValue = JSON.parse(decryptedValue);
+        console.log("Loaded data for key", key, ":", parsedValue); // Debug
+        return parsedValue;
+    }
+    return defaultValue;
+}
+
+  export function encryptData(data) {
+    return CryptoJS.AES.encrypt(data, encryptionKey).toString();
+  }
+
+  export function decryptData(encryptedData) {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
+
+export function saveToLocalStorage(key, value) {
+  let valueToStore = JSON.stringify(value);
+  localStorage.setItem(key, encryptData(valueToStore));
+}
+
+export function saveGameData() {
+  saveToLocalStorage("gameData", gameData);
+}

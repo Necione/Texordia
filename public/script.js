@@ -1,1 +1,341 @@
-const _0xaa8172=_0x576f;function _0x218b(){const _0x4492f6=['preventDefault','\x0aInvalid\x20command\x20or\x20wrong\x20directory.\x0a','trim','keydown','CnUwp','findIndex','ctrlKey','scrollTop','qsMSm','6918fqAeQj','Welcome\x20back\x20to\x20Texordia.\x20[\x20Ver\x200.1\x20]\x0a','xDvTe','YZqbP','equipment','bIpaH','LhpmB','selectionStart','4LdrvVe','substring','oHkln','\x0aYou\x20don\x27t\x20have\x20any\x20Potions\x20in\x20your\x20inventory.\x0a','stats','UccZe','ehxQE','VWusK','ighvv','focus','yplFo','vrlau','scrollHeight','786857MqZgMj','1783014FoAfUt','2947bVddTl','tree','currentDirectory','\x0aYou\x20don\x27t\x20have\x20that\x20item\x20in\x20your\x20inventory.\x0a','UYrmf','BjKrY','Welcome\x20back\x20to\x20Texordia.\x20[\x20Ver\x200.1\x20]\x0aUse\x20\x27help\x27\x20to\x20get\x20started\x0a\x0a','help','3NvfCKf','setSelectionRange','log','inventory','toUpperCase','IeUlg','2032070mnvIAG','length','No\x20subdirectories\x20were\x20found.\x0a','split','wTmSz','join','userInventory','lastIndexOf','IkOrU','qgcyG','mBwxy','\x0aInvalid\x20item\x20name.\x0a','204cKalTN','GWpVr','wVjVP','potion','find','Uocrz','useitem','jWbTQ','DOMContentLoaded','mskSA',',\x20Argument:\x20','equip','XKHjV','kRYEF','Command:\x20','quests','items','wnVGx','iLnEB','NhwEF','Texordia\x5c','PKpOT','Guild','Shop','xUiAa','TYJlj','GOwIJ','wKQbn','addEventListener','Delete','swlzS','maxHp','value','eYGWA','wKZiP','\x0aThe\x20system\x20cannot\x20find\x20the\x20path\x20specified:\x20','45JBHbOK','XcZEA','object','slice','skills','ATFpL','52855oqYQUk','floor','jhiiK','fAOTU','click','fSExN','collect','\x20HP.\x20Current\x20HP:\x20','IneZL','Root','XErcJ','toLowerCase','key','times','pWUHx','splice','\x27\x20is\x20not\x20recognized\x20as\x20an\x20internal\x20or\x20external\x20command.\x0a','Backspace','2016430YFWRjJ','\x0aChanged\x20directory\x20to\x20','sudo\x20hunt','698512kzJGwk'];_0x218b=function(){return _0x4492f6;};return _0x218b();}(function(_0x536a7b,_0x4e6801){const _0x4f06c3=_0x576f,_0xe611c2=_0x536a7b();while(!![]){try{const _0x4c70e7=parseInt(_0x4f06c3(0x1b6))/0x1+-parseInt(_0x4f06c3(0x1b7))/0x2*(parseInt(_0x4f06c3(0x1c0))/0x3)+-parseInt(_0x4f06c3(0x1a9))/0x4*(-parseInt(_0x4f06c3(0x1c6))/0x5)+parseInt(_0x4f06c3(0x1a1))/0x6*(-parseInt(_0x4f06c3(0x1b8))/0x7)+-parseInt(_0x4f06c3(0x197))/0x8+-parseInt(_0x4f06c3(0x17c))/0x9*(-parseInt(_0x4f06c3(0x194))/0xa)+-parseInt(_0x4f06c3(0x182))/0xb*(-parseInt(_0x4f06c3(0x1d2))/0xc);if(_0x4c70e7===_0x4e6801)break;else _0xe611c2['push'](_0xe611c2['shift']());}catch(_0x1da831){_0xe611c2['push'](_0xe611c2['shift']());}}}(_0x218b,0xc7ef9));import{gameData,updateGameData}from'./gameData.js';function _0x576f(_0x358b04,_0x5c647a){const _0x218b7c=_0x218b();return _0x576f=function(_0x576f3d,_0x5eb058){_0x576f3d=_0x576f3d-0x176;let _0x57c9eb=_0x218b7c[_0x576f3d];return _0x57c9eb;},_0x576f(_0x358b04,_0x5c647a);}import{handleQuest}from'./commands/quests.js';import{handleHunting}from'./commands/hunting.js';import{showCooldowns}from'./commands/cooldowns.js';import{handleShopItems,handleSellAll,showItemInfo}from'./commands/shop.js';import{startExploration,collectTreasure}from'./commands/explore.js';import{showHelp}from'./commands/help.js';import{consumables}from'./data/items/consumable.js';import{equipArmor,unequipArmor,showEquippedArmor}from'./commands/equip.js';import{showInventory}from'./commands/inventory.js';import{saveGameData,consoleElement}from'./utilities.js';import{showStats}from'./commands/stats.js';import{handleSkillsCommands}from'./commands/skills.js';document[_0xaa8172(0x1ee)](_0xaa8172(0x1da),function(){const _0x194cea=_0xaa8172,_0x247718={'ehxQE':'0|3|2|4|1','IneZL':function(_0x3f689b,_0x16cfa2){return _0x3f689b+_0x16cfa2;},'wnVGx':'Enter','NhwEF':function(_0x571bb0,_0x594466){return _0x571bb0===_0x594466;},'IkOrU':_0x194cea(0x193),'vrlau':function(_0x307c8a,_0x1df54a){return _0x307c8a<=_0x1df54a;},'UYbOl':_0x194cea(0x1ef),'YZqbP':function(_0x432ed6,_0x16d47e){return _0x432ed6<_0x16d47e;},'JuwnS':'Texordia>\x20','WrNQE':_0x194cea(0x196),'wKQbn':function(_0x1c75e5,_0x262a90){return _0x1c75e5===_0x262a90;},'PKpOT':_0x194cea(0x1e8),'eYGWA':function(_0x283b4c,_0x425209){return _0x283b4c(_0x425209);},'iLnEB':function(_0x496747,_0x23144c){return _0x496747===_0x23144c;},'MZDxo':'sudo\x20explore','jWbTQ':function(_0x1dc21e){return _0x1dc21e();},'OqNMW':_0x194cea(0x188),'kRYEF':'\x0aYou\x20need\x20to\x20be\x20in\x20the\x20Guild\x20directory\x20to\x20collect\x20treasures.\x0a','XErcJ':function(_0x201f91,_0x73be6b,_0x35a7c9){return _0x201f91(_0x73be6b,_0x35a7c9);},'Ywlfu':'info','GOwIJ':function(_0x1feff9,_0x29162b){return _0x1feff9(_0x29162b);},'wVjVP':function(_0x1b7512,_0x5b5ac4){return _0x1b7512(_0x5b5ac4);},'yplFo':_0x194cea(0x1d8),'swlzS':_0x194cea(0x1e2),'mskSA':_0x194cea(0x1dd),'bIpaH':_0x194cea(0x1a5),'jhiiK':function(_0x4579b8,_0x3a981d){return _0x4579b8(_0x3a981d);},'RfCRu':_0x194cea(0x1ad),'pWUHx':'cls','UccZe':_0x194cea(0x1b9),'qgcyG':function(_0x225033,_0x1a25d7){return _0x225033===_0x1a25d7;},'CnUwp':function(_0x1cb2a9){return _0x1cb2a9();},'fSExN':function(_0x36e633,_0x538cfd){return _0x36e633!==_0x538cfd;},'Fugbq':_0x194cea(0x1d1),'wTmSz':function(_0x33b783,_0x269538){return _0x33b783&&_0x269538;},'BjKrY':_0x194cea(0x1d5),'cNHfe':_0x194cea(0x1bb),'wKZiP':function(_0x3b9472){return _0x3b9472();},'GWpVr':'inventory','VWusK':function(_0x3b2572){return _0x3b2572();},'Rnebk':_0x194cea(0x18f),'IeUlg':function(_0x165e49){return _0x165e49();},'UYrmf':function(_0x26ce8e,_0x182388){return _0x26ce8e!==_0x182388;},'ATFpL':function(_0xe8bf3c,_0x256773){return _0xe8bf3c+_0x256773;},'oHkln':function(_0x4a74e0,_0x4525da){return _0x4a74e0*_0x4525da;},'LhpmB':function(_0x2a6f20,_0xae1f53){return _0x2a6f20>_0xae1f53;},'qsMSm':_0x194cea(0x1ac),'TYJlj':function(_0x5a8b02,_0x256587){return _0x5a8b02!==_0x256587;},'XKHjV':_0x194cea(0x1e9),'EekrJ':function(_0x2c0d80,_0x214f7b){return _0x2c0d80||_0x214f7b;},'fAOTU':'root','mBwxy':_0x194cea(0x17e),'ighvv':function(_0x39dcfa,_0x28fcf4,_0xdbbb92){return _0x39dcfa(_0x28fcf4,_0xdbbb92);},'XcZEA':function(_0x37f45b,_0x165b95,_0x345a4d){return _0x37f45b(_0x165b95,_0x345a4d);},'ydNmz':function(_0x518043,_0x4c66a2){return _0x518043+_0x4c66a2;},'xDvTe':_0x194cea(0x1be),'xUiAa':_0x194cea(0x19b),'Uocrz':_0x194cea(0x186)};let _0x4e3430=![];var _0x32f052=gameData[_0x194cea(0x1ba)]?_0x194cea(0x1e6)+gameData['currentDirectory']+'>\x20':_0x247718['JuwnS'];const _0x5ec0d4={'Root':{'Shop':{},'Guild':{}}};consoleElement[_0x194cea(0x178)]=_0x247718['ydNmz'](_0x247718[_0x194cea(0x1a3)],_0x32f052),consoleElement[_0x194cea(0x1b2)](),consoleElement[_0x194cea(0x1c1)](consoleElement[_0x194cea(0x178)][_0x194cea(0x1c7)],consoleElement[_0x194cea(0x178)]['length']),consoleElement[_0x194cea(0x1ee)](_0x247718[_0x194cea(0x1ea)],function(_0x1455c6){const _0x296252=_0x194cea,_0x3594c9=_0x247718[_0x296252(0x1af)]['split']('|');let _0x5bb7a4=0x0;while(!![]){switch(_0x3594c9[_0x5bb7a4++]){case'0':var _0x333715=_0x247718[_0x296252(0x18a)](this[_0x296252(0x178)][_0x296252(0x1cd)](_0x32f052),_0x32f052['length']);continue;case'1':if(_0x1455c6[_0x296252(0x18e)]===_0x247718[_0x296252(0x1e3)]){_0x1455c6[_0x296252(0x198)]();var _0xfc2767=this['value'][_0x296252(0x1aa)](_0x333715)[_0x296252(0x19a)]();_0x27f14c(_0xfc2767),this[_0x296252(0x19f)]=this[_0x296252(0x1b5)],this[_0x296252(0x1c1)](this['value']['length'],this[_0x296252(0x178)]['length']);}continue;case'2':if(_0x247718[_0x296252(0x1e5)](_0x1455c6[_0x296252(0x18e)],_0x247718[_0x296252(0x1ce)])&&_0x247718[_0x296252(0x1b4)](this[_0x296252(0x1a8)],_0x333715)||_0x247718[_0x296252(0x1e5)](_0x1455c6[_0x296252(0x18e)],_0x247718['UYbOl'])&&this[_0x296252(0x1a8)]<_0x333715){_0x1455c6['preventDefault']();return;}continue;case'3':if(_0x1455c6[_0x296252(0x19e)]&&_0x1455c6[_0x296252(0x18e)]==='a'){_0x1455c6[_0x296252(0x198)](),this[_0x296252(0x1c1)](_0x333715,this[_0x296252(0x178)][_0x296252(0x1c7)]);return;}continue;case'4':_0x247718[_0x296252(0x1a4)](this[_0x296252(0x1a8)],_0x333715)&&!_0x1455c6['ctrlKey']&&(_0x1455c6['preventDefault'](),this[_0x296252(0x1c1)](_0x333715,_0x333715));continue;}break;}}),document[_0x194cea(0x1ee)](_0x247718[_0x194cea(0x1d7)],function(){const _0x2f39a6=_0x194cea;consoleElement[_0x2f39a6(0x1b2)]();});function _0x1b2fed(){const _0x516579=_0x194cea,_0x12ffa8=gameData[_0x516579(0x1ba)]?_0x516579(0x1e6)+gameData[_0x516579(0x1ba)]+'>\x20':_0x247718['JuwnS'];consoleElement[_0x516579(0x178)]+='\x0a'+_0x12ffa8,consoleElement[_0x516579(0x19f)]=consoleElement['scrollHeight'],consoleElement[_0x516579(0x1c1)](consoleElement[_0x516579(0x178)][_0x516579(0x1c7)],consoleElement[_0x516579(0x178)][_0x516579(0x1c7)]),consoleElement[_0x516579(0x1b2)]();}function _0x15d84e(){_0x4e3430=![];}function _0x27f14c(_0x44b0c7){const _0x480aad=_0x194cea,[_0x94acd5,..._0xc71aed]=_0x44b0c7['trim']()[_0x480aad(0x1c9)](/\s+/),_0x1ccb5d=_0xc71aed[0x0]?_0x94acd5+'\x20'+_0xc71aed[0x0]:_0x94acd5,_0x4b2e4f=_0xc71aed[_0x480aad(0x1cb)]('\x20');console[_0x480aad(0x1c2)](_0x480aad(0x1e0)+_0x94acd5+_0x480aad(0x1dc)+_0x4b2e4f);switch(_0x94acd5){case'sudo':if(_0x1ccb5d===_0x247718['WrNQE']&&_0x247718[_0x480aad(0x1ed)](gameData[_0x480aad(0x1ba)],_0x247718['PKpOT']))_0x4e3430=!![],_0x247718[_0x480aad(0x179)](handleHunting,_0x15d84e);else _0x247718[_0x480aad(0x1e4)](_0x1ccb5d,_0x247718['MZDxo'])&&gameData[_0x480aad(0x1ba)]===_0x247718[_0x480aad(0x1e7)]?_0x247718['jWbTQ'](startExploration):_0x247718[_0x480aad(0x179)](_0x1bf9a1,_0x1ccb5d);break;case _0x247718['OqNMW']:_0x247718[_0x480aad(0x1e4)](gameData[_0x480aad(0x1ba)],_0x247718['PKpOT'])?_0x247718[_0x480aad(0x1d9)](collectTreasure):consoleElement[_0x480aad(0x178)]+=_0x247718[_0x480aad(0x1df)];break;case _0x480aad(0x1e1):_0x247718['XErcJ'](handleQuest,_0x4b2e4f,_0x44b0c7);break;case _0x247718['Ywlfu']:_0x247718[_0x480aad(0x1ec)](showItemInfo,_0x4b2e4f);break;case'sellall':_0x247718[_0x480aad(0x1d4)](handleSellAll,_0x4b2e4f);break;case _0x247718[_0x480aad(0x1b3)]:_0x247718[_0x480aad(0x179)](_0x12c6af,_0x4b2e4f);break;case _0x247718[_0x480aad(0x176)]:_0x247718[_0x480aad(0x18c)](handleShopItems,_0x4b2e4f,_0x44b0c7);break;case _0x480aad(0x1bf):_0x247718[_0x480aad(0x1d9)](showHelp);break;case _0x480aad(0x180):_0x247718[_0x480aad(0x1ec)](handleSkillsCommands,_0x4b2e4f);break;case _0x247718[_0x480aad(0x1db)]:equipArmor(_0x4b2e4f);break;case _0x247718[_0x480aad(0x1a6)]:_0x247718[_0x480aad(0x179)](showEquippedArmor,_0x4b2e4f);break;case'unequip':_0x247718[_0x480aad(0x179)](unequipArmor,_0x4b2e4f);break;case'cd':_0x247718[_0x480aad(0x184)](_0x5da5ea,_0x4b2e4f);break;case _0x247718['RfCRu']:case _0x480aad(0x1c3):case _0x247718[_0x480aad(0x190)]:case _0x480aad(0x18f):case _0x247718[_0x480aad(0x1ae)]:_0x288227(_0x94acd5,_0x4b2e4f);break;default:consoleElement[_0x480aad(0x178)]+='\x0a\x27'+_0x44b0c7+_0x480aad(0x192);break;}!_0x4e3430&&_0x247718[_0x480aad(0x1d9)](_0x1b2fed);}function _0x1bf9a1(_0x27bf59){const _0x440237=_0x194cea;_0x247718[_0x440237(0x1e5)](_0x27bf59,'sudo\x20hunt')&&_0x247718[_0x440237(0x1cf)](gameData['currentDirectory'],_0x247718[_0x440237(0x1e7)])?_0x247718[_0x440237(0x19c)](handleHunting):consoleElement['value']+=_0x440237(0x199);}function _0x12c6af(_0x47971e){const _0x2bd4e9=_0x194cea;if(_0x247718[_0x2bd4e9(0x187)](typeof _0x47971e,'string')){consoleElement[_0x2bd4e9(0x178)]+=_0x247718['Fugbq'];return;}const _0x29d5c1=_0x47971e[_0x2bd4e9(0x18d)](),_0x3d838f=consumables[_0x2bd4e9(0x1d6)](_0x4b19f9=>_0x4b19f9['name'][_0x2bd4e9(0x18d)]()===_0x29d5c1),_0x4a8a59=gameData[_0x2bd4e9(0x1cc)]['find'](_0x3e9116=>_0x3e9116['item'][_0x2bd4e9(0x18d)]()===_0x29d5c1);_0x247718[_0x2bd4e9(0x1ca)](_0x3d838f,_0x4a8a59)?_0x29d5c1===_0x247718[_0x2bd4e9(0x1bd)]&&_0x57b849():consoleElement[_0x2bd4e9(0x178)]+=_0x247718['cNHfe'];}function _0x288227(_0x23df03,_0x3e17e4){const _0xfac92d=_0x194cea;switch(_0x23df03){case'cd':_0x247718['jhiiK'](_0x5da5ea,_0x3e17e4);break;case _0x247718['RfCRu']:_0x247718[_0xfac92d(0x17a)](showStats);break;case _0x247718[_0xfac92d(0x1d3)]:_0x247718[_0xfac92d(0x1b0)](showInventory);break;case _0x247718[_0xfac92d(0x190)]:_0x247718['CnUwp'](_0x303326);break;case _0x247718['Rnebk']:_0x247718[_0xfac92d(0x1c5)](showCooldowns);break;case _0x247718[_0xfac92d(0x1ae)]:_0x247718[_0xfac92d(0x19c)](_0x13aa98);break;default:consoleElement[_0xfac92d(0x178)]+='\x0a\x27'+_0x23df03+_0xfac92d(0x192);break;}}function _0x57b849(){const _0x11de9c=_0x194cea,_0x2f9878=gameData[_0x11de9c(0x1cc)][_0x11de9c(0x19d)](_0x23cf8f=>_0x23cf8f['item'][_0x11de9c(0x18d)]()==='potion');if(_0x247718[_0x11de9c(0x1bc)](_0x2f9878,-0x1)){gameData[_0x11de9c(0x1cc)][_0x11de9c(0x191)](_0x2f9878,0x1);const _0x3f700e=_0x247718[_0x11de9c(0x181)](Math[_0x11de9c(0x183)](_0x247718[_0x11de9c(0x1ab)](Math['random'](),0x6)),0x5);_0x247718[_0x11de9c(0x1a7)](_0x247718[_0x11de9c(0x181)](gameData['hp'],_0x3f700e),gameData[_0x11de9c(0x177)])?gameData['hp']=gameData['maxHp']:gameData['hp']+=_0x3f700e,consoleElement[_0x11de9c(0x178)]+='\x0aYou\x20used\x20a\x20Potion\x20and\x20restored\x20'+_0x3f700e+_0x11de9c(0x189)+gameData['hp']+'.\x0a',saveGameData();}else consoleElement[_0x11de9c(0x178)]+=_0x247718[_0x11de9c(0x1a0)];}function _0x5da5ea(_0x548817){const _0xa28ea0=_0x194cea;let _0x14d935='';if(_0x247718[_0xa28ea0(0x1eb)](_0x548817,'~')){const _0x56559e=[_0x247718[_0xa28ea0(0x1de)],_0x247718[_0xa28ea0(0x1e7)]],_0x4cfc95=_0x247718[_0xa28ea0(0x18a)](_0x548817['charAt'](0x0)[_0xa28ea0(0x1c4)](),_0x548817[_0xa28ea0(0x17f)](0x1)[_0xa28ea0(0x18d)]());if(_0x56559e['includes'](_0x4cfc95))_0x14d935=_0x4cfc95;else{consoleElement[_0xa28ea0(0x178)]+=_0xa28ea0(0x17b)+_0x4cfc95+'\x0a';return;}}updateGameData({'currentDirectory':_0x14d935}),_0x32f052='Texordia'+(_0x14d935?_0x247718[_0xa28ea0(0x181)]('\x5c',_0x14d935):'')+'>\x20',consoleElement[_0xa28ea0(0x178)]+=_0xa28ea0(0x195)+_0x247718['EekrJ'](_0x14d935,_0x247718[_0xa28ea0(0x185)])+'.\x0a';}function _0x303326(){const _0x190a27=_0x194cea;consoleElement[_0x190a27(0x178)]=_0x190a27(0x1a2);}function _0x13aa98(){const _0x379430=_0x194cea,_0x2b4317=_0x247718[_0x379430(0x1d4)](_0x505342,gameData[_0x379430(0x1ba)]);consoleElement[_0x379430(0x178)]+=_0x247718[_0x379430(0x181)]('\x0a',_0x2b4317);}function _0x505342(){const _0x49eee7=_0x194cea;function _0x3ef247(_0x4e2fb8,_0x315b44=''){const _0x3efbd6=_0x576f;let _0x5952dc='';for(const _0x51714a in _0x4e2fb8){_0x5952dc+=_0x315b44+'-\x20'+_0x51714a+'\x0a',_0x247718['wKQbn'](typeof _0x4e2fb8[_0x51714a],_0x247718[_0x3efbd6(0x1d0)])&&(_0x5952dc+=_0x247718[_0x3efbd6(0x1b1)](_0x3ef247,_0x4e2fb8[_0x51714a],_0x247718[_0x3efbd6(0x18a)](_0x315b44,'\x20\x20')));}return _0x5952dc;}if(gameData['currentDirectory']==='')return _0x247718[_0x49eee7(0x1ec)](_0x3ef247,_0x5ec0d4[_0x49eee7(0x18b)]);else{const _0x5d7e5d=_0x247718[_0x49eee7(0x1b1)](_0x3a0deb,_0x5ec0d4,gameData['currentDirectory']['split']('\x5c'));return _0x5d7e5d?_0x247718[_0x49eee7(0x17d)](_0x3ef247,_0x5d7e5d,'\x20\x20'):_0x49eee7(0x1c8);}}function _0x3a0deb(_0x213eac,_0x26e90f){let _0x273c23=_0x213eac;for(const _0x7da90d of _0x26e90f){if(_0x273c23[_0x7da90d])_0x273c23=_0x273c23[_0x7da90d];else return null;}return _0x273c23;}});
+import { gameData, updateGameData } from "./gameData.js";
+import { handleQuest } from "./commands/quests.js";
+import { handleHunting } from "./commands/hunting.js";
+import { showCooldowns } from "./commands/cooldowns.js";
+import {
+  handleShopItems,
+  handleSellAll,
+  showItemInfo,
+} from "./commands/shop.js";
+import { startExploration, collectTreasure } from "./commands/explore.js";
+import { showHelp } from "./commands/help.js";
+import { consumables } from "./data/items/consumable.js";
+import {
+  equipArmor,
+  unequipArmor,
+  showEquippedArmor,
+} from "./commands/equip.js";
+import { showInventory } from "./commands/inventory.js";
+import { saveGameData, consoleElement } from "./utilities.js";
+import { showStats } from "./commands/stats.js";
+import { handleSkillsCommands } from "./commands/skills.js";
+
+document.addEventListener("DOMContentLoaded", function () {
+  let isAsyncCommandRunning = false;
+
+  var promptText = gameData.currentDirectory
+    ? `Texordia\\${gameData.currentDirectory}> `
+    : "Texordia> ";
+
+  const directoryStructure = {
+    Root: {
+      Shop: {},
+      Guild: {},
+    },
+  };
+
+  consoleElement.value =
+    "Welcome back to Texordia. [ Ver 0.1 ]\nUse 'help' to get started\n\n" +
+    promptText;
+  consoleElement.focus();
+  consoleElement.setSelectionRange(
+    consoleElement.value.length,
+    consoleElement.value.length,
+  );
+
+  consoleElement.addEventListener("keydown", function (event) {
+    var currentLineStart =
+      this.value.lastIndexOf(promptText) + promptText.length;
+
+    if (event.ctrlKey && event.key === "a") {
+      event.preventDefault();
+      this.setSelectionRange(currentLineStart, this.value.length);
+      return;
+    }
+
+    if (
+      (event.key === "Backspace" && this.selectionStart <= currentLineStart) ||
+      (event.key === "Delete" && this.selectionStart < currentLineStart)
+    ) {
+      event.preventDefault();
+      return;
+    }
+
+    if (this.selectionStart < currentLineStart && !event.ctrlKey) {
+      event.preventDefault();
+      this.setSelectionRange(currentLineStart, currentLineStart);
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      var input = this.value.substring(currentLineStart).trim();
+
+      processCommand(input);
+
+      this.scrollTop = this.scrollHeight;
+      this.setSelectionRange(this.value.length, this.value.length);
+    }
+  });
+
+  document.addEventListener("click", function () {
+    consoleElement.focus();
+  });
+
+  function appendPrompt() {
+    const prompt = gameData.currentDirectory
+      ? `Texordia\\${gameData.currentDirectory}> `
+      : "Texordia> ";
+
+    consoleElement.value += `\n${prompt}`;
+    consoleElement.scrollTop = consoleElement.scrollHeight;
+    consoleElement.setSelectionRange(
+      consoleElement.value.length,
+      consoleElement.value.length,
+    );
+
+    consoleElement.focus();
+  }
+
+  function finishHunt() {
+    isAsyncCommandRunning = false;
+  }
+
+  function processCommand(input) {
+    const [command, ...args] = input.trim().split(/\s+/);
+    const initialCommand = args[0] ? `${command} ${args[0]}` : command;
+    const argument = args.join(" ");
+
+    console.log(`Command: ${command}, Argument: ${argument}`);
+
+    switch (command) {
+      case "sudo":
+        if (
+          initialCommand === "sudo hunt" &&
+          gameData.currentDirectory === "Guild"
+        ) {
+          isAsyncCommandRunning = true;
+          handleHunting(finishHunt);
+        } else if (
+          initialCommand === "sudo explore" &&
+          gameData.currentDirectory === "Guild"
+        ) {
+          startExploration();
+        } else {
+          handleSudoCommands(initialCommand);
+        }
+        break;
+      case "collect":
+        if (gameData.currentDirectory === "Guild") {
+          collectTreasure();
+        } else {
+          consoleElement.value +=
+            "\nYou need to be in the Guild directory to collect treasures.\n";
+        }
+        break;
+      case "quests":
+        handleQuest(argument, input);
+        break;
+      case "info":
+        showItemInfo(argument);
+        break;
+      case "sellall":
+        handleSellAll(argument);
+        break;
+      case "useitem":
+        handleUseItem(argument);
+        break;
+      case "items":
+        handleShopItems(argument, input);
+        break;
+      case "help":
+        showHelp();
+        break;
+        case "skills":
+            handleSkillsCommands(argument);
+            break;
+      case "equip":
+        equipArmor(argument);
+        break;
+      case "equipment":
+        showEquippedArmor(argument);
+        break;
+      case "unequip":
+        unequipArmor(argument);
+        break;
+      case "cd":
+        changeDirectory(argument);
+        break;
+      case "stats":
+      case "inventory":
+      case "cls":
+      case "times":
+      case "tree":
+        handleGeneralCommands(command, argument);
+        break;
+      default:
+        consoleElement.value += `\n'${input}' is not recognized as an internal or external command.\n`;
+        break;
+    }
+
+    if (!isAsyncCommandRunning) {
+      appendPrompt();
+    }
+  }
+
+  function handleSudoCommands(initialCommand) {
+    if (
+      initialCommand === "sudo hunt" &&
+      gameData.currentDirectory === "Guild"
+    ) {
+      handleHunting();
+    } else {
+      consoleElement.value += `\nInvalid command or wrong directory.\n`;
+    }
+  }
+
+  function handleUseItem(argument) {
+    if (typeof argument !== "string") {
+      consoleElement.value += "\nInvalid item name.\n";
+      return;
+    }
+
+    const itemName = argument.toLowerCase();
+    const consumableItem = consumables.find(
+      (item) => item.name.toLowerCase() === itemName,
+    );
+    const inventoryItem = gameData.userInventory.find(
+      (item) => item.item.toLowerCase() === itemName,
+    );
+
+    if (consumableItem && inventoryItem) {
+      if (itemName === "potion") {
+        usePotion();
+      }
+    } else {
+      consoleElement.value += "\nYou don't have that item in your inventory.\n";
+    }
+  }
+
+  function handleGeneralCommands(command, argument) {
+    switch (command) {
+      case "cd":
+        changeDirectory(argument);
+        break;
+      case "stats":
+        showStats();
+        break;
+      case "inventory":
+        showInventory();
+        break;
+      case "cls":
+        clearScreen();
+        break;
+      case "times":
+        showCooldowns();
+        break;
+      case "tree":
+        showDirectoryTree();
+        break;
+      default:
+        consoleElement.value += `\n'${command}' is not recognized as an internal or external command.\n`;
+        break;
+    }
+  }
+
+  function usePotion() {
+    const potionIndex = gameData.userInventory.findIndex(
+      (itemObj) => itemObj.item.toLowerCase() === "potion",
+    );
+
+    if (potionIndex !== -1) {
+      gameData.userInventory.splice(potionIndex, 1);
+
+      const restoredHP = Math.floor(Math.random() * 6) + 5;
+
+      if (gameData.hp + restoredHP > gameData.maxHp) {
+        gameData.hp = gameData.maxHp;
+      } else {
+        gameData.hp += restoredHP;
+      }
+
+      consoleElement.value += `\nYou used a Potion and restored ${restoredHP} HP. Current HP: ${gameData.hp}.\n`;
+
+      saveGameData();
+    } else {
+      consoleElement.value +=
+        "\nYou don't have any Potions in your inventory.\n";
+    }
+  }
+
+  function changeDirectory(argument) {
+    let newDirectory = "";
+
+    if (argument !== "~") {
+      const availableDirectories = ["Shop", "Guild"];
+      const directoryName =
+        argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
+
+      if (availableDirectories.includes(directoryName)) {
+        newDirectory = directoryName;
+      } else {
+        consoleElement.value += `\nThe system cannot find the path specified: ${directoryName}\n`;
+        return;
+      }
+    }
+
+    updateGameData({ currentDirectory: newDirectory });
+
+    promptText = `Texordia${newDirectory ? "\\" + newDirectory : ""}> `;
+    consoleElement.value += `\nChanged directory to ${
+      newDirectory || "root"
+    }.\n`;
+  }
+
+  function clearScreen() {
+    consoleElement.value = "Welcome back to Texordia. [ Ver 0.1 ]\n";
+  }
+
+  function showDirectoryTree() {
+    const tree = displayDirectoryTree(gameData.currentDirectory);
+    consoleElement.value += "\n" + tree;
+  }
+
+  function displayDirectoryTree() {
+    function buildTree(directory, prefix = "") {
+      let tree = "";
+      for (const key in directory) {
+        tree += `${prefix}- ${key}\n`;
+        if (typeof directory[key] === "object") {
+          tree += buildTree(directory[key], prefix + "  ");
+        }
+      }
+      return tree;
+    }
+
+    if (gameData.currentDirectory === "") {
+      return buildTree(directoryStructure.Root);
+    } else {
+      const subdirectory = getSubdirectory(
+        directoryStructure,
+        gameData.currentDirectory.split("\\"),
+      );
+      if (subdirectory) {
+        return buildTree(subdirectory, "  ");
+      } else {
+        return `No subdirectories were found.\n`;
+      }
+    }
+  }
+
+  function getSubdirectory(directoryStructure, path) {
+    let current = directoryStructure;
+    for (const dir of path) {
+      if (current[dir]) {
+        current = current[dir];
+      } else {
+        return null;
+      }
+    }
+    return current;
+  }
+});

@@ -1,1 +1,24 @@
-function _0x19f0(_0x45de1a,_0x1714f2){const _0x914abf=_0x914a();return _0x19f0=function(_0x19f07d,_0x52433b){_0x19f07d=_0x19f07d-0x1ce;let _0x4dac0d=_0x914abf[_0x19f07d];return _0x4dac0d;},_0x19f0(_0x45de1a,_0x1714f2);}const _0x743512=_0x19f0;(function(_0x26f9c5,_0x124e74){const _0x22ed96=_0x19f0,_0x34697c=_0x26f9c5();while(!![]){try{const _0x4dd567=parseInt(_0x22ed96(0x1d2))/0x1*(parseInt(_0x22ed96(0x1d7))/0x2)+parseInt(_0x22ed96(0x1d4))/0x3+-parseInt(_0x22ed96(0x1d0))/0x4*(-parseInt(_0x22ed96(0x1cf))/0x5)+parseInt(_0x22ed96(0x1d9))/0x6+parseInt(_0x22ed96(0x1d5))/0x7+-parseInt(_0x22ed96(0x1d6))/0x8*(-parseInt(_0x22ed96(0x1d3))/0x9)+-parseInt(_0x22ed96(0x1d1))/0xa;if(_0x4dd567===_0x124e74)break;else _0x34697c['push'](_0x34697c['shift']());}catch(_0x5f24d4){_0x34697c['push'](_0x34697c['shift']());}}}(_0x914a,0xe59cc));export const armors=[{'name':_0x743512(0x1d8),'defenseIncrease':0x1,'hpIncrease':0x5,'buyPrice':0x19,'sellPrice':0x14,'purchasable':!![]},{'name':_0x743512(0x1ce),'defenseIncrease':0x3,'buyPrice':0xf,'sellPrice':0xa,'purchasable':!![]},{'name':_0x743512(0x1da),'attackIncrease':0x2,'buyPrice':0x14,'sellPrice':0xa,'purchasable':!![]}];function _0x914a(){const _0x40ec71=['569259IYzLjY','2651961sOxsrF','2738617YuzUBQ','152mXbdBB','18182jNfCDV','Hearty\x20Ring','9684540MeCKrO','Blood\x20Ring','Travelling\x20Ring','110hAdbtx','110872JnchVX','44240240rRFqDh','73tVXiGL'];_0x914a=function(){return _0x40ec71;};return _0x914a();}
+export const armors = [
+  {
+    "name": "Hearty Ring",
+    "defenseIncrease": 1,
+    "hpIncrease": 5,
+    "buyPrice": 25,
+    "sellPrice": 20,
+    "purchasable": true
+  },
+  {
+    "name": "Travelling Ring",
+    "defenseIncrease": 3,
+    "buyPrice": 15,
+    "sellPrice": 10,
+    "purchasable": true
+  },
+  {
+    "name": "Blood Ring",
+    "attackIncrease": 2,
+    "buyPrice": 20,
+    "sellPrice": 10,
+    "purchasable": true
+  }
+];

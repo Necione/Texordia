@@ -1,1 +1,194 @@
-(function(_0xd80004,_0x88124a){const _0x554b29=_0x3bab,_0x216638=_0xd80004();while(!![]){try{const _0x401886=parseInt(_0x554b29(0xef))/0x1+-parseInt(_0x554b29(0x117))/0x2+-parseInt(_0x554b29(0x122))/0x3*(-parseInt(_0x554b29(0x13a))/0x4)+-parseInt(_0x554b29(0x121))/0x5*(parseInt(_0x554b29(0x129))/0x6)+-parseInt(_0x554b29(0x13d))/0x7*(parseInt(_0x554b29(0xf2))/0x8)+parseInt(_0x554b29(0xed))/0x9*(-parseInt(_0x554b29(0x139))/0xa)+parseInt(_0x554b29(0x13c))/0xb;if(_0x401886===_0x88124a)break;else _0x216638['push'](_0x216638['shift']());}catch(_0x4e8219){_0x216638['push'](_0x216638['shift']());}}}(_0x46d2,0x98fdf));import{saveGameData,consoleElement}from'../utilities.js';import{gameData}from'../gameData.js';import{drops}from'../data/items/drops.js';import{armors}from'../data/items/armor.js';import{consumables}from'../data/items/consumable.js';function _0x3bab(_0x5541df,_0x261847){const _0x46d22c=_0x46d2();return _0x3bab=function(_0x3bab06,_0x27687f){_0x3bab06=_0x3bab06-0xe3;let _0x3fe9d0=_0x46d22c[_0x3bab06];return _0x3fe9d0;},_0x3bab(_0x5541df,_0x261847);}function extractItemNameFromInput(_0x465d7a){const _0x48928f=_0x3bab;var _0x2e0cb2=_0x465d7a[_0x48928f(0x13f)](/-buy\s+(.+)/);return _0x2e0cb2?_0x2e0cb2[0x1]:null;}function attemptToPurchaseItem(_0x11716b,_0x53e3e0,_0x1ad01f){const _0x35098d=_0x3bab,_0x690b01={'Hhmlg':function(_0x21957d){return _0x21957d();}},_0x138d87=[...drops,...consumables,...armors],_0x10f0dc=_0x138d87['find'](_0x25c332=>_0x25c332[_0x35098d(0xf0)]['toLowerCase']()===_0x11716b[_0x35098d(0x12b)]());if(!_0x10f0dc||!_0x10f0dc[_0x35098d(0xe6)]){_0x1ad01f['value']+=_0x35098d(0x12f)+_0x11716b+_0x35098d(0xfd);return;}if(_0x53e3e0[_0x35098d(0x130)]<_0x10f0dc[_0x35098d(0x11e)]){_0x1ad01f['value']+='\x0aNot\x20enough\x20Gold\x20to\x20purchase\x20\x27'+_0x11716b+_0x35098d(0x143);return;}_0x53e3e0[_0x35098d(0x130)]-=_0x10f0dc[_0x35098d(0x11e)];const _0x5eccf9=_0x53e3e0['userInventory'][_0x35098d(0xf6)](_0x1b01d5=>_0x1b01d5[_0x35098d(0x112)]===_0x10f0dc[_0x35098d(0xf0)]);_0x5eccf9?_0x5eccf9[_0x35098d(0xea)]+=0x1:_0x53e3e0[_0x35098d(0x114)][_0x35098d(0xfa)]({'item':_0x10f0dc['name'],'quantity':0x1}),_0x690b01['Hhmlg'](saveGameData),_0x1ad01f[_0x35098d(0xe7)]+=_0x35098d(0x123)+_0x10f0dc[_0x35098d(0xf0)]+_0x35098d(0x11b)+_0x10f0dc[_0x35098d(0x11e)]+'\x20Gold.\x0a';}function createTable(_0x3ea38d,_0x124268){const _0x12f083=_0x3bab,_0x4a7f14={'ESZTx':function(_0x14673e,_0xff6ea){return _0x14673e>_0xff6ea;},'PwWkt':function(_0x2b8f37,_0x346c78){return _0x2b8f37+_0x346c78;},'IEBEY':_0x12f083(0x116)};let _0x331d0a=0x0;_0x3ea38d[_0x12f083(0x140)](_0x5e8cff=>{const _0x436202=_0x12f083;_0x4a7f14[_0x436202(0x11c)](_0x5e8cff['name']['length'],_0x331d0a)&&(_0x331d0a=_0x5e8cff[_0x436202(0xf0)][_0x436202(0x10f)]);});const _0x2ca597=0xa,_0x4e8c2e=Math[_0x12f083(0x132)](_0x331d0a,_0x2ca597);let _0x10a081='\x0a\x0a'+_0x124268+'\x0a';return _0x10a081+='+'+'-'[_0x12f083(0xe9)](_0x4a7f14['PwWkt'](_0x4e8c2e,0x2))+'+'+'-'[_0x12f083(0xe9)](0xe)+'+'+'-'[_0x12f083(0xe9)](0xf)+'+\x0a',_0x10a081+='|\x20'+_0x4a7f14[_0x12f083(0x111)][_0x12f083(0x12a)](_0x4e8c2e)+'\x20|\x20Buy\x20Price\x20\x20\x20\x20|\x20Sell\x20Price\x20\x20\x20\x20|\x0a',_0x10a081+='+'+'-'[_0x12f083(0xe9)](_0x4a7f14['PwWkt'](_0x4e8c2e,0x2))+'+'+'-'['repeat'](0xe)+'+'+'-'[_0x12f083(0xe9)](0xf)+'+\x0a',_0x3ea38d[_0x12f083(0x140)](_0x4b241d=>{const _0x5ab37e=_0x12f083,_0x52bcf1=_0x4b241d['purchasable']?_0x4b241d['buyPrice'][_0x5ab37e(0x127)]():'X',_0x29e66f=_0x4b241d['sellPrice'][_0x5ab37e(0x127)]();_0x10a081+='|\x20'+_0x4b241d[_0x5ab37e(0xf0)][_0x5ab37e(0x12a)](_0x4e8c2e)+_0x5ab37e(0xf4)+_0x52bcf1['padEnd'](0xc)+_0x5ab37e(0xf4)+_0x29e66f[_0x5ab37e(0x12a)](0xd)+'\x20|\x0a';}),_0x10a081+='+'+'-'[_0x12f083(0xe9)](_0x4a7f14['PwWkt'](_0x4e8c2e,0x2))+'+'+'-'['repeat'](0xe)+'+'+'-'[_0x12f083(0xe9)](0xf)+'+\x0a',_0x10a081;}function listShopItems(_0x3657a2,_0x393d5a){const _0x185277=_0x3bab,_0x2d14af={'GNTRv':function(_0x224dfa,_0x2ca2da){return _0x224dfa===_0x2ca2da;},'fOYjM':function(_0x4b7f9d,_0x356bd6){return _0x4b7f9d>_0x356bd6;},'BRTYP':function(_0x5664e2,_0x3a81ce,_0x4f3c31){return _0x5664e2(_0x3a81ce,_0x4f3c31);},'JWwqM':_0x185277(0x10b),'bsXxT':_0x185277(0x12d),'NIIHQ':'Consumable','OLbLT':function(_0x507f46,_0x4df92e){return _0x507f46===_0x4df92e;},'ADFAK':_0x185277(0x11f),'scAOg':function(_0x1b955a,_0x4bec90,_0x3b86fd){return _0x1b955a(_0x4bec90,_0x3b86fd);},'PkBVx':_0x185277(0x120)};let _0x3125ca='';if(_0x2d14af[_0x185277(0xeb)](_0x393d5a,_0x185277(0x141))&&drops&&_0x2d14af[_0x185277(0x10d)](drops[_0x185277(0x10f)],0x0))_0x3125ca+=_0x2d14af[_0x185277(0x12e)](createTable,drops,_0x2d14af[_0x185277(0x142)]);else{if(_0x2d14af[_0x185277(0xeb)](_0x393d5a,_0x2d14af[_0x185277(0x110)])&&consumables&&consumables[_0x185277(0x10f)]>0x0)_0x3125ca+=createTable(consumables,_0x2d14af[_0x185277(0xfe)]);else _0x2d14af[_0x185277(0xe3)](_0x393d5a,_0x2d14af['ADFAK'])&&armors&&armors[_0x185277(0x10f)]>0x0?_0x3125ca+=_0x2d14af[_0x185277(0x104)](createTable,armors,_0x2d14af[_0x185277(0x10c)]):_0x3125ca+=_0x185277(0x106)+_0x393d5a+'\x20available.\x0a';}_0x3657a2[_0x185277(0xe7)]+=_0x3125ca;}export function sellAllItems(_0x16e1c9){const _0x26c280=_0x3bab,_0x96ffd8={'NuADH':function(_0x483c13,_0x149528){return _0x483c13*_0x149528;},'HvldM':'all\x20items','TyDEG':function(_0x279fde){return _0x279fde();}};let _0xedcb7a=0x0;_0x16e1c9=_0x16e1c9?_0x16e1c9['toLowerCase']():null,gameData[_0x26c280(0x114)]=gameData[_0x26c280(0x114)][_0x26c280(0xf1)](_0x4fd78c=>{const _0x2ed7d5=_0x26c280;if(!_0x16e1c9||_0x4fd78c['item'][_0x2ed7d5(0x12b)]()===_0x16e1c9){const _0x43a14c=[...drops,...consumables,...armors][_0x2ed7d5(0xf6)](_0x5ac239=>_0x5ac239[_0x2ed7d5(0xf0)][_0x2ed7d5(0x12b)]()===_0x4fd78c[_0x2ed7d5(0x112)][_0x2ed7d5(0x12b)]());if(_0x43a14c)return _0xedcb7a+=_0x96ffd8[_0x2ed7d5(0xe4)](_0x43a14c[_0x2ed7d5(0x137)],_0x4fd78c[_0x2ed7d5(0xea)]),![];}return!![];}),gameData[_0x26c280(0x130)]+=_0xedcb7a,consoleElement[_0x26c280(0xe7)]+=_0x26c280(0x12c)+(_0x16e1c9?_0x16e1c9:_0x96ffd8[_0x26c280(0xfc)])+_0x26c280(0xee)+_0xedcb7a+_0x26c280(0x11d),_0x96ffd8[_0x26c280(0x131)](saveGameData);}export function handleSellAll(_0x951719){const _0x1e2d00=_0x3bab,_0x41076d={'DPeBP':function(_0x3ce6bc,_0x1fa751){return _0x3ce6bc!==_0x1fa751;},'EUapX':_0x1e2d00(0x138),'KPRfC':_0x1e2d00(0xf8)};if(_0x41076d[_0x1e2d00(0x135)](gameData['currentDirectory'],_0x41076d[_0x1e2d00(0x115)])){consoleElement[_0x1e2d00(0xe7)]+=_0x41076d[_0x1e2d00(0xec)];return;}sellAllItems(_0x951719);}function _0x46d2(){const _0x4a56cf=['55906pdDzYk','name','filter','893832sogKJV','split','\x20|\x20','WjIlb','find','DnaOR','\x0aYou\x20must\x20be\x20in\x20the\x20Shop\x20directory\x20to\x20sell\x20items.\x0a','BspAQ','push','KFBxi','HvldM','\x27\x20is\x20not\x20available\x20for\x20purchase.\x0a','NIIHQ','-\x20HP\x20Increase:\x20','tfjSb','CFHIu','mCHwR','all','scAOg','defenseIncrease','\x0aNo\x20','\x0aItem\x20not\x20found,\x20are\x20you\x20sure\x20it\x27s\x20spelt\x20correctly?\x0a','-\x20Sell\x20Price:\x20','hpIncrease','xwNAP','Drops','PkBVx','fOYjM','includes','length','bsXxT','IEBEY','item','ooRMO','userInventory','EUapX','Item\x20Name','1076474wvuvZi','-list','currentDirectory','\x0aInvalid\x20format.\x20Use:\x20items\x20-buy\x20\x22Item\x20Name\x22\x0a','\x27\x20for\x20','ESZTx','\x20gold.\x0a','buyPrice','equipment','Equipment','17590iqXfkI','153534yjfmTU','\x0aPurchased\x20\x27','-\x20Defense\x20Increase:\x20','xqxUO','items','toString','attackIncrease','606kBFmpP','padEnd','toLowerCase','\x0aSold\x20','consumable','BRTYP','\x0aItem\x20\x27','goldAmount','TyDEG','max','\x0aInvalid\x20command\x20structure.\x20Use:\x20\x27items\x20-[list|buy]\x20(argument)\x27\x0a','\x27:\x0a','DPeBP','\x0a\x0aInfo\x20for\x20\x27','sellPrice','Shop','1810pJHzyT','48LoTqMi','\x0aYou\x20must\x20be\x20in\x20the\x20Shop\x20directory\x20to\x20interact\x20with\x20items.\x0a','19048590yPJXwY','7TymDdt','WlPxs','match','forEach','drops','JWwqM','\x27.\x0a','OLbLT','NuADH','CnNEk','purchasable','value','-\x20Attack\x20Increase:\x20','repeat','quantity','GNTRv','KPRfC','38277jcYTaa','\x20for\x20'];_0x46d2=function(){return _0x4a56cf;};return _0x46d2();}export function handleShopItems(_0x200f49,_0x127013){const _0x132dc3=_0x3bab,_0x13ce4f={'PLTXM':function(_0x461a34,_0x36f2c4){return _0x461a34!==_0x36f2c4;},'offZE':_0x132dc3(0x138),'xqxUO':_0x132dc3(0x13b),'mCHwR':function(_0x4e259c,_0x291b7a){return _0x4e259c===_0x291b7a;},'CnNEk':_0x132dc3(0x126),'WlPxs':function(_0x4faf6b,_0x2c1ab7){return _0x4faf6b===_0x2c1ab7;},'ooRMO':_0x132dc3(0x118),'xwNAP':_0x132dc3(0x103),'GdiZk':_0x132dc3(0x141),'BspAQ':'equipment','WjIlb':_0x132dc3(0x12d),'DnaOR':function(_0x53e8e4,_0x31aca3,_0x21d974){return _0x53e8e4(_0x31aca3,_0x21d974);},'tfjSb':function(_0x531487,_0x5a8222){return _0x531487===_0x5a8222;},'CFHIu':function(_0x16e86d,_0x237f13){return _0x16e86d(_0x237f13);},'fnHCc':function(_0xa5bb72,_0x2faf04,_0x4ebde3,_0xac2a35){return _0xa5bb72(_0x2faf04,_0x4ebde3,_0xac2a35);},'KFBxi':_0x132dc3(0x11a)};if(_0x13ce4f['PLTXM'](gameData[_0x132dc3(0x119)],_0x13ce4f['offZE'])){consoleElement['value']+=_0x13ce4f[_0x132dc3(0x125)];return;}const _0x122388=_0x127013[_0x132dc3(0xf3)](/\s+/);if(_0x13ce4f[_0x132dc3(0x102)](_0x122388[0x0],_0x13ce4f[_0x132dc3(0xe5)])&&_0x13ce4f[_0x132dc3(0x13e)](_0x122388[0x1],_0x13ce4f[_0x132dc3(0x113)])){const _0x42f439=_0x122388[0x2]||_0x13ce4f[_0x132dc3(0x10a)];[_0x13ce4f['GdiZk'],_0x13ce4f[_0x132dc3(0xf9)],_0x13ce4f[_0x132dc3(0xf5)],_0x13ce4f['xwNAP']][_0x132dc3(0x10e)](_0x42f439)?_0x13ce4f[_0x132dc3(0x102)](_0x42f439,_0x13ce4f[_0x132dc3(0x10a)])?(_0x13ce4f[_0x132dc3(0xf7)](listShopItems,consoleElement,_0x13ce4f['GdiZk']),listShopItems(consoleElement,_0x13ce4f['WjIlb']),listShopItems(consoleElement,_0x13ce4f[_0x132dc3(0xf9)])):listShopItems(consoleElement,_0x42f439):consoleElement[_0x132dc3(0xe7)]+='\x0aInvalid\x20category.\x20Use:\x20\x27items\x20-list\x20[drops|equipment|consumable|all]\x27\x0a';}else{if(_0x13ce4f[_0x132dc3(0x100)](_0x122388[0x0],_0x13ce4f[_0x132dc3(0xe5)])&&_0x13ce4f['tfjSb'](_0x122388[0x1],'-buy')){const _0x23bbc3=_0x13ce4f[_0x132dc3(0x101)](extractItemNameFromInput,_0x127013);_0x23bbc3?_0x13ce4f['fnHCc'](attemptToPurchaseItem,_0x23bbc3,gameData,consoleElement):consoleElement['value']+=_0x13ce4f[_0x132dc3(0xfb)];}else consoleElement[_0x132dc3(0xe7)]+=_0x132dc3(0x133);}}export function showItemInfo(_0x2ba68b){const _0x242416=_0x3bab,_0x1d5526=_0x2ba68b[_0x242416(0x12b)](),_0x19f9e5=armors[_0x242416(0xf6)](_0x10ad2e=>_0x10ad2e[_0x242416(0xf0)][_0x242416(0x12b)]()===_0x1d5526)||consumables[_0x242416(0xf6)](_0x5cac6b=>_0x5cac6b[_0x242416(0xf0)][_0x242416(0x12b)]()===_0x1d5526)||drops[_0x242416(0xf6)](_0xa6e103=>_0xa6e103[_0x242416(0xf0)][_0x242416(0x12b)]()===_0x1d5526);if(!_0x19f9e5){consoleElement[_0x242416(0xe7)]+=_0x242416(0x107);return;}let _0x348ccc=_0x242416(0x136)+_0x19f9e5[_0x242416(0xf0)]+_0x242416(0x134);if(_0x19f9e5[_0x242416(0x105)])_0x348ccc+=_0x242416(0x124)+_0x19f9e5[_0x242416(0x105)]+'\x0a';if(_0x19f9e5[_0x242416(0x109)])_0x348ccc+=_0x242416(0xff)+_0x19f9e5[_0x242416(0x109)]+'\x0a';if(_0x19f9e5[_0x242416(0x128)])_0x348ccc+=_0x242416(0xe8)+_0x19f9e5['attackIncrease']+'\x0a';if(_0x19f9e5['buyPrice'])_0x348ccc+='-\x20Buy\x20Price:\x20'+_0x19f9e5['buyPrice']+'\x0a';if(_0x19f9e5[_0x242416(0x137)])_0x348ccc+=_0x242416(0x108)+_0x19f9e5[_0x242416(0x137)]+'\x0a';consoleElement['value']+=_0x348ccc;}
+import { saveGameData, consoleElement } from "../utilities.js";
+import { gameData } from "../gameData.js";
+import { drops } from "../data/items/drops.js";
+import { armors } from "../data/items/armor.js";
+import { consumables } from "../data/items/consumable.js";
+
+function extractItemNameFromInput(input) {
+  var match = input.match(/-buy\s+(.+)/);
+  return match ? match[1] : null;
+}
+
+function attemptToPurchaseItem(itemName, gameData, consoleElement) {
+  const allItems = [...drops, ...consumables, ...armors];
+
+  // Find the item data
+  const item = allItems.find(
+    (i) => i.name.toLowerCase() === itemName.toLowerCase(),
+  );
+
+  // Check if item is purchasable and available
+  if (!item || !item.purchasable) {
+    consoleElement.value += `\nItem '${itemName}' is not available for purchase.\n`;
+    return;
+  }
+
+  // Check if the player has enough gold
+  if (gameData.goldAmount < item.buyPrice) {
+    consoleElement.value += `\nNot enough Gold to purchase '${itemName}'.\n`;
+    return;
+  }
+
+  // Deduct the gold and add the item to inventory with its original case
+  gameData.goldAmount -= item.buyPrice;
+  const inventoryItem = gameData.userInventory.find(
+    (i) => i.item === item.name,
+  );
+  if (inventoryItem) {
+    inventoryItem.quantity += 1;
+  } else {
+    gameData.userInventory.push({ item: item.name, quantity: 1 });
+  }
+
+  // Save game data and update the console
+  saveGameData();
+  consoleElement.value += `\nPurchased '${item.name}' for ${item.buyPrice} Gold.\n`;
+}
+
+function createTable(data, title) {
+  let maxLength = 0;
+  data.forEach((item) => {
+    if (item.name.length > maxLength) {
+      maxLength = item.name.length;
+    }
+  });
+
+  const minNameWidth = 10;
+  const nameWidth = Math.max(maxLength, minNameWidth);
+  let table = `\n\n${title}\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15,
+  )}+\n`;
+  table += `| ${"Item Name".padEnd(
+    nameWidth,
+  )} | Buy Price    | Sell Price    |\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15,
+  )}+\n`;
+
+  data.forEach((item) => {
+    const buyPriceDisplay = item.purchasable ? item.buyPrice.toString() : "X";
+    const sellPriceDisplay = item.sellPrice.toString();
+    table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(
+      12,
+    )} | ${sellPriceDisplay.padEnd(13)} |\n`;
+  });
+
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15,
+  )}+\n`;
+  return table;
+}
+
+function listShopItems(consoleElement, category) {
+  let output = "";
+
+  if (category === "drops" && drops && drops.length > 0) {
+    output += createTable(drops, "Drops");
+  } else if (
+    category === "consumable" &&
+    consumables &&
+    consumables.length > 0
+  ) {
+    output += createTable(consumables, "Consumable");
+  } else if (category === "equipment" && armors && armors.length > 0) {
+    output += createTable(armors, "Equipment");
+  } else {
+    output += `\nNo ${category} available.\n`;
+  }
+
+  consoleElement.value += output;
+}
+
+export function sellAllItems(specificItem) {
+  let totalSellPrice = 0;
+  specificItem = specificItem ? specificItem.toLowerCase() : null;
+
+  gameData.userInventory = gameData.userInventory.filter((itemObj) => {
+    if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
+      const itemData = [...drops, ...consumables, ...armors].find(
+        (item) => item.name.toLowerCase() === itemObj.item.toLowerCase(),
+      );
+      if (itemData) {
+        totalSellPrice += itemData.sellPrice * itemObj.quantity;
+        return false;
+      }
+    }
+    return true;
+  });
+
+  gameData.goldAmount += totalSellPrice;
+  consoleElement.value += `\nSold ${
+    specificItem ? specificItem : "all items"
+  } for ${totalSellPrice} gold.\n`;
+  saveGameData();
+}
+
+export function handleSellAll(argument) {
+  if (gameData.currentDirectory !== "Shop") {
+    consoleElement.value +=
+      "\nYou must be in the Shop directory to sell items.\n";
+    return;
+  }
+  sellAllItems(argument);
+}
+
+export function handleShopItems(argument, input) {
+  if (gameData.currentDirectory !== "Shop") {
+    consoleElement.value +=
+      "\nYou must be in the Shop directory to interact with items.\n";
+    return;
+  }
+
+  const args = input.split(/\s+/); // Split the input by spaces
+
+  if (args[0] === "items" && args[1] === "-list") {
+    const category = args[2] || "all";
+    if (["drops", "equipment", "consumable", "all"].includes(category)) {
+      if (category === "all") {
+        listShopItems(consoleElement, "drops");
+        listShopItems(consoleElement, "consumable");
+        listShopItems(consoleElement, "equipment");
+      } else {
+        listShopItems(consoleElement, category);
+      }
+    } else {
+      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|equipment|consumable|all]'\n`;
+    }
+  } else if (args[0] === "items" && args[1] === "-buy") {
+    const itemName = extractItemNameFromInput(input);
+    if (itemName) {
+      attemptToPurchaseItem(itemName, gameData, consoleElement);
+    } else {
+      consoleElement.value += '\nInvalid format. Use: items -buy "Item Name"\n';
+    }
+  } else {
+    consoleElement.value += `\nInvalid command structure. Use: 'items -[list|buy] (argument)'\n`;
+  }
+}
+
+export function showItemInfo(itemName) {
+  const lowercasedItemName = itemName.toLowerCase();
+  const item =
+    armors.find((item) => item.name.toLowerCase() === lowercasedItemName) ||
+    consumables.find(
+      (item) => item.name.toLowerCase() === lowercasedItemName,
+    ) ||
+    drops.find((item) => item.name.toLowerCase() === lowercasedItemName);
+
+  if (!item) {
+    consoleElement.value += `\nItem not found, are you sure it's spelt correctly?\n`;
+    return;
+  }
+
+  let infoDisplay = `\n\nInfo for '${item.name}':\n`;
+  if (item.defenseIncrease)
+    infoDisplay += `- Defense Increase: ${item.defenseIncrease}\n`;
+  if (item.hpIncrease) infoDisplay += `- HP Increase: ${item.hpIncrease}\n`;
+  if (item.attackIncrease)
+    infoDisplay += `- Attack Increase: ${item.attackIncrease}\n`;
+  if (item.buyPrice) infoDisplay += `- Buy Price: ${item.buyPrice}\n`;
+  if (item.sellPrice) infoDisplay += `- Sell Price: ${item.sellPrice}\n`;
+
+  consoleElement.value += infoDisplay;
+}

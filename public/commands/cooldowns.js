@@ -1,1 +1,30 @@
-function _0x4826(){var _0x2dbbb6=['11956SuVWXk','447AMUJJw','\x0aReady\x20for\x20hunting!\x0a','70qIQgmG','Time\x20remaining\x20until\x20exploration\x20can\x20be\x20collected:\x20','7XRqiOD','\x20seconds\x0a','ongoingExploration','value','\x0aTime\x20remaining\x20until\x20next\x20hunt:\x20','getTime','explorationEndTime','943038fxCBsq','270994IvtltN','7703632iTRpKp','IkEaQ','BCUiH','5772ikxMOS','tbXLB','split','QKApl','gNwDc','2580627mBDEST','floor','4|3|1|0|2','lastHuntTime','\x0aExploration\x20complete!\x20You\x20can\x20collect\x20your\x20treasure\x20now.\x0a','119150AUQfMZ','228tuzbRo','51304mCxnIO'];_0x4826=function(){return _0x2dbbb6;};return _0x4826();}(function(_0x4fb107,_0x354a69){var _0x4f4ff1=_0x227b,_0x3f298c=_0x4fb107();while(!![]){try{var _0x4ef7c=parseInt(_0x4f4ff1(0xcb))/0x1*(parseInt(_0x4f4ff1(0xd3))/0x2)+-parseInt(_0x4f4ff1(0xe5))/0x3*(-parseInt(_0x4f4ff1(0xe4))/0x4)+parseInt(_0x4f4ff1(0xe1))/0x5*(parseInt(_0x4f4ff1(0xe2))/0x6)+parseInt(_0x4f4ff1(0xdc))/0x7+parseInt(_0x4f4ff1(0xd4))/0x8+-parseInt(_0x4f4ff1(0xd2))/0x9*(parseInt(_0x4f4ff1(0xc9))/0xa)+-parseInt(_0x4f4ff1(0xe3))/0xb*(parseInt(_0x4f4ff1(0xd7))/0xc);if(_0x4ef7c===_0x354a69)break;else _0x3f298c['push'](_0x3f298c['shift']());}catch(_0x52c92a){_0x3f298c['push'](_0x3f298c['shift']());}}}(_0x4826,0x9fb39));import{consoleElement}from'../utilities.js';function _0x227b(_0x4c20e1,_0x3df1b9){var _0x482616=_0x4826();return _0x227b=function(_0x227bf0,_0x3c1bee){_0x227bf0=_0x227bf0-0xc8;var _0xb087f6=_0x482616[_0x227bf0];return _0xb087f6;},_0x227b(_0x4c20e1,_0x3df1b9);}import{gameData}from'../gameData.js';export function showCooldowns(){var _0x254810=_0x227b,_0x1cb235={'tbXLB':function(_0x17c6a7,_0x3e6311){return _0x17c6a7-_0x3e6311;},'gNwDc':function(_0x1c66b9,_0x179b86){return _0x1c66b9/_0x179b86;},'BCUiH':function(_0x4c2155,_0x324f3c){return _0x4c2155-_0x324f3c;},'IkEaQ':function(_0x29332f,_0x4e66e3){return _0x29332f/_0x4e66e3;},'QKApl':function(_0x381640,_0xf5753a){return _0x381640-_0xf5753a;}},_0x37ec05=_0x254810(0xde)[_0x254810(0xd9)]('|'),_0x115492=0x0;while(!![]){switch(_0x37ec05[_0x115492++]){case'0':if(_0x4582d6<_0x119ac9){var _0x33fd32=_0x1cb235[_0x254810(0xd8)](_0x119ac9,_0x4582d6);consoleElement[_0x254810(0xce)]+=_0x254810(0xcf)+_0x33fd32+'\x20seconds\x0a';}else consoleElement[_0x254810(0xce)]+=_0x254810(0xc8);continue;case'1':var _0x119ac9=0x1e;continue;case'2':if(gameData[_0x254810(0xcd)]){var _0x28ddb9=new Date(gameData[_0x254810(0xd1)])[_0x254810(0xd0)](),_0x29cc46=Math[_0x254810(0xdd)](_0x1cb235[_0x254810(0xdb)](_0x1cb235[_0x254810(0xd8)](_0x347cd0,_0x28ddb9),0x3e8)),_0x38b518=0x78;if(_0x29cc46<_0x38b518){var _0x4bbe14=_0x1cb235[_0x254810(0xd6)](_0x38b518,_0x29cc46);consoleElement[_0x254810(0xce)]+=_0x254810(0xca)+_0x4bbe14+_0x254810(0xcc);}else consoleElement[_0x254810(0xce)]+=_0x254810(0xe0);}continue;case'3':var _0x4582d6=Math['floor'](_0x1cb235[_0x254810(0xd5)](_0x1cb235[_0x254810(0xda)](_0x347cd0,gameData[_0x254810(0xdf)]),0x3e8));continue;case'4':var _0x347cd0=new Date()[_0x254810(0xd0)]();continue;}break;}}
+import { consoleElement } from "../utilities.js";
+import { gameData } from "../gameData.js";
+
+export function showCooldowns() {
+    // Hunting cooldown logic
+    var currentTime = new Date().getTime();
+    var timePassedSinceLastHunt = Math.floor((currentTime - gameData.lastHuntTime) / 1000);
+    var huntCooldown = 30;
+
+    if (timePassedSinceLastHunt < huntCooldown) {
+      var timeLeftForHunt = huntCooldown - timePassedSinceLastHunt;
+      consoleElement.value += `\nTime remaining until next hunt: ${timeLeftForHunt} seconds\n`;
+    } else {
+      consoleElement.value += `\nReady for hunting!\n`;
+    }
+
+    // Exploration cooldown logic
+    if (gameData.ongoingExploration) {
+        var explorationEndTime = new Date(gameData.explorationEndTime).getTime();
+        var timePassedSinceExplorationStart = Math.floor((currentTime - explorationEndTime) / 1000);
+        var explorationCooldown = 120;
+
+        if (timePassedSinceExplorationStart < explorationCooldown) {
+            var timeLeftForExploration = explorationCooldown - timePassedSinceExplorationStart;
+            consoleElement.value += `Time remaining until exploration can be collected: ${timeLeftForExploration} seconds\n`;
+        } else {
+            consoleElement.value += `\nExploration complete! You can collect your treasure now.\n`;
+        }
+    }
+}

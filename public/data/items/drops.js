@@ -1,1 +1,50 @@
-const _0x557ebd=_0x6e43;(function(_0x1ec4b4,_0x263eab){const _0x3398b2=_0x6e43,_0x132c00=_0x1ec4b4();while(!![]){try{const _0x168e70=-parseInt(_0x3398b2(0x13c))/0x1*(parseInt(_0x3398b2(0x13a))/0x2)+-parseInt(_0x3398b2(0x138))/0x3*(-parseInt(_0x3398b2(0x131))/0x4)+-parseInt(_0x3398b2(0x139))/0x5+-parseInt(_0x3398b2(0x12e))/0x6*(parseInt(_0x3398b2(0x130))/0x7)+parseInt(_0x3398b2(0x133))/0x8+parseInt(_0x3398b2(0x132))/0x9+-parseInt(_0x3398b2(0x135))/0xa;if(_0x168e70===_0x263eab)break;else _0x132c00['push'](_0x132c00['shift']());}catch(_0x19f23e){_0x132c00['push'](_0x132c00['shift']());}}}(_0x5e2c,0x32da2));function _0x6e43(_0x223301,_0x5e6efd){const _0x5e2c46=_0x5e2c();return _0x6e43=function(_0x6e4305,_0x4010e5){_0x6e4305=_0x6e4305-0x12e;let _0x4a57ca=_0x5e2c46[_0x6e4305];return _0x4a57ca;},_0x6e43(_0x223301,_0x5e6efd);}export const drops=[{'name':'Spiderweb','sellPrice':0x5,'buyPrice':0xa,'purchasable':!![]},{'name':_0x557ebd(0x136),'sellPrice':0x7,'buyPrice':0xe,'purchasable':!![]},{'name':_0x557ebd(0x134),'sellPrice':0x7,'buyPrice':0x0,'purchasable':![]},{'name':_0x557ebd(0x137),'sellPrice':0x7,'buyPrice':0xe,'purchasable':!![]},{'name':_0x557ebd(0x13b),'sellPrice':0x9,'buyPrice':0x12,'purchasable':!![]},{'name':'Spider\x20Eye','sellPrice':0xf,'buyPrice':0x1e,'purchasable':![]},{'name':_0x557ebd(0x12f),'sellPrice':0x6,'buyPrice':0xc,'purchasable':!![]},{'name':'Condensate','sellPrice':0xe,'buyPrice':0x0,'purchasable':![]}];function _0x5e2c(){const _0x311247=['Hardened\x20Skin','1841350zSHRlu','Flesh','Old\x20Tape','285573JDazXB','416660cfRfmf','2jsgMsy','Zombie\x20Hide','41677RjWzdV','18kUGzfi','Slimeball','513478lIVJqX','12wgmLpe','1910142NlkPpp','1917480omavqR'];_0x5e2c=function(){return _0x311247;};return _0x5e2c();}
+export const drops = [
+  {
+    "name": "Spiderweb",
+    "sellPrice": 5,
+    "buyPrice": 10,
+    "purchasable": true
+  },
+  {
+    "name": "Flesh",
+    "sellPrice": 7,
+    "buyPrice": 14,
+    "purchasable": true
+  },
+  {
+    "name": "Hardened Skin",
+    "sellPrice": 7,
+    "buyPrice": 0,
+    "purchasable": false
+  },
+  {
+    "name": "Old Tape",
+    "sellPrice": 7,
+    "buyPrice": 14,
+    "purchasable": true
+  },
+  {
+    "name": "Zombie Hide",
+    "sellPrice": 9,
+    "buyPrice": 18,
+    "purchasable": true
+  },
+  {
+    "name": "Spider Eye",
+    "sellPrice": 15,
+    "buyPrice": 30,
+    "purchasable": false
+  },
+  {
+    "name": "Slimeball",
+    "sellPrice": 6,
+    "buyPrice": 12,
+    "purchasable": true
+  },
+  {
+    "name": "Condensate",
+    "sellPrice": 14,
+    "buyPrice": 0,
+    "purchasable": false
+  }
+];
