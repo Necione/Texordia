@@ -14,7 +14,7 @@ function attemptToPurchaseItem(itemName, gameData, consoleElement) {
 
   // Find the item data
   const item = allItems.find(
-    (i) => i.name.toLowerCase() === itemName.toLowerCase(),
+    (i) => i.name.toLowerCase() === itemName.toLowerCase()
   );
 
   // Check if item is purchasable and available
@@ -32,7 +32,7 @@ function attemptToPurchaseItem(itemName, gameData, consoleElement) {
   // Deduct the gold and add the item to inventory with its original case
   gameData.goldAmount -= item.buyPrice;
   const inventoryItem = gameData.userInventory.find(
-    (i) => i.item === item.name,
+    (i) => i.item === item.name
   );
   if (inventoryItem) {
     inventoryItem.quantity += 1;
@@ -57,25 +57,25 @@ function createTable(data, title) {
   const nameWidth = Math.max(maxLength, minNameWidth);
   let table = `\n\n${title}\n`;
   table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
-    15,
+    15
   )}+\n`;
   table += `| ${"Item Name".padEnd(
-    nameWidth,
+    nameWidth
   )} | Buy Price    | Sell Price    |\n`;
   table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
-    15,
+    15
   )}+\n`;
 
   data.forEach((item) => {
     const buyPriceDisplay = item.purchasable ? item.buyPrice.toString() : "X";
     const sellPriceDisplay = item.sellPrice.toString();
     table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(
-      12,
+      12
     )} | ${sellPriceDisplay.padEnd(13)} |\n`;
   });
 
   table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
-    15,
+    15
   )}+\n`;
   return table;
 }
@@ -107,7 +107,7 @@ export function sellAllItems(specificItem) {
   gameData.userInventory = gameData.userInventory.filter((itemObj) => {
     if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
       const itemData = [...drops, ...consumables, ...armors].find(
-        (item) => item.name.toLowerCase() === itemObj.item.toLowerCase(),
+        (item) => item.name.toLowerCase() === itemObj.item.toLowerCase()
       );
       if (itemData) {
         totalSellPrice += itemData.sellPrice * itemObj.quantity;
@@ -172,7 +172,7 @@ export function showItemInfo(itemName) {
   const item =
     armors.find((item) => item.name.toLowerCase() === lowercasedItemName) ||
     consumables.find(
-      (item) => item.name.toLowerCase() === lowercasedItemName,
+      (item) => item.name.toLowerCase() === lowercasedItemName
     ) ||
     drops.find((item) => item.name.toLowerCase() === lowercasedItemName);
 

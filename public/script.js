@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   consoleElement.focus();
   consoleElement.setSelectionRange(
     consoleElement.value.length,
-    consoleElement.value.length,
+    consoleElement.value.length
   );
 
   consoleElement.addEventListener("keydown", function (event) {
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     consoleElement.scrollTop = consoleElement.scrollHeight;
     consoleElement.setSelectionRange(
       consoleElement.value.length,
-      consoleElement.value.length,
+      consoleElement.value.length
     );
 
     consoleElement.focus();
@@ -150,9 +150,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "help":
         showHelp();
         break;
-        case "skills":
-            handleSkillsCommands(argument);
-            break;
+      case "skills":
+        handleSkillsCommands(argument);
+        break;
       case "equip":
         equipArmor(argument);
         break;
@@ -201,10 +201,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const itemName = argument.toLowerCase();
     const consumableItem = consumables.find(
-      (item) => item.name.toLowerCase() === itemName,
+      (item) => item.name.toLowerCase() === itemName
     );
     const inventoryItem = gameData.userInventory.find(
-      (item) => item.item.toLowerCase() === itemName,
+      (item) => item.item.toLowerCase() === itemName
     );
 
     if (consumableItem && inventoryItem) {
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function usePotion() {
     const potionIndex = gameData.userInventory.findIndex(
-      (itemObj) => itemObj.item.toLowerCase() === "potion",
+      (itemObj) => itemObj.item.toLowerCase() === "potion"
     );
 
     if (potionIndex !== -1) {
@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       const subdirectory = getSubdirectory(
         directoryStructure,
-        gameData.currentDirectory.split("\\"),
+        gameData.currentDirectory.split("\\")
       );
       if (subdirectory) {
         return buildTree(subdirectory, "  ");

@@ -20,15 +20,16 @@ const defaultData = {
   leechCounter: 0,
   // Other Combat
   isStunned: false,
-  isFirstAttack: true
+  isFirstAttack: true,
 };
 
 function updateLevel() {
-  const expForNextLevel = [
-    35, 55, 115, 215, 355, 535, 755, 1015, 1315, 1655,
-  ];
+  const expForNextLevel = [35, 55, 115, 215, 355, 535, 755, 1015, 1315, 1655];
 
-  while (gameData.exp >= gameData.nextLevelExp && gameData.level - 1 < expForNextLevel.length) {
+  while (
+    gameData.exp >= gameData.nextLevelExp &&
+    gameData.level - 1 < expForNextLevel.length
+  ) {
     gameData.level++;
     gameData.attack += 1; // Increase base attack
     gameData.nextLevelExp = expForNextLevel[gameData.level - 1];

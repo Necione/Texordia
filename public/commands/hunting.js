@@ -3,114 +3,130 @@ import { saveGameData, consoleElement } from "../utilities.js";
 import { monsters } from "../data/monsters.js";
 
 function generateHealthBar(currentHP, maxHP) {
-    currentHP = Math.min(currentHP, maxHP);
-    const hpBarLength = 20;
+  currentHP = Math.min(currentHP, maxHP);
+  const hpBarLength = 20;
 
-    if (currentHP <= 0) {
-        return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
-    }
+  if (currentHP <= 0) {
+    return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
+  }
 
-    const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
-    const emptyLength = hpBarLength - filledLength;
+  const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
+  const emptyLength = hpBarLength - filledLength;
 
-    return "[" + "█".repeat(filledLength) + " ".repeat(emptyLength) + `] ${currentHP}/${maxHP}`;
+  return (
+    "[" +
+    "█".repeat(filledLength) +
+    " ".repeat(emptyLength) +
+    `] ${currentHP}/${maxHP}`
+  );
 }
 
 export async function handleHunting(finishHuntCallback) {
-
   var currentTime = new Date().getTime();
   if (currentTime - gameData.lastHuntTime < 30000) {
-      var timeLeft = Math.ceil((30000 - (currentTime - gameData.lastHuntTime)) / 1000);
-      consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
-      if (typeof finishHuntCallback === "function") {
-          finishHuntCallback();
-      }
-      return;
+    var timeLeft = Math.ceil(
+      (30000 - (currentTime - gameData.lastHuntTime)) / 1000
+    );
+    consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
+    if (typeof finishHuntCallback === "function") {
+      finishHuntCallback();
+    }
+    return;
   }
 
   let spinner = ["-", "/", "|", "\\"];
   let spinnerIndex = 0;
 
   const spinnerInterval = setInterval(() => {
-      consoleElement.value = consoleElement.value.replace(/[-/|\\]$/, "") + spinner[spinnerIndex];
-      spinnerIndex = (spinnerIndex + 1) % spinner.length;
+    consoleElement.value =
+      consoleElement.value.replace(/[-/|\\]$/, "") + spinner[spinnerIndex];
+    spinnerIndex = (spinnerIndex + 1) % spinner.length;
   }, 250);
 
   consoleElement.value += "\nSearching for monsters... ";
   consoleElement.disabled = true;
 
   setTimeout(() => {
-      clearInterval(spinnerInterval);
+    clearInterval(spinnerInterval);
 
-        // Filter monsters based on the player's level and their encounter range
-        const levelAppropriateMonsters = monsters.filter(monster =>
-          gameData.level >= monster.encounterRange[0] && gameData.level <= monster.encounterRange[1]
-      );
+    // Filter monsters based on the player's level and their encounter range
+    const levelAppropriateMonsters = monsters.filter(
+      (monster) =>
+        gameData.level >= monster.encounterRange[0] &&
+        gameData.level <= monster.encounterRange[1]
+    );
 
-      // Select a random monster from the filtered list
-      const monster = levelAppropriateMonsters[Math.floor(Math.random() * levelAppropriateMonsters.length)];
-      monster.hp = Math.floor(Math.random() * (monster.hpRange[1] - monster.hpRange[0] + 1)) + monster.hpRange[0];
-      const monsterMaxHP = monster.hp;
+    // Select a random monster from the filtered list
+    const monster =
+      levelAppropriateMonsters[
+        Math.floor(Math.random() * levelAppropriateMonsters.length)
+      ];
+    monster.hp =
+      Math.floor(
+        Math.random() * (monster.hpRange[1] - monster.hpRange[0] + 1)
+      ) + monster.hpRange[0];
+    const monsterMaxHP = monster.hp;
 
-      let combatLog = "";
-      let isFirstAttack = true;
+    let combatLog = "";
+    let isFirstAttack = true;
 
-      const combatStartIndex = consoleElement.value.length;
+    const combatStartIndex = consoleElement.value.length;
 
-      const updateCombatDisplay = () => {
-        const playerName = "Your HP";
-        const monsterName = monster.name + " HP";
+    const updateCombatDisplay = () => {
+      const playerName = "Your HP";
+      const monsterName = monster.name + " HP";
 
-        // Determine the maximum name length for alignment
-        const maxNameLength = Math.max(playerName.length, monsterName.length);
+      // Determine the maximum name length for alignment
+      const maxNameLength = Math.max(playerName.length, monsterName.length);
 
-        // Pad the names to the maximum length
-        const paddedPlayerName = playerName.padEnd(maxNameLength);
-        const paddedMonsterName = monsterName.padEnd(maxNameLength);
+      // Pad the names to the maximum length
+      const paddedPlayerName = playerName.padEnd(maxNameLength);
+      const paddedMonsterName = monsterName.padEnd(maxNameLength);
 
-        const playerHealthBar = generateHealthBar(gameData.hp, gameData.maxHp);
-        const monsterHealthBar = generateHealthBar(monster.hp, monsterMaxHP);
-        
-        const combatDisplay = `\n\n${paddedPlayerName} ${playerHealthBar}\n${paddedMonsterName} ${monsterHealthBar}\n\n[ Combat Log ]\n${combatLog}`;
-        consoleElement.value = consoleElement.value.substring(0, combatStartIndex) + combatDisplay;
-        adjustConsoleScroll();
+      const playerHealthBar = generateHealthBar(gameData.hp, gameData.maxHp);
+      const monsterHealthBar = generateHealthBar(monster.hp, monsterMaxHP);
+
+      const combatDisplay = `\n\n${paddedPlayerName} ${playerHealthBar}\n${paddedMonsterName} ${monsterHealthBar}\n\n[ Combat Log ]\n${combatLog}`;
+      consoleElement.value =
+        consoleElement.value.substring(0, combatStartIndex) + combatDisplay;
+      adjustConsoleScroll();
     };
 
-      const adjustConsoleScroll = () => {
-          consoleElement.scrollTop = consoleElement.scrollHeight;
-      };
+    const adjustConsoleScroll = () => {
+      consoleElement.scrollTop = consoleElement.scrollHeight;
+    };
+
+    updateCombatDisplay();
+
+    const combatInterval = setInterval(() => {
+      if (monster.hp > 0) {
+        const attackResult = playerAttack(isFirstAttack, monster, gameData);
+        combatLog += attackResult.combatLog;
+        isFirstAttack = attackResult.isFirstAttack;
+
+        if (monster.hp <= 0) {
+          clearInterval(combatInterval);
+          combatLog += `You defeated the ${monster.name}!\n`;
+          updateCombatDisplay();
+          handleCombatVictory(monster, finishHuntCallback);
+          return;
+        }
+
+        combatLog += monsterAttack(monster, gameData);
+
+        if (gameData.hp <= 0) {
+          clearInterval(combatInterval);
+          combatLog += `You have been defeated by the ${monster.name}!\n`;
+          updateCombatDisplay();
+          handleCombatDefeat();
+          return;
+        }
+      }
 
       updateCombatDisplay();
+    }, 1000);
 
-      const combatInterval = setInterval(() => {
-          if (monster.hp > 0) {
-              const attackResult = playerAttack(isFirstAttack, monster, gameData);
-              combatLog += attackResult.combatLog;
-              isFirstAttack = attackResult.isFirstAttack;
-
-              if (monster.hp <= 0) {
-                  clearInterval(combatInterval);
-                  combatLog += `You defeated the ${monster.name}!\n`;
-                  updateCombatDisplay();
-                  handleCombatVictory(monster, finishHuntCallback);
-                  return;
-              }
-
-              combatLog += monsterAttack(monster, gameData);
-
-              if (gameData.hp <= 0) {
-                  clearInterval(combatInterval);
-                  combatLog += `You have been defeated by the ${monster.name}!\n`;
-                  updateCombatDisplay();
-                  handleCombatDefeat();
-                  return;
-              }
-          }
-
-          updateCombatDisplay();
-      }, 1000);
-
-      gameData.lastHuntTime = new Date().getTime();
+    gameData.lastHuntTime = new Date().getTime();
   }, 5000);
 }
 
@@ -118,25 +134,30 @@ function playerAttack(isFirstAttack, monster, gameData) {
   let playerDamage = gameData.attack;
 
   if (isFirstAttack && gameData.skills.includes("Vigilance")) {
-      playerDamage *= 2; // Double damage for the first attack
+    playerDamage *= 2; // Double damage for the first attack
   }
 
   monster.hp -= playerDamage;
 
-    // Check for Leech skill
-    if (gameData.skills.includes("Leech")) {
-      gameData.leechCounter++;
-      if (gameData.leechCounter >= 2) {
-          gameData.hp = Math.min(gameData.hp + 0.5, gameData.maxHp); // Heal 1 HP, but do not exceed max HP
-          gameData.leechCounter = 0; // Reset counter after healing
-      }      
+  // Check for Leech skill
+  if (gameData.skills.includes("Leech")) {
+    gameData.leechCounter++;
+    if (gameData.leechCounter >= 2) {
+      gameData.hp = Math.min(gameData.hp + 0.5, gameData.maxHp); // Heal 1 HP, but do not exceed max HP
+      gameData.leechCounter = 0; // Reset counter after healing
+    }
   }
 
-  return { combatLog: `+ You dealt ${playerDamage} Damage to the ${monster.name}!\n`, isFirstAttack: false };
+  return {
+    combatLog: `+ You dealt ${playerDamage} Damage to the ${monster.name}!\n`,
+    isFirstAttack: false,
+  };
 }
 
 function monsterAttack(monster, gameData) {
-  const monsterAttack = Math.floor(Math.random() * (monster.damage[1] - monster.damage[0] + 1)) + monster.damage[0];
+  const monsterAttack =
+    Math.floor(Math.random() * (monster.damage[1] - monster.damage[0] + 1)) +
+    monster.damage[0];
   gameData.hp -= monsterAttack;
 
   return `- The ${monster.name} dealt ${monsterAttack} Damage to you\n`;
@@ -155,11 +176,11 @@ function handleCombatVictory(monster, finishHuntCallback) {
         lootDropped = true;
         const quantity =
           Math.floor(
-            Math.random() * (drop.quantityRange[1] - drop.quantityRange[0] + 1),
+            Math.random() * (drop.quantityRange[1] - drop.quantityRange[0] + 1)
           ) + drop.quantityRange[0];
 
         const existingItemIndex = gameData.userInventory.findIndex(
-          (item) => item.item === drop.item,
+          (item) => item.item === drop.item
         );
         if (existingItemIndex !== -1) {
           gameData.userInventory[existingItemIndex].quantity += quantity;
@@ -188,8 +209,9 @@ function handleCombatVictory(monster, finishHuntCallback) {
 
   // Calculate and award EXP
   const xpAwarded =
-    Math.floor(Math.random() * (monster.expRange[1] - monster.expRange[0] + 1)) +
-    monster.expRange[0];
+    Math.floor(
+      Math.random() * (monster.expRange[1] - monster.expRange[0] + 1)
+    ) + monster.expRange[0];
   gameData.exp += xpAwarded;
   consoleElement.value += `\nYou gained ${xpAwarded} EXP.\n`;
 
@@ -205,7 +227,7 @@ function handleCombatVictory(monster, finishHuntCallback) {
   consoleElement.focus();
   consoleElement.setSelectionRange(
     consoleElement.value.length,
-    consoleElement.value.length,
+    consoleElement.value.length
   );
 }
 

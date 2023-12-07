@@ -17,7 +17,7 @@ export function handleQuest(argument, input) {
 }
 
 export function generateRandomQuests() {
-  const itemNames = drops.map(drop => drop.name);
+  const itemNames = drops.map((drop) => drop.name);
   const quests = [];
   for (let i = 1; i <= 3; i++) {
     const item = itemNames[Math.floor(Math.random() * itemNames.length)];
@@ -53,7 +53,7 @@ export function submitQuest(questId) {
     .split("x ")
     .map((el) => el.trim());
   const inventoryItem = gameData.userInventory.find(
-    (item) => item.item === itemName,
+    (item) => item.item === itemName
   );
 
   if (!inventoryItem || inventoryItem.quantity < parseInt(quantityRequired)) {
@@ -67,7 +67,7 @@ export function submitQuest(questId) {
   // If the quantity of the item reaches 0, remove the item from the inventory
   if (inventoryItem.quantity <= 0) {
     gameData.userInventory = gameData.userInventory.filter(
-      (item) => item.quantity > 0,
+      (item) => item.quantity > 0
     );
   }
 

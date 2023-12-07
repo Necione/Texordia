@@ -65,7 +65,7 @@ const commands = [
 
 export function showHelp() {
   const longestCommandNameLength = Math.max(
-    ...commands.map((cmd) => cmd.name.length),
+    ...commands.map((cmd) => cmd.name.length)
   );
 
   let helpMessage = "\n\n";

@@ -15,7 +15,7 @@ export function equipArmor(argument) {
   const armor = gameData.userInventory.find(
     (item) =>
       item.item.toLowerCase() === lowercasedArgument &&
-      armors.some((a) => a.name.toLowerCase() === lowercasedArgument),
+      armors.some((a) => a.name.toLowerCase() === lowercasedArgument)
   );
 
   if (!armor) {
@@ -25,7 +25,7 @@ export function equipArmor(argument) {
 
   // Get the armor stats from the armor data
   const armorStats = armors.find(
-    (a) => a.name.toLowerCase() === lowercasedArgument,
+    (a) => a.name.toLowerCase() === lowercasedArgument
   );
 
   // Check if the armor is already equipped
@@ -41,7 +41,7 @@ export function equipArmor(argument) {
 
   // Find a free armor slot
   const freeSlotIndex = gameData.equippedArmors.findIndex(
-    (slot) => slot === null,
+    (slot) => slot === null
   );
   if (freeSlotIndex === -1) {
     consoleElement.value +=
@@ -64,7 +64,7 @@ export function equipArmor(argument) {
 
   // Remove armor from inventory
   gameData.userInventory = gameData.userInventory.filter(
-    (item) => item.item.toLowerCase() !== lowercasedArgument,
+    (item) => item.item.toLowerCase() !== lowercasedArgument
   );
 
   // Save game data
@@ -83,7 +83,7 @@ export function unequipArmor(argument) {
 
   // Find if the armor is equipped
   const equippedIndex = gameData.equippedArmors.findIndex(
-    (slot) => slot && slot.toLowerCase() === lowercasedArgument,
+    (slot) => slot && slot.toLowerCase() === lowercasedArgument
   );
   if (equippedIndex === -1) {
     consoleElement.value += `\n'${argument}' is not currently equipped.\n`;
@@ -92,7 +92,7 @@ export function unequipArmor(argument) {
 
   // Get the armor stats from the armor data
   const armorStats = armors.find(
-    (a) => a.name.toLowerCase() === lowercasedArgument,
+    (a) => a.name.toLowerCase() === lowercasedArgument
   );
 
   if (!armorStats) {
@@ -114,7 +114,7 @@ export function unequipArmor(argument) {
 
   // Add the armor back to inventory
   const inventoryItem = gameData.userInventory.find(
-    (item) => item.item.toLowerCase() === lowercasedArgument,
+    (item) => item.item.toLowerCase() === lowercasedArgument
   );
   if (inventoryItem) {
     inventoryItem.quantity += 1;
@@ -142,12 +142,18 @@ export function showEquippedArmor() {
     if (argument) {
       const armorStats = armors.find((a) => a.name === argument);
       if (armorStats) {
-        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${armorStats.defenseIncrease}, HP +${armorStats.hpIncrease || 0}, Attack +${armorStats.attackIncrease || 0})\n`;
+        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${
+          armorStats.defenseIncrease
+        }, HP +${armorStats.hpIncrease || 0}, Attack +${
+          armorStats.attackIncrease || 0
+        })\n`;
         totalDefenseIncrease += armorStats.defenseIncrease;
         totalHpIncrease += armorStats.hpIncrease || 0;
         totalAttackIncrease += armorStats.attackIncrease || 0;
       } else {
-        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Stats not found)\n`;
+        equippedArmorDisplay += `Slot ${
+          index + 1
+        }: ${argument} (Stats not found)\n`;
       }
     } else {
       equippedArmorDisplay += `Slot ${index + 1}: X\n`;
@@ -162,4 +168,3 @@ export function showEquippedArmor() {
 
   saveGameData();
 }
-
