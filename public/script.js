@@ -21,7 +21,6 @@ import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-  let isAsyncCommandRunning = false;
 
   var promptText = gameData.currentDirectory
     ? `Texordia\\${gameData.currentDirectory}> `
@@ -96,10 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
     consoleElement.focus();
   }
 
-  function finishHunt() {
-    isAsyncCommandRunning = false;
-  }
-
   function processCommand(input) {
     const [command, ...args] = input.trim().split(/\s+/);
     const initialCommand = args[0] ? `${command} ${args[0]}` : command;
@@ -113,8 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
           initialCommand === "sudo hunt" &&
           gameData.currentDirectory === "Guild"
         ) {
-          isAsyncCommandRunning = true;
-          handleHunting(finishHunt);
+          gameData.isAsyncCommandRunning = true;
+          handleHunting();
         } else if (
           initialCommand === "sudo explore" &&
           gameData.currentDirectory === "Guild"
@@ -177,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
     }
 
-    if (!isAsyncCommandRunning) {
+    if (!gameData.isAsyncCommandRunning) {
       appendPrompt();
     }
   }

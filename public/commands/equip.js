@@ -99,7 +99,11 @@ export function unequipArmor(argument) {
 
   // Unequip the armor
   gameData.equippedArmors[equippedIndex] = null;
-  gameData.defense -= armorStats.defenseIncrease;
+
+  // Adjust gameData values based on armor stats
+  if (armorStats.defenseIncrease) {
+    gameData.defense -= armorStats.defenseIncrease;
+  }
 
   if (armorStats.hpIncrease) {
     gameData.maxHp -= armorStats.hpIncrease;
@@ -139,14 +143,17 @@ export function showEquippedArmor() {
     if (argument) {
       const armorStats = armors.find((a) => a.name === argument);
       if (armorStats) {
-        equippedArmorDisplay += `Slot ${index + 1}: ${argument} (Defense +${
-          armorStats.defenseIncrease
-        }, HP +${armorStats.hpIncrease || 0}, Attack +${
-          armorStats.attackIncrease || 0
-        })\n`;
-        totalDefenseIncrease += armorStats.defenseIncrease;
-        totalHpIncrease += armorStats.hpIncrease || 0;
-        totalAttackIncrease += armorStats.attackIncrease || 0;
+        // Default to 0 if undefined
+        let defenseIncrease = armorStats.defenseIncrease || 0;
+        let hpIncrease = armorStats.hpIncrease || 0;
+        let attackIncrease = armorStats.attackIncrease || 0;
+
+        equippedArmorDisplay += `Slot ${
+          index + 1
+        }: ${argument} (Defense +${defenseIncrease}, HP +${hpIncrease}, Attack +${attackIncrease})\n`;
+        totalDefenseIncrease += defenseIncrease;
+        totalHpIncrease += hpIncrease;
+        totalAttackIncrease += attackIncrease;
       } else {
         equippedArmorDisplay += `Slot ${
           index + 1

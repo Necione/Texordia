@@ -57,6 +57,20 @@ export const monsters = [
     ],
   },
   {
+    name: "Crab",
+    encounterRange: [2, 3],
+    expRange: [5, 8],
+    hpRange: [2, 5],
+    damage: [7, 14],
+    drops: [
+      {
+        item: "Shell",
+        dropChance: 80,
+        quantityRange: [1, 2],
+      }
+    ],
+  },
+  {
     name: "Rattlesnake",
     encounterRange: [2, 4],
     expRange: [2, 6],
