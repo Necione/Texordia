@@ -9,14 +9,14 @@ import {
 } from "./commands/shop.js";
 import { startExploration, collectTreasure } from "./commands/explore.js";
 import { showHelp } from "./commands/help.js";
-import { consumables } from "./data/items/consumable.js";
 import {
   equipArmor,
   unequipArmor,
   showEquippedArmor,
 } from "./commands/equip.js";
 import { showInventory } from "./commands/inventory.js";
-import { saveGameData, consoleElement } from "./utilities.js";
+import { consoleElement } from "./utilities.js";
+import { handleUseItem } from "./commands/useitem.js"
 import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
 
@@ -188,29 +188,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function handleUseItem(argument) {
-    if (typeof argument !== "string") {
-      consoleElement.value += "\nInvalid item name.\n";
-      return;
-    }
-
-    const itemName = argument.toLowerCase();
-    const consumableItem = consumables.find(
-      (item) => item.name.toLowerCase() === itemName
-    );
-    const inventoryItem = gameData.userInventory.find(
-      (item) => item.item.toLowerCase() === itemName
-    );
-
-    if (consumableItem && inventoryItem) {
-      if (itemName === "potion") {
-        usePotion();
-      }
-    } else {
-      consoleElement.value += "\nYou don't have that item in your inventory.\n";
-    }
-  }
-
   function handleGeneralCommands(command, argument) {
     switch (command) {
       case "cd":
@@ -234,31 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
       default:
         consoleElement.value += `\n'${command}' is not recognized as an internal or external command.\n`;
         break;
-    }
-  }
-
-  function usePotion() {
-    const potionIndex = gameData.userInventory.findIndex(
-      (itemObj) => itemObj.item.toLowerCase() === "potion"
-    );
-
-    if (potionIndex !== -1) {
-      gameData.userInventory.splice(potionIndex, 1);
-
-      const restoredHP = Math.floor(Math.random() * 6) + 5;
-
-      if (gameData.hp + restoredHP > gameData.maxHp) {
-        gameData.hp = gameData.maxHp;
-      } else {
-        gameData.hp += restoredHP;
-      }
-
-      consoleElement.value += `\nYou used a Potion and restored ${restoredHP} HP. Current HP: ${gameData.hp}.\n`;
-
-      saveGameData();
-    } else {
-      consoleElement.value +=
-        "\nYou don't have any Potions in your inventory.\n";
     }
   }
 

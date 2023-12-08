@@ -18,6 +18,12 @@ export const drops = [
     purchasable: true,
   },
   {
+    name: "Jelly",
+    sellPrice: 4,
+    buyPrice: 12,
+    purchasable: true,
+  },
+  {
     name: "Hardened Skin",
     sellPrice: 7,
     buyPrice: 0,

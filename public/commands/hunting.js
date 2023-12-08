@@ -5,8 +5,27 @@ import { monsters } from "../data/monsters.js";
 // Add this in your gameData structure
 gameData.accumulatedRewards = {
   loot: [],
-  exp: 0
+  exp: 0,
 };
+
+function spawnSpecificMonster(monsterName) {
+  const specificMonster = monsters.find(
+    (monster) => monster.name === monsterName
+  );
+
+  if (!specificMonster) {
+    throw new Error("Monster not found: " + monsterName);
+  }
+
+  return {
+    ...specificMonster,
+    currentHP:
+      Math.floor(
+        Math.random() *
+          (specificMonster.hpRange[1] - specificMonster.hpRange[0] + 1)
+      ) + specificMonster.hpRange[0],
+  };
+}
 
 function spawnMonster(playerLevel) {
   const levelAppropriateMonsters = monsters.filter(
@@ -119,6 +138,9 @@ export async function handleHunting() {
       (30000 - (currentTime - gameData.lastHuntTime)) / 1000
     );
     consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
+    gameData.isAsyncCommandRunning = false;
+
+    saveGameData();
     return;
   }
 
@@ -138,13 +160,18 @@ export async function handleHunting() {
     clearInterval(spinnerInterval);
 
     const monstersToEncounter = [spawnMonster(gameData.level)];
-    if (Math.random() < 0.5) {
+    if (monstersToEncounter[0].name === "Jellyfish") {
+      // Add two Lesser Jellyfish to the encounter list
+      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
+      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
+    } else if (Math.random() < 0.5) {
+      // Add a second random monster if the first isn't a Jellyfish
       monstersToEncounter.push(spawnMonster(gameData.level));
     }
 
     const onAllCombatsComplete = () => {
       applyAccumulatedRewards();
-    
+
       // Update game data and save it
       gameData.lastHuntTime = new Date().getTime();
       updateGameData(gameData);
@@ -159,7 +186,7 @@ export async function handleHunting() {
       consoleElement.setSelectionRange(
         consoleElement.value.length,
         consoleElement.value.length,
-        consoleElement.scrollTop = consoleElement.scrollHeight
+        (consoleElement.scrollTop = consoleElement.scrollHeight)
       );
 
       saveGameData();
@@ -224,8 +251,8 @@ function handleCombatVictory(monster, remainingMonsters, onAllCombatsComplete) {
     consoleElement.setSelectionRange(
       consoleElement.value.length,
       consoleElement.value.length,
-      consoleElement.scrollTop = consoleElement.scrollHeight
-    )
+      (consoleElement.scrollTop = consoleElement.scrollHeight)
+    );
 
     saveGameData();
   }
@@ -236,10 +263,15 @@ function accumulateLootAndExp(monster) {
   if (Array.isArray(monster.drops)) {
     monster.drops.forEach((drop) => {
       if (Math.random() * 100 < drop.dropChance) {
-        const quantity = Math.floor(Math.random() * (drop.quantityRange[1] - drop.quantityRange[0] + 1)) + drop.quantityRange[0];
+        const quantity =
+          Math.floor(
+            Math.random() * (drop.quantityRange[1] - drop.quantityRange[0] + 1)
+          ) + drop.quantityRange[0];
 
         // Check if the item already exists in the accumulated loot
-        const existingItem = gameData.accumulatedRewards.loot.find(item => item.item === drop.item);
+        const existingItem = gameData.accumulatedRewards.loot.find(
+          (item) => item.item === drop.item
+        );
         if (existingItem) {
           existingItem.quantity += quantity;
         } else {
@@ -250,16 +282,22 @@ function accumulateLootAndExp(monster) {
   }
 
   // Calculate and accumulate EXP
-  const xpAwarded = Math.floor(Math.random() * (monster.expRange[1] - monster.expRange[0] + 1)) + monster.expRange[0];
+  const xpAwarded =
+    Math.floor(
+      Math.random() * (monster.expRange[1] - monster.expRange[0] + 1)
+    ) + monster.expRange[0];
   gameData.accumulatedRewards.exp += xpAwarded;
 }
 
 function applyAccumulatedRewards() {
   // Apply the accumulated loot
-  gameData.accumulatedRewards.loot.forEach(accumulatedItem => {
-    const existingItemIndex = gameData.userInventory.findIndex(item => item.item === accumulatedItem.item);
+  gameData.accumulatedRewards.loot.forEach((accumulatedItem) => {
+    const existingItemIndex = gameData.userInventory.findIndex(
+      (item) => item.item === accumulatedItem.item
+    );
     if (existingItemIndex !== -1) {
-      gameData.userInventory[existingItemIndex].quantity += accumulatedItem.quantity;
+      gameData.userInventory[existingItemIndex].quantity +=
+        accumulatedItem.quantity;
     } else {
       gameData.userInventory.push({ ...accumulatedItem });
     }
@@ -281,9 +319,9 @@ function displayAccumulatedRewardsResults() {
     rewardsSummary += "+---------------+--------+\n";
     rewardsSummary += "| Loot          | Amount |\n";
     rewardsSummary += "+---------------+--------+\n";
-    gameData.accumulatedRewards.loot.forEach(item => {
-      let paddedItemName = item.item.padEnd(13, ' '); // Adjust the padding as needed
-      let paddedQuantity = item.quantity.toString().padEnd(6, ' ');
+    gameData.accumulatedRewards.loot.forEach((item) => {
+      let paddedItemName = item.item.padEnd(13, " "); // Adjust the padding as needed
+      let paddedQuantity = item.quantity.toString().padEnd(6, " ");
       rewardsSummary += `| ${paddedItemName} | ${paddedQuantity} |\n`;
     });
     rewardsSummary += "+---------------+--------+\n";
@@ -297,11 +335,9 @@ function displayAccumulatedRewardsResults() {
   consoleElement.value += rewardsSummary;
 }
 
-
 function resetAccumulatedRewards() {
   gameData.accumulatedRewards = { loot: [], exp: 0 };
 }
-
 
 function handleCombatDefeat() {
   consoleElement.value += `\n[ Combat Results ]\nYou have been defeated!\n`;

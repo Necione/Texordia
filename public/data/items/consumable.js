@@ -1,8 +1,18 @@
 export const consumables = [
   {
-    name: "Potion",
+    name: "Lesser Potion",
+    itemType: "potion",
     purchasable: true,
-    buyPrice: 40,
+    buyPrice: 30,
     sellPrice: 10,
+    healRange: [5, 15]
   },
+  {
+    name: "Greater Potion",
+    itemType: "potion",
+    purchasable: true,
+    buyPrice: 50,
+    sellPrice: 20,
+    healRange: [15, 25]
+  }
 ];

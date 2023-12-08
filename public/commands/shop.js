@@ -190,5 +190,10 @@ export function showItemInfo(itemName) {
   if (item.buyPrice) infoDisplay += `- Buy Price: ${item.buyPrice}\n`;
   if (item.sellPrice) infoDisplay += `- Sell Price: ${item.sellPrice}\n`;
 
+  // Check if the item is a potion and display its healing range
+  if (item.itemType === "potion" && item.healRange) {
+    infoDisplay += `- Heals: ${item.healRange[0]} to ${item.healRange[1]} HP\n`;
+  }
+
   consoleElement.value += infoDisplay;
 }

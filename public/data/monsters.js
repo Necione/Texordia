@@ -57,6 +57,34 @@ export const monsters = [
     ],
   },
   {
+    name: "Jellyfish",
+    encounterRange: [2, 3],
+    expRange: [2, 3],
+    hpRange: [7, 15],
+    damage: [4, 7],
+    drops: [
+      {
+        item: "Jelly",
+        dropChance: 80,
+        quantityRange: [1, 2],
+      }
+    ],
+  },
+  {
+    name: "Lesser Jellyfish",
+    encounterRange: [2, 3],
+    expRange: [1, 3],
+    hpRange: [4, 6],
+    damage: [2, 4],
+    drops: [
+      {
+        item: "Jelly",
+        dropChance: 80,
+        quantityRange: [1, 2],
+      }
+    ],
+  },
+  {
     name: "Crab",
     encounterRange: [2, 3],
     expRange: [5, 8],
