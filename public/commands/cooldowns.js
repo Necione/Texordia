@@ -2,8 +2,9 @@ import { consoleElement } from "../utilities.js";
 import { gameData } from "../gameData.js";
 
 export function showCooldowns() {
-  // Hunting cooldown logic
   var currentTime = new Date().getTime();
+
+  // Hunting cooldown logic
   var timePassedSinceLastHunt = Math.floor(
     (currentTime - gameData.lastHuntTime) / 1000
   );
@@ -19,14 +20,11 @@ export function showCooldowns() {
   // Exploration cooldown logic
   if (gameData.ongoingExploration) {
     var explorationEndTime = new Date(gameData.explorationEndTime).getTime();
-    var timePassedSinceExplorationStart = Math.floor(
-      (currentTime - explorationEndTime) / 1000
+    var timeLeftForExploration = Math.floor(
+      (explorationEndTime - currentTime) / 1000
     );
-    var explorationCooldown = 120;
 
-    if (timePassedSinceExplorationStart < explorationCooldown) {
-      var timeLeftForExploration =
-        explorationCooldown - timePassedSinceExplorationStart;
+    if (timeLeftForExploration > 0) {
       consoleElement.value += `Time remaining until exploration can be collected: ${timeLeftForExploration} seconds\n`;
     } else {
       consoleElement.value += `\nExploration complete! You can collect your treasure now.\n`;

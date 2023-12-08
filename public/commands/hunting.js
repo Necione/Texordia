@@ -31,8 +31,13 @@ function spawnMonster(playerLevel) {
   const levelAppropriateMonsters = monsters.filter(
     (monster) =>
       playerLevel >= monster.encounterRange[0] &&
-      playerLevel <= monster.encounterRange[1]
+      playerLevel <= monster.encounterRange[1] &&
+      monster.naturalEncounter
   );
+
+  if (levelAppropriateMonsters.length === 0) {
+    throw new Error("No appropriate monsters found for this level.");
+  }
 
   const selectedMonster =
     levelAppropriateMonsters[
@@ -162,6 +167,8 @@ export async function handleHunting() {
     const monstersToEncounter = [spawnMonster(gameData.level)];
     if (monstersToEncounter[0].name === "Jellyfish") {
       // Add two Lesser Jellyfish to the encounter list
+      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
+      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
       monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
       monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
     } else if (Math.random() < 0.5) {

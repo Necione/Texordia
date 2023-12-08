@@ -1,6 +1,7 @@
 export const monsters = [
   {
     name: "Slime",
+    naturalEncounter: true,
     encounterRange: [1, 1],
     expRange: [2, 5],
     hpRange: [3, 5],
@@ -20,6 +21,7 @@ export const monsters = [
   },
   {
     name: "Zombie",
+    naturalEncounter: true,
     encounterRange: [1, 2],
     expRange: [4, 7],
     hpRange: [5, 7],
@@ -39,6 +41,7 @@ export const monsters = [
   },
   {
     name: "Spider",
+    naturalEncounter: true,
     encounterRange: [1, 3],
     expRange: [2, 6],
     hpRange: [8, 10],
@@ -58,6 +61,7 @@ export const monsters = [
   },
   {
     name: "Jellyfish",
+    naturalEncounter: true,
     encounterRange: [2, 3],
     expRange: [2, 3],
     hpRange: [7, 15],
@@ -72,6 +76,7 @@ export const monsters = [
   },
   {
     name: "Lesser Jellyfish",
+    naturalEncounter: false,
     encounterRange: [2, 3],
     expRange: [1, 3],
     hpRange: [4, 6],
@@ -86,6 +91,7 @@ export const monsters = [
   },
   {
     name: "Crab",
+    naturalEncounter: true,
     encounterRange: [2, 3],
     expRange: [5, 8],
     hpRange: [2, 5],
@@ -100,6 +106,7 @@ export const monsters = [
   },
   {
     name: "Rattlesnake",
+    naturalEncounter: true,
     encounterRange: [2, 4],
     expRange: [2, 6],
     hpRange: [12, 19],
@@ -114,6 +121,7 @@ export const monsters = [
   },
   {
     name: "Mummy",
+    naturalEncounter: true,
     encounterRange: [3, 4],
     expRange: [4, 6],
     hpRange: [20, 30],

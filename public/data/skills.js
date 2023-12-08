@@ -1,4 +1,5 @@
 import { gameData } from "../gameData.js";
+import { saveGameData } from "../utilities.js";
 
 export const skillData = {
   Vigilance: {
@@ -28,7 +29,8 @@ export function unlockSkill(skillName) {
 
   const [skillKey, skillDetails] = skill;
 
-  if (skillDetails.unlocked) {
+  // Check if the skill is already unlocked or added to gameData.skills
+  if (skillDetails.unlocked || gameData.skills.includes(skillKey)) {
     console.error(`Skill '${skillKey}' is already unlocked.`);
     return false;
   }
@@ -37,6 +39,9 @@ export function unlockSkill(skillName) {
     gameData.goldAmount -= skillDetails.cost;
     skillDetails.unlocked = true;
     gameData.skills.push(skillKey); // Store the original skill name
+
+    saveGameData();
+
     return true;
   } else {
     console.error(
