@@ -1,8 +1,9 @@
 import { gameData, updateGameData } from "../gameData.js";
 import { saveGameData, consoleElement } from "../utilities.js";
 import { monsters } from "../data/monsters.js";
+import { monsterGroups } from "../data/groupMonster.js";
+import { skillData } from "../data/skills.js";
 
-// Add this in your gameData structure
 gameData.accumulatedRewards = {
   loot: [],
   exp: 0,
@@ -17,13 +18,16 @@ function spawnSpecificMonster(monsterName) {
     throw new Error("Monster not found: " + monsterName);
   }
 
+  const monsterHP =
+    Math.floor(
+      Math.random() *
+        (specificMonster.hpRange[1] - specificMonster.hpRange[0] + 1)
+    ) + specificMonster.hpRange[0];
+
   return {
     ...specificMonster,
-    currentHP:
-      Math.floor(
-        Math.random() *
-          (specificMonster.hpRange[1] - specificMonster.hpRange[0] + 1)
-      ) + specificMonster.hpRange[0],
+    currentHP: monsterHP,
+    maxHP: monsterHP,
   };
 }
 
@@ -43,25 +47,26 @@ function spawnMonster(playerLevel) {
     levelAppropriateMonsters[
       Math.floor(Math.random() * levelAppropriateMonsters.length)
     ];
+  const monsterHP =
+    Math.floor(
+      Math.random() *
+        (selectedMonster.hpRange[1] - selectedMonster.hpRange[0] + 1)
+    ) + selectedMonster.hpRange[0];
 
   return {
     ...selectedMonster,
-    currentHP:
-      Math.floor(
-        Math.random() *
-          (selectedMonster.hpRange[1] - selectedMonster.hpRange[0] + 1)
-      ) + selectedMonster.hpRange[0],
+    currentHP: monsterHP,
+    maxHP: monsterHP,
   };
 }
 
 function generateHealthBar(currentHP, maxHP) {
-  currentHP = Math.min(currentHP, maxHP);
+  // Fallback for undefined or NaN values
+  currentHP = currentHP ?? 0;
+  maxHP = maxHP ?? 1;
+
+  currentHP = Math.max(0, Math.min(currentHP, maxHP));
   const hpBarLength = 20;
-
-  if (currentHP <= 0) {
-    return "[DEAD".padEnd(hpBarLength + 1) + `] ${currentHP}/${maxHP}`;
-  }
-
   const filledLength = Math.round((currentHP / maxHP) * hpBarLength);
   const emptyLength = hpBarLength - filledLength;
 
@@ -89,7 +94,7 @@ function startCombat(monster, remainingMonsters, onAllCombatsComplete) {
     const playerHealthBar = generateHealthBar(gameData.hp, gameData.maxHp);
     const monsterHealthBar = generateHealthBar(
       monster.currentHP,
-      monster.hpRange[1]
+      monster.maxHP
     );
 
     const combatDisplay = `\n\n${paddedPlayerName} ${playerHealthBar}\n${paddedMonsterName} ${monsterHealthBar}\n\n[ Combat Log ]\n${combatLog}`;
@@ -115,7 +120,6 @@ function startCombat(monster, remainingMonsters, onAllCombatsComplete) {
         combatLog += `You defeated the ${monster.name}!\n`;
         updateCombatDisplay();
 
-        // Call handleCombatVictory here
         handleCombatVictory(monster, remainingMonsters, onAllCombatsComplete);
 
         return;
@@ -137,18 +141,6 @@ function startCombat(monster, remainingMonsters, onAllCombatsComplete) {
 }
 
 export async function handleHunting() {
-  var currentTime = new Date().getTime();
-  if (currentTime - gameData.lastHuntTime < 30000) {
-    var timeLeft = Math.ceil(
-      (30000 - (currentTime - gameData.lastHuntTime)) / 1000
-    );
-    consoleElement.value += `\nYou need to rest. Try hunting again in ${timeLeft} seconds.\n`;
-    gameData.isAsyncCommandRunning = false;
-
-    saveGameData();
-    return;
-  }
-
   let spinner = ["-", "/", "|", "\\"];
   let spinnerIndex = 0;
 
@@ -164,24 +156,34 @@ export async function handleHunting() {
   setTimeout(() => {
     clearInterval(spinnerInterval);
 
-    const monstersToEncounter = [spawnMonster(gameData.level)];
-    if (monstersToEncounter[0].name === "Jellyfish") {
-      // Add two Lesser Jellyfish to the encounter list
-      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
-      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
-      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
-      monstersToEncounter.push(spawnSpecificMonster("Lesser Jellyfish"));
-    } else if (Math.random() < 0.5) {
-      // Add a second random monster if the first isn't a Jellyfish
+    let monstersToEncounter = [];
+
+    // 25% chance to encounter a group of monsters
+    if (Math.random() < 0.25) {
+      const groupToEncounter = monsterGroups.find(
+        (group) =>
+          gameData.level >= group.levelRange[0] &&
+          gameData.level <= group.levelRange[1]
+      );
+
+      if (groupToEncounter) {
+        // Spawn monsters based on the group configuration
+        groupToEncounter.monsters.forEach((groupMonster) => {
+          for (let i = 0; i < groupMonster.number; i++) {
+            monstersToEncounter.push(spawnSpecificMonster(groupMonster.name));
+          }
+        });
+      }
+    }
+
+    // If no group was chosen or random chance failed, spawn a single random monster
+    if (monstersToEncounter.length === 0) {
       monstersToEncounter.push(spawnMonster(gameData.level));
     }
 
     const onAllCombatsComplete = () => {
       applyAccumulatedRewards();
-
-      // Update game data and save it
-      gameData.lastHuntTime = new Date().getTime();
-      updateGameData(gameData);
+      updateGameData();
       saveGameData();
 
       gameData.isAsyncCommandRunning = false;
@@ -205,21 +207,34 @@ export async function handleHunting() {
       onAllCombatsComplete
     );
   }, 5000);
-
-  gameData.lastHuntTime = new Date().getTime();
 }
 
 function playerAttack(isFirstAttack, monster, gameData) {
-  let playerDamage = gameData.attack;
+  let playerDamage = gameData.attack; // Ensure gameData.attack is a number
 
-  if (isFirstAttack && gameData.skills.includes("Vigilance")) {
-    playerDamage *= 2;
+  // Apply Vigilance skill bonus
+  if (
+    isFirstAttack &&
+    gameData.skills["Vigilance"] &&
+    gameData.skills["Vigilance"].unlocked
+  ) {
+    const vigilanceLevel = gameData.skills["Vigilance"].level - 1; // Adjust index for 0-based array
+    const vigilanceBonus = skillData.Vigilance.bonuses[vigilanceLevel];
+    playerDamage *= vigilanceBonus;
   }
 
   monster.currentHP -= playerDamage;
+  if (monster.currentHP < 0) monster.currentHP = 0;
 
-  if (gameData.skills.includes("Leech") && gameData.leechCounter % 2 === 0) {
-    gameData.hp = Math.min(gameData.hp + 1, gameData.maxHp);
+  // Apply Leech skill bonus
+  if (
+    gameData.skills["Leech"] &&
+    gameData.skills["Leech"].unlocked &&
+    gameData.leechCounter % 2 === 0
+  ) {
+    const leechLevel = gameData.skills["Leech"].level - 1; // Adjust index for 0-based array
+    const leechBonus = skillData.Leech.bonuses[leechLevel];
+    gameData.hp = Math.min(gameData.hp + leechBonus, gameData.maxHp);
   }
   gameData.leechCounter++;
 
@@ -245,9 +260,6 @@ function handleCombatVictory(monster, remainingMonsters, onAllCombatsComplete) {
     const nextMonster = remainingMonsters.shift();
     startCombat(nextMonster, remainingMonsters, onAllCombatsComplete);
   } else {
-    gameData.lastHuntTime = new Date().getTime();
-    updateGameData(gameData);
-
     applyAccumulatedRewards();
 
     gameData.isAsyncCommandRunning = false;
@@ -333,7 +345,7 @@ function displayAccumulatedRewardsResults() {
     });
     rewardsSummary += "+---------------+--------+\n";
   } else {
-    rewardsSummary += "No loot gained this time.\n";
+    rewardsSummary += "No loot gained this time.\n\n";
   }
 
   // Displaying the accumulated experience
@@ -347,13 +359,10 @@ function resetAccumulatedRewards() {
 }
 
 function handleCombatDefeat() {
-  consoleElement.value += `\n[ Combat Results ]\nYou have been defeated!\n`;
-  handleDeath();
-}
-
-function handleDeath() {
   consoleElement.value += "\nYou have died. All progress has been reset.\n";
   localStorage.clear();
+
+  consoleElement.scrollTop = consoleElement.scrollHeight;
 
   setTimeout(() => {
     window.location.reload();

@@ -143,17 +143,11 @@ export function handleShopItems(argument, input) {
   const args = input.split(/\s+/); // Split the input by spaces
 
   if (args[0] === "items" && args[1] === "-list") {
-    const category = args[2] || "all";
-    if (["drops", "equipment", "consumable", "all"].includes(category)) {
-      if (category === "all") {
-        listShopItems(consoleElement, "drops");
-        listShopItems(consoleElement, "consumable");
-        listShopItems(consoleElement, "equipment");
-      } else {
-        listShopItems(consoleElement, category);
-      }
+    const category = args[2];
+    if (["drops", "equipment", "consumable"].includes(category)) {
+      listShopItems(consoleElement, category);
     } else {
-      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|equipment|consumable|all]'\n`;
+      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|equipment|consumable]'\n`;
     }
   } else if (args[0] === "items" && args[1] === "-buy") {
     const itemName = extractItemNameFromInput(input);

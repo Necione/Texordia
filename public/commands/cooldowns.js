@@ -3,31 +3,25 @@ import { gameData } from "../gameData.js";
 
 export function showCooldowns() {
   var currentTime = new Date().getTime();
-
-  // Hunting cooldown logic
-  var timePassedSinceLastHunt = Math.floor(
-    (currentTime - gameData.lastHuntTime) / 1000
-  );
-  var huntCooldown = 30;
-
-  if (timePassedSinceLastHunt < huntCooldown) {
-    var timeLeftForHunt = huntCooldown - timePassedSinceLastHunt;
-    consoleElement.value += `\nTime remaining until next hunt: ${timeLeftForHunt} seconds\n`;
-  } else {
-    consoleElement.value += `\nReady for hunting!\n`;
-  }
+  var hasCooldowns = false;
 
   // Exploration cooldown logic
   if (gameData.ongoingExploration) {
     var explorationEndTime = new Date(gameData.explorationEndTime).getTime();
-    var timeLeftForExploration = Math.floor(
+    var timeLeftForExploration = Math.ceil(
       (explorationEndTime - currentTime) / 1000
     );
 
     if (timeLeftForExploration > 0) {
-      consoleElement.value += `Time remaining until exploration can be collected: ${timeLeftForExploration} seconds\n`;
+      consoleElement.value += `\nExploration: ${timeLeftForExploration} seconds\n`;
+      hasCooldowns = true;
     } else {
       consoleElement.value += `\nExploration complete! You can collect your treasure now.\n`;
+      hasCooldowns = true;
     }
+  }
+
+  if (!hasCooldowns) {
+    consoleElement.value += `\nYou have no active cooldowns.\n`;
   }
 }

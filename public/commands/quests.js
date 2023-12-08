@@ -19,7 +19,7 @@ export function handleQuest(argument, input) {
 export function generateRandomQuests() {
   const itemNames = drops.map((drop) => drop.name);
   const quests = [];
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 1; i <= 5; i++) {
     const item = itemNames[Math.floor(Math.random() * itemNames.length)];
     const quantity = Math.floor(Math.random() * 10) + 1;
     const reward = Math.floor(Math.random() * 21) + 10;
@@ -39,7 +39,6 @@ export function generateAndSaveQuests() {
 }
 
 export function submitQuest(questId) {
-  // Load the quests and find the one with the matching ID
   let quests = loadFromLocalStorage("quests", []);
   const quest = quests.find((q) => q.id === parseInt(questId));
 
@@ -48,7 +47,6 @@ export function submitQuest(questId) {
     return;
   }
 
-  // Parse the item requirement to get the name and quantity
   const [quantityRequired, itemName] = quest.itemRequirement
     .split("x ")
     .map((el) => el.trim());
@@ -61,25 +59,20 @@ export function submitQuest(questId) {
     return;
   }
 
-  // Remove the required items from the player's inventory
   inventoryItem.quantity -= parseInt(quantityRequired);
 
-  // If the quantity of the item reaches 0, remove the item from the inventory
   if (inventoryItem.quantity <= 0) {
     gameData.userInventory = gameData.userInventory.filter(
       (item) => item.quantity > 0
     );
   }
 
-  // Parse the reward to add the gold to the player's total
   const rewardAmount = parseInt(quest.reward.split(" ")[0]);
   gameData.goldAmount += rewardAmount;
 
-  // Remove the quest from the list of available quests
   quests = quests.filter((q) => q.id !== parseInt(questId));
   saveToLocalStorage("quests", quests);
 
-  // Save the game data
   saveGameData();
 
   consoleElement.value += `\nQuest ${questId} completed! You earned ${rewardAmount} Gold.\n`;
@@ -99,9 +92,16 @@ export function handleQuestsCommands(argument, input) {
 }
 
 export function refreshQuests() {
-  const quests = generateAndSaveQuests();
-  showQuests();
-  consoleElement.value += "\nQuests have been refreshed.\n";
+  if (gameData.goldAmount >= 5) {
+    gameData.goldAmount -= 5;
+    const quests = generateAndSaveQuests();
+    showQuests();
+    consoleElement.value += "\nQuests have been refreshed. 5 Gold deducted.\n";
+    saveGameData();
+  } else {
+    consoleElement.value +=
+      "\nNot enough Gold to refresh quests. Need 5 Gold.\n";
+  }
 }
 
 export function showQuests() {

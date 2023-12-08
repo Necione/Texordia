@@ -9,6 +9,7 @@ import {
 } from "./commands/shop.js";
 import { startExploration, collectTreasure } from "./commands/explore.js";
 import { showHelp } from "./commands/help.js";
+import { showEquippedWeapon } from "./commands/weapon.js";
 import {
   equipArmor,
   unequipArmor,
@@ -152,6 +153,9 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
       case "equipment":
         showEquippedArmor(argument);
+        break;
+      case "weapon":
+        showEquippedWeapon();
         break;
       case "unequip":
         unequipArmor(argument);

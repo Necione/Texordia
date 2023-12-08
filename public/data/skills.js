@@ -1,52 +1,58 @@
 import { gameData } from "../gameData.js";
-import { saveGameData } from "../utilities.js";
+import { saveGameData, consoleElement } from "../utilities.js";
 
 export const skillData = {
   Vigilance: {
     name: "Vigilance",
-    description: "Deals 2x damage for the first attack in a hunt",
     cost: 50,
     unlocked: false,
+    level: 0,
+    maxLevel: 5,
+    bonuses: [1.5, 1.75, 2, 2.5, 3],
+    upgradeCost: 30,
   },
   Leech: {
     name: "Leech",
-    description: "Heals 1 HP every 2 attacks",
     cost: 30,
     unlocked: false,
+    level: 0,
+    maxLevel: 5,
+    bonuses: [1, 2, 3, 4, 5],
+    upgradeCost: 40,
   },
 };
 
 export function unlockSkill(skillName) {
-  // Find the skill with the matching lowercase name
-  const skill = Object.entries(skillData).find(
-    ([name, data]) => name.toLowerCase() === skillName
+  // Convert skillName to the correct case as defined in skillData
+  const formattedSkillName = Object.keys(skillData).find(
+    key => key.toLowerCase() === skillName.toLowerCase()
   );
 
-  if (!skill) {
-    console.error(`Skill '${skillName}' not found.`);
+  // Check if the formatted skill name exists
+  if (!formattedSkillName) {
+    consoleElement.value += `\nSkill '${skillName}' not found.\n`;
     return false;
   }
 
-  const [skillKey, skillDetails] = skill;
+  const skillDetails = skillData[formattedSkillName];
 
-  // Check if the skill is already unlocked or added to gameData.skills
-  if (skillDetails.unlocked || gameData.skills.includes(skillKey)) {
-    console.error(`Skill '${skillKey}' is already unlocked.`);
+  // Check if the skill is already unlocked
+  if (skillDetails.unlocked) {
+    consoleElement.value += `\nSkill '${formattedSkillName}' is already unlocked.\n`;
     return false;
   }
 
+  // Check if the player has enough gold to unlock the skill
   if (gameData.goldAmount >= skillDetails.cost) {
     gameData.goldAmount -= skillDetails.cost;
     skillDetails.unlocked = true;
-    gameData.skills.push(skillKey); // Store the original skill name
+    gameData.skills[formattedSkillName] = { unlocked: true, level: 1 };
 
     saveGameData();
-
+    consoleElement.value += `\nSkill '${formattedSkillName}' unlocked successfully.\n`;
     return true;
   } else {
-    console.error(
-      `Not enough gold to unlock '${skillKey}'. Required: ${skillDetails.cost}, Available: ${gameData.goldAmount}`
-    );
+    consoleElement.value += `\nNot enough Gold to unlock '${formattedSkillName}'. Required: ${skillDetails.cost}, Available: ${gameData.goldAmount}\n`;
     return false;
   }
 }

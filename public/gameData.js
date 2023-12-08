@@ -2,8 +2,7 @@ import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
 const defaultData = {
   isAsyncCommandRunning: false,
-  goldAmount: 100,
-  lastHuntTime: 0,
+  goldAmount: 0,
   ongoingExploration: false,
   explorationEndTime: "",
   attack: 2,
@@ -16,10 +15,20 @@ const defaultData = {
   level: 1,
   exp: 0,
   nextLevelExp: 35, // EXP required for level 2
-  skills: [],
-  // Leech Related
+  equippedBlade: null,
+  equippedHandle: null,
+  equippedHilt: null,
+  skills: {
+    Vigilance: {
+      unlocked: false,
+      level: 0,
+    },
+    Leech: {
+      unlocked: false,
+      level: 0,
+    },
+  },
   leechCounter: 0,
-  // Other Combat
   isFirstAttack: true,
 };
 
@@ -31,7 +40,7 @@ function updateLevel() {
     gameData.level - 1 < expForNextLevel.length
   ) {
     gameData.level++;
-    gameData.attack += 1; // Increase base attack
+    gameData.attack += 1;
     gameData.nextLevelExp = expForNextLevel[gameData.level - 1];
   }
 }
