@@ -58,6 +58,10 @@ const commands = [
     description: "View all directories you can go to",
   },
   {
+    name: "skills -(buy) (argument)",
+    description: "View your current and unlockable skills",
+  },
+  {
     name: "useitem (argument)",
     description: "Use a consumable",
   },

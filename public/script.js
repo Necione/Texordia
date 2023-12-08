@@ -15,13 +15,12 @@ import {
   showEquippedArmor,
 } from "./commands/equip.js";
 import { showInventory } from "./commands/inventory.js";
-import { consoleElement } from "./utilities.js";
-import { handleUseItem } from "./commands/useitem.js"
+import { consoleElement, saveGameData } from "./utilities.js";
+import { handleUseItem } from "./commands/useitem.js";
 import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-
   var promptText = gameData.currentDirectory
     ? `Texordia\\${gameData.currentDirectory}> `
     : "Texordia> ";

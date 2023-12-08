@@ -2,7 +2,7 @@ import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
 const defaultData = {
   isAsyncCommandRunning: false,
-  goldAmount: 0,
+  goldAmount: 100,
   lastHuntTime: 0,
   ongoingExploration: false,
   explorationEndTime: "",
