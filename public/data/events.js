@@ -13,7 +13,7 @@ export const events = [
         description: "Give the man 5 Gold",
         action: () => {
           if (gameData.goldAmount >= 5) {
-            gameData.goldAmount -= 5; // Deduct 5 gold
+            gameData.goldAmount -= 5; // Deduct 1 gold
             const fleshItem = { item: "Flesh", quantity: 1 };
 
             // Add 2 Flesh to inventory
@@ -28,7 +28,7 @@ export const events = [
             }
 
             saveGameData(); // Save the changes
-            return "You give the man some gold. He thanks you and hands you some flesh.";
+            return "You give the man some gold. He hands you some flesh in return.";
           } else {
             return "You don't have enough gold to help the man.";
           }
@@ -42,6 +42,48 @@ export const events = [
           return "You decide to ignore the man and continue on your journey.";
         },
         outcome: "The man watches you leave with a look of disappointment.",
+      },
+    ],
+  },
+  {
+    dialogue: "A hooded figure approaches and asks for gold to hitch a ride to the nearby town.",
+    triggerRequirements: {
+      minLevel: 1,
+      minGold: 5,
+    },
+    choices: [
+      {
+        description: "Give the hooded figure 5 Gold",
+        action: () => {
+          if (gameData.goldAmount >= 5) {
+            gameData.goldAmount -= 5; // Deduct 5 gold
+            const dulledBladeItem = { item: "Dulled Blade", quantity: 1 };
+
+            // Add Dulled Blade to inventory
+            const existingItemIndex = gameData.userInventory.findIndex(
+              (item) => item.item === dulledBladeItem.item
+            );
+            if (existingItemIndex !== -1) {
+              gameData.userInventory[existingItemIndex].quantity += dulledBladeItem.quantity;
+            } else {
+              gameData.userInventory.push(dulledBladeItem);
+            }
+
+            saveGameData(); // Save the changes
+            return "You give the figure some gold. He hands you a Dulled Blade in return.";
+          } else {
+            return "You don't have enough gold.";
+          }
+        },
+        outcome: "The hooded figure nods in thanks and leaves, leaving behind a dulled blade.",
+      },
+      {
+        description: "Politely decline and move on",
+        action: () => {
+          // No change to gameData in this case
+          return "You decide not to give the gold and continue on your journey.";
+        },
+        outcome: "The hooded figure silently watches you leave, then disappears into the shadows.",
       },
     ],
   },

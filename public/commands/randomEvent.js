@@ -3,12 +3,18 @@ import { gameData } from "../gameData.js";
 import { consoleElement, saveGameData } from "../utilities.js";
 
 export function triggerRandomEvent() {
-  const randomEventIndex = Math.floor(Math.random() * events.length);
-  const selectedEvent = events[randomEventIndex];
+  // Filter out events that meet the trigger requirements
+  const validEvents = events.filter((event) =>
+    eventTriggerRequirementsMet(event)
+  );
 
-  if (eventTriggerRequirementsMet(selectedEvent)) {
+  if (validEvents.length > 0) {
+    // Select a random event from the valid events
+    const randomEventIndex = Math.floor(Math.random() * validEvents.length);
+    const selectedEvent = validEvents[randomEventIndex];
     initiateEvent(selectedEvent);
   } else {
+    // No valid events available
     consoleElement.value += "\nA quiet day, no events occurred.\n";
     gameData.isAsyncCommandRunning = false;
     appendPrompt();
@@ -40,9 +46,11 @@ function displayDialogue(dialogue, event) {
       if (currentLetterIndex < sentence.length) {
         consoleElement.value += sentence[currentLetterIndex];
         currentLetterIndex++;
+        updateScroll(); // Update scroll position after each letter
         setTimeout(displayNextLetter, 50);
       } else {
         consoleElement.value += ".\n";
+        updateScroll(); // Update scroll position after each sentence
         currentSentenceIndex++;
         currentLetterIndex = 0;
         if (currentSentenceIndex < sentences.length) {
@@ -59,6 +67,10 @@ function displayDialogue(dialogue, event) {
     displayNextLetter();
   };
 
+  const updateScroll = () => {
+    consoleElement.scrollTop = consoleElement.scrollHeight;
+  };
+
   displayNextSentence();
 }
 
@@ -67,10 +79,11 @@ function presentChoices(choices) {
   choices.forEach((choice, index) => {
     consoleElement.value += `${index + 1}: ${choice.description}\n`;
   });
-  consoleElement.value += "Press the corresponding number to choose.\n";
+  consoleElement.value += "\nPress the corresponding number to choose.\n";
 
   // Re-enable console input here
   consoleElement.disabled = false;
+  consoleElement.focus();
 
   listenForChoiceSelection();
 }
@@ -82,11 +95,19 @@ function listenForChoiceSelection() {
 }
 
 function handleChoiceSelection(e) {
+  // Prevent default behavior to avoid typing the number in the console
+  e.preventDefault();
+
   const choiceKey = e.key;
   const choiceIndex = parseInt(choiceKey, 10) - 1;
-  const selectedChoice = gameData.currentEvent.choices[choiceIndex];
 
-  if (selectedChoice) {
+  // Ensure that the pressed key is a valid choice number
+  if (
+    !isNaN(choiceIndex) &&
+    choiceIndex >= 0 &&
+    choiceIndex < gameData.currentEvent.choices.length
+  ) {
+    const selectedChoice = gameData.currentEvent.choices[choiceIndex];
     handleEventOutcome(selectedChoice);
   } else {
     consoleElement.value += "\nInvalid choice. Please try again.\n";
@@ -106,7 +127,6 @@ function handleEventOutcome(choice) {
   gameData.isAsyncCommandRunning = false;
   gameData.currentEvent = null;
 
-  // Append the next command prompt
   appendPrompt();
   saveGameData();
 }

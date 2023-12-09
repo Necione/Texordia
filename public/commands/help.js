@@ -2,16 +2,16 @@ import { consoleElement } from "../utilities.js";
 
 const commands = [
   {
+    name: "cd (argument)",
+    description: "Change into a different directory [~ is return]",
+  },
+  {
     name: "adventure",
     description: "Go and continue your ongoing adventure",
   },
   {
     name: "explore",
     description: "Check out your surroundings and gather things",
-  },
-  {
-    name: "cd (argument)",
-    description: "Change into a different directory [~ is return]",
   },
   {
     name: "info (argument)",

@@ -14,7 +14,7 @@ export function showEquippedWeapon() {
     Handle: gameData.equippedHandle,
   };
 
-  let totalBonuses = { ATK: 0, DEF: 0 }; // Initialize total bonuses
+  let totalBonuses = { ATK: 0, DEF: 0, CritValue: 0, CritChance: 0 }; // Initialize total bonuses
 
   for (const [part, equipped] of Object.entries(weaponParts)) {
     let partBonuses = "";
@@ -31,6 +31,12 @@ export function showEquippedWeapon() {
         partBonuses += `DEF: +${partData.bonuses.defenseIncrease}`;
         totalBonuses.DEF += partData.bonuses.defenseIncrease; // Add to total bonuses
       }
+      if (partData.bonuses.critValue) {
+        totalBonuses.CritValue += partData.bonuses.critValue;
+      }
+      if (partData.bonuses.critChance) {
+        totalBonuses.CritChance += partData.bonuses.critChance;
+      }
     }
 
     weaponTable += `| ${part.padEnd(7)} | ${equippedDisplay.padEnd(
@@ -39,7 +45,7 @@ export function showEquippedWeapon() {
   }
 
   weaponTable += "+---------+-----------------+----------------------+\n";
-  weaponTable += `Total Bonuses: ATK: +${totalBonuses.ATK}, DEF: +${totalBonuses.DEF}\n`;
+  weaponTable += `Total Bonuses: ATK: +${totalBonuses.ATK}, DEF: +${totalBonuses.DEF}, Crit Damage: +${totalBonuses.CritValue}%, Crit Chance: +${totalBonuses.CritChance}%\n`;
 
   consoleElement.value += weaponTable;
 }
@@ -122,36 +128,73 @@ function applyWeaponPart(partType, partData) {
     if (partData.bonuses.defenseIncrease) {
       gameData.defense += partData.bonuses.defenseIncrease;
     }
+    if (partData.bonuses.critValue) {
+      gameData.critValue += partData.bonuses.critValue;
+    }
+    if (partData.bonuses.critChance) {
+      gameData.critChance += partData.bonuses.critChance;
+    }
   }
 
   saveGameData(); // Save changes to game data
 }
 
 function showWeaponCatalog() {
-  let catalogTable = "\n\nWeapon Parts Catalog:\n";
-  catalogTable += "+------------+--------+-----------------------+\n";
-  catalogTable += "| Part       | Cost   | Bonuses               |\n";
-  catalogTable += "+------------+--------+-----------------------+\n";
+  let maxLengthName = 0;
+  let maxLengthBonus = 0;
+  const allParts = [...blades, ...hilts, ...handles].filter(
+    (part) => part.purchasable
+  ); // Filter only purchasable parts
 
-  const displayBonus = (part) => {
-    let bonuses = [];
-    if (part.bonuses.attackIncrease)
-      bonuses.push(`ATK: +${part.bonuses.attackIncrease}`);
-    if (part.bonuses.defenseIncrease)
-      bonuses.push(`DEF: +${part.bonuses.defenseIncrease}`);
-    return bonuses.join(", ");
-  };
-
-  const allParts = [...blades, ...hilts, ...handles];
+  // Find the longest item name and bonus text for proper formatting
   allParts.forEach((part) => {
+    if (part.name.length > maxLengthName) {
+      maxLengthName = part.name.length;
+    }
     const bonusText = displayBonus(part);
-    catalogTable += `| ${part.name.padEnd(10)} | ${part.cost
-      .toString()
-      .padEnd(6)} | ${bonusText.padEnd(21)} |\n`;
+    if (bonusText.length > maxLengthBonus) {
+      maxLengthBonus = bonusText.length;
+    }
   });
 
-  catalogTable += "+------------+--------+-----------------------+\n";
+  const nameWidth = Math.max(maxLengthName, "Part Name".length); // Compare with header length
+  const bonusWidth = Math.max(maxLengthBonus, "Bonuses".length);
+  let catalogTable = "\n\nWeapon Parts Catalog:\n";
+  catalogTable += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(8)}+${"-".repeat(
+    bonusWidth + 2
+  )}+\n`;
+  catalogTable += `| ${"Part Name".padEnd(
+    nameWidth
+  )} | Cost   | ${"Bonuses".padEnd(bonusWidth)} |\n`;
+  catalogTable += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(8)}+${"-".repeat(
+    bonusWidth + 2
+  )}+\n`;
+
+  allParts.forEach((part) => {
+    const bonusText = displayBonus(part);
+    catalogTable += `| ${part.name.padEnd(nameWidth)} | ${part.cost
+      .toString()
+      .padEnd(6)} | ${bonusText.padEnd(bonusWidth)} |\n`;
+  });
+
+  catalogTable += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(8)}+${"-".repeat(
+    bonusWidth + 2
+  )}+\n`;
   consoleElement.value += catalogTable;
+}
+
+// Helper function to display bonuses
+function displayBonus(part) {
+  let bonuses = [];
+  if (part.bonuses.attackIncrease)
+    bonuses.push(`ATK: +${part.bonuses.attackIncrease}`);
+  if (part.bonuses.defenseIncrease)
+    bonuses.push(`DEF: +${part.bonuses.defenseIncrease}`);
+  if (part.bonuses.critValue)
+    bonuses.push(`Crit DMG: +${part.bonuses.critValue}%`);
+  if (part.bonuses.critChance)
+    bonuses.push(`Crit %: +${part.bonuses.critChance}%`);
+  return bonuses.join(", ");
 }
 
 export function handleWeaponCommands(argument) {
@@ -202,6 +245,14 @@ function removeWeaponPart(partType) {
     }
     if (partData.bonuses.defenseIncrease) {
       gameData.defense -= partData.bonuses.defenseIncrease;
+    }
+    if (partData && partData.bonuses) {
+      if (partData.bonuses.critValue) {
+        gameData.critValue -= partData.bonuses.critValue;
+      }
+      if (partData.bonuses.critChance) {
+        gameData.critChance -= partData.bonuses.critChance;
+      }
     }
   }
 

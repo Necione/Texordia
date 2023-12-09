@@ -157,7 +157,7 @@ export async function handleAdventure() {
   setTimeout(() => {
     clearInterval(spinnerInterval);
 
-    const randomChoice = Math.random() < 0.5; // 50% chance
+    const randomChoice = Math.random() < 0.25; // 25% chance
 
     if (randomChoice) {
       triggerRandomEvent();
@@ -213,7 +213,7 @@ export async function handleAdventure() {
         onAllCombatsComplete
       );
     }
-  }, 5000);
+  }, 4000);
 }
 
 function playerAttack(isFirstAttack, monster, gameData) {
