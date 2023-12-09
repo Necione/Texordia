@@ -11,7 +11,7 @@ export function removeItemFromInventory(argument) {
     );
 
     if (itemIndex === -1) {
-        consoleElement.value += `\nItem '${argument}' not found in your inventory.\n`;
+        consoleElement.value += `\nItem not found in your inventory.\n`;
         return;
     }
 

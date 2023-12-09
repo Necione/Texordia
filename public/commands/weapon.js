@@ -10,8 +10,8 @@ export function showEquippedWeapon() {
 
   const weaponParts = {
     Blade: gameData.equippedBlade,
-    Handle: gameData.equippedHandle,
     Hilt: gameData.equippedHilt,
+    Handle: gameData.equippedHandle,
   };
 
   let totalBonuses = { ATK: 0, DEF: 0 }; // Initialize total bonuses
@@ -73,18 +73,18 @@ function addWeaponPart(itemName) {
       (blade) => blade.name.toLowerCase() === formattedItemName
     );
   } else if (
-    handles.some((handle) => handle.name.toLowerCase() === formattedItemName)
-  ) {
-    partType = "Handle";
-    partData = handles.find(
-      (handle) => handle.name.toLowerCase() === formattedItemName
-    );
-  } else if (
     hilts.some((hilt) => hilt.name.toLowerCase() === formattedItemName)
   ) {
     partType = "Hilt";
     partData = hilts.find(
       (hilt) => hilt.name.toLowerCase() === formattedItemName
+    );
+  } else if (
+    handles.some((handle) => handle.name.toLowerCase() === formattedItemName)
+  ) {
+    partType = "Handle";
+    partData = handles.find(
+      (handle) => handle.name.toLowerCase() === formattedItemName
     );
   }
 
@@ -108,10 +108,10 @@ function addWeaponPart(itemName) {
 function applyWeaponPart(partType, partData) {
   if (partType === "Blade") {
     gameData.equippedBlade = partData.name;
-  } else if (partType === "Handle") {
-    gameData.equippedHandle = partData.name;
   } else if (partType === "Hilt") {
     gameData.equippedHilt = partData.name;
+  } else if (partType === "Handle") {
+    gameData.equippedHandle = partData.name;
   }
 
   // Apply bonuses

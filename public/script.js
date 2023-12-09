@@ -1,6 +1,6 @@
 import { gameData, updateGameData } from "./gameData.js";
 import { handleQuest } from "./commands/quests.js";
-import { handleHunting } from "./commands/hunting.js";
+import { handleAdventure } from "./commands/adventure.js";
 import { showCooldowns } from "./commands/cooldowns.js";
 import { removeItemFromInventory } from "./commands/rm.js";
 import {
@@ -35,46 +35,86 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   };
 
-  consoleElement.value =
-    "Welcome back to Texordia. [ Ver 0.1 ]\nUse 'help' to get started\n\n" +
-    promptText;
+  if (!gameData.registeredName) {
+    // Prompt for name input
+    consoleElement.value =
+      "Welcome to Texordia, to get started, please enter your name:\n\nTexordia> ";
+  } else {
+    // Existing welcome message
+    consoleElement.value =
+      `Welcome back to Texordia, ${gameData.registeredName}\nUse 'help' to view all commands.\n\n` +
+      promptText;
+  }
+
   consoleElement.focus();
   consoleElement.setSelectionRange(
     consoleElement.value.length,
     consoleElement.value.length
   );
 
-  consoleElement.addEventListener("keydown", function (event) {
+  consoleElement.addEventListener("keydown", function (e) {
+    // Find the position of "Your Response>" in the console text
+    const responsePromptPosition = consoleElement.value.lastIndexOf("Your Response>");
+  
+    // If the prompt is found, add its length to determine the start position for editing
+    const editableStartPosition = responsePromptPosition !== -1 ? responsePromptPosition + "Your Response>".length : 0;
+    
     var currentLineStart =
       this.value.lastIndexOf(promptText) + promptText.length;
 
-    if (event.ctrlKey && event.key === "a") {
-      event.preventDefault();
+    if (e.ctrlKey && e.key === "a") {
+      e.preventDefault();
       this.setSelectionRange(currentLineStart, this.value.length);
       return;
     }
 
     if (
-      (event.key === "Backspace" && this.selectionStart <= currentLineStart) ||
-      (event.key === "Delete" && this.selectionStart < currentLineStart)
+      (e.key === "Backspace" && this.selectionStart <= currentLineStart) ||
+      (e.key === "Delete" && this.selectionStart < currentLineStart)
     ) {
-      event.preventDefault();
+      e.preventDefault();
       return;
     }
 
-    if (this.selectionStart < currentLineStart && !event.ctrlKey) {
-      event.preventDefault();
+    if (this.selectionStart < currentLineStart && !e.ctrlKey) {
+      e.preventDefault();
       this.setSelectionRange(currentLineStart, currentLineStart);
     }
 
-    if (event.key === "Enter") {
-      event.preventDefault();
+    if (e.key === "Enter") {
+      e.preventDefault();
       var input = this.value.substring(currentLineStart).trim();
 
-      processCommand(input);
+      // Name checking
+      if (!gameData.registeredName) {
+        if (input.trim().length > 0 && /^[A-Za-z]+$/.test(input.trim())) {
+          // Only letters from the alphabet are allowed
+          gameData.registeredName = input.trim();
+          consoleElement.value +=
+            `\n\nWelcome, ${gameData.registeredName}. May you have a safe journey ahead!\nUse 'help' to get started.\n\n` + promptText;
+
+          consoleElement.focus();
+          consoleElement.setSelectionRange(
+            consoleElement.value.length,
+            consoleElement.value.length
+          );
+
+          saveGameData(); // Save the registered name
+        } else {
+          consoleElement.value +=
+            "\nPlease enter a valid name (letters only).\n\nTexordia> ";
+          return;
+        }
+      } else {
+        processCommand(input);
+      }
 
       this.scrollTop = this.scrollHeight;
       this.setSelectionRange(this.value.length, this.value.length);
+    }   else {
+      if (consoleElement.selectionStart < currentLineStart) {
+        e.preventDefault();
+      }
     }
   });
 
@@ -105,22 +145,21 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`Command: ${command}, Argument: ${argument}`);
 
     switch (command) {
-      case "sudo":
-        if (
-          initialCommand === "sudo hunt" &&
-          gameData.currentDirectory === "Guild"
-        ) {
-          gameData.isAsyncCommandRunning = true;
-          handleHunting();
-        } else if (
-          initialCommand === "sudo explore" &&
-          gameData.currentDirectory === "Guild"
-        ) {
-          startExploration();
+      case "adventure":
+        if (gameData.currentDirectory === "Guild") {
+            gameData.isAsyncCommandRunning = true;
+            handleAdventure();
         } else {
-          handleSudoCommands(initialCommand);
+            consoleElement.value += "\nYou need to be in the Guild directory to go on an adventure.\n";
         }
         break;
+        case "explore":
+            if (gameData.currentDirectory === "Guild") {
+                startExploration();
+            } else {
+                consoleElement.value += "\nYou need to be in the Guild directory to go on an adventure.\n";
+            }
+            break;
       case "collect":
         if (gameData.currentDirectory === "Guild") {
           collectTreasure();
@@ -187,17 +226,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!gameData.isAsyncCommandRunning) {
       appendPrompt();
-    }
-  }
-
-  function handleSudoCommands(initialCommand) {
-    if (
-      initialCommand === "sudo hunt" &&
-      gameData.currentDirectory === "Guild"
-    ) {
-      handleHunting();
-    } else {
-      consoleElement.value += `\nInvalid command or wrong directory.\n`;
     }
   }
 

@@ -48,7 +48,7 @@ function attemptToPurchaseItem(itemName, gameData, consoleElement) {
 function createTable(data, title) {
   let maxLength = 0;
   data.forEach((item) => {
-    if (item.name.length > maxLength) {
+    if (item.purchasable && item.name.length > maxLength) {
       maxLength = item.name.length;
     }
   });
@@ -56,27 +56,17 @@ function createTable(data, title) {
   const minNameWidth = 10;
   const nameWidth = Math.max(maxLength, minNameWidth);
   let table = `\n\n${title}\n`;
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
-    15
-  )}+\n`;
-  table += `| ${"Item Name".padEnd(
-    nameWidth
-  )} | Buy Price    | Sell Price    |\n`;
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
-    15
-  )}+\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
+  table += `| ${"Item Name".padEnd(nameWidth)} | Buy Price    | Sell Price    |\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
 
-  data.forEach((item) => {
-    const buyPriceDisplay = item.purchasable ? item.buyPrice.toString() : "X";
+  data.filter(item => item.purchasable).forEach((item) => {
+    const buyPriceDisplay = item.buyPrice.toString();
     const sellPriceDisplay = item.sellPrice.toString();
-    table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(
-      12
-    )} | ${sellPriceDisplay.padEnd(13)} |\n`;
+    table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(12)} | ${sellPriceDisplay.padEnd(13)} |\n`;
   });
 
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
-    15
-  )}+\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
   return table;
 }
 
@@ -104,6 +94,23 @@ export function sellAllItems(specificItem) {
   let totalSellPrice = 0;
   specificItem = specificItem ? specificItem.toLowerCase() : null;
 
+  // Check if there are items to sell
+  const itemsToSell = gameData.userInventory.filter((itemObj) => {
+    if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
+      return [...drops, ...consumables, ...armors].some(
+        (item) => item.name.toLowerCase() === itemObj.item.toLowerCase()
+      );
+    }
+    return false;
+  });
+
+  // If no items to sell, display a message and exit the function
+  if (itemsToSell.length === 0) {
+    consoleElement.value += "\nYou don't have anything to sell.\n";
+    return;
+  }
+
+  // Proceed with selling items
   gameData.userInventory = gameData.userInventory.filter((itemObj) => {
     if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
       const itemData = [...drops, ...consumables, ...armors].find(

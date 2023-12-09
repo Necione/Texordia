@@ -5,6 +5,7 @@ import { saveGameData, consoleElement } from "../utilities.js";
 export function startExploration() {
   if (gameData.ongoingExploration) {
     consoleElement.value += "\nAn exploration is already ongoing.\n";
+
     return;
   }
 

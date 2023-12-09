@@ -1,10 +1,13 @@
 import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
 const defaultData = {
+  registeredName: "",
   isAsyncCommandRunning: false,
-  goldAmount: 0,
+  isEventInProgress: false,
+  eventResponseHandler: null,
   ongoingExploration: false,
   explorationEndTime: "",
+  goldAmount: 10,
   attack: 2,
   hp: 20,
   critValue: 1.1,
@@ -42,7 +45,8 @@ function updateLevel() {
     gameData.level - 1 < expForNextLevel.length
   ) {
     gameData.level++;
-    gameData.attack += 1;
+    gameData.attack += 0.5;
+    gameData.maxHp += 1;
     gameData.nextLevelExp = expForNextLevel[gameData.level - 1];
   }
 }

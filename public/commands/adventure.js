@@ -3,6 +3,7 @@ import { saveGameData, consoleElement } from "../utilities.js";
 import { monsters } from "../data/monsters.js";
 import { monsterGroups } from "../data/groupMonster.js";
 import { skillData } from "../data/skills.js";
+import { triggerRandomEvent } from "./randomEvent.js";
 
 gameData.accumulatedRewards = {
   loot: [],
@@ -140,7 +141,7 @@ function startCombat(monster, remainingMonsters, onAllCombatsComplete) {
   }, 1000);
 }
 
-export async function handleHunting() {
+export async function handleAdventure() {
   let spinner = ["-", "/", "|", "\\"];
   let spinnerIndex = 0;
 
@@ -150,62 +151,68 @@ export async function handleHunting() {
     spinnerIndex = (spinnerIndex + 1) % spinner.length;
   }, 250);
 
-  consoleElement.value += "\nSearching for monsters... ";
+  consoleElement.value += "\nGoing on an adventure... ";
   consoleElement.disabled = true;
 
   setTimeout(() => {
     clearInterval(spinnerInterval);
 
-    let monstersToEncounter = [];
+    const randomChoice = Math.random() < 0.5; // 50% chance
 
-    // 25% chance to encounter a group of monsters
-    if (Math.random() < 0.25) {
-      const groupToEncounter = monsterGroups.find(
-        (group) =>
-          gameData.level >= group.levelRange[0] &&
-          gameData.level <= group.levelRange[1]
-      );
+    if (randomChoice) {
+      triggerRandomEvent();
+    } else {
+      let monstersToEncounter = [];
 
-      if (groupToEncounter) {
-        // Spawn monsters based on the group configuration
-        groupToEncounter.monsters.forEach((groupMonster) => {
-          for (let i = 0; i < groupMonster.number; i++) {
-            monstersToEncounter.push(spawnSpecificMonster(groupMonster.name));
-          }
-        });
+      // 25% chance to encounter a group of monsters
+      if (Math.random() < 0.25) {
+        const groupToEncounter = monsterGroups.find(
+          (group) =>
+            gameData.level >= group.levelRange[0] &&
+            gameData.level <= group.levelRange[1]
+        );
+
+        if (groupToEncounter) {
+          // Spawn monsters based on the group configuration
+          groupToEncounter.monsters.forEach((groupMonster) => {
+            for (let i = 0; i < groupMonster.number; i++) {
+              monstersToEncounter.push(spawnSpecificMonster(groupMonster.name));
+            }
+          });
+        }
       }
-    }
 
-    // If no group was chosen or random chance failed, spawn a single random monster
-    if (monstersToEncounter.length === 0) {
-      monstersToEncounter.push(spawnMonster(gameData.level));
-    }
+      // If no group was chosen or random chance failed, spawn a single random monster
+      if (monstersToEncounter.length === 0) {
+        monstersToEncounter.push(spawnMonster(gameData.level));
+      }
 
-    const onAllCombatsComplete = () => {
-      applyAccumulatedRewards();
-      updateGameData();
-      saveGameData();
+      const onAllCombatsComplete = () => {
+        applyAccumulatedRewards();
+        updateGameData();
+        saveGameData();
 
-      gameData.isAsyncCommandRunning = false;
+        gameData.isAsyncCommandRunning = false;
 
-      // Append the next command prompt
-      consoleElement.value += `\nTexordia\\${gameData.currentDirectory}> `;
-      consoleElement.disabled = false;
-      consoleElement.focus();
-      consoleElement.setSelectionRange(
-        consoleElement.value.length,
-        consoleElement.value.length,
-        (consoleElement.scrollTop = consoleElement.scrollHeight)
+        // Append the next command prompt
+        consoleElement.value += `\nTexordia\\${gameData.currentDirectory}> `;
+        consoleElement.disabled = false;
+        consoleElement.focus();
+        consoleElement.setSelectionRange(
+          consoleElement.value.length,
+          consoleElement.value.length,
+          (consoleElement.scrollTop = consoleElement.scrollHeight)
+        );
+
+        saveGameData();
+      };
+
+      startCombat(
+        monstersToEncounter.shift(),
+        monstersToEncounter,
+        onAllCombatsComplete
       );
-
-      saveGameData();
-    };
-
-    startCombat(
-      monstersToEncounter.shift(),
-      monstersToEncounter,
-      onAllCombatsComplete
-    );
+    }
   }, 5000);
 }
 

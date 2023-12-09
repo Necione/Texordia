@@ -37,4 +37,22 @@ export const armors = [
     sellPrice: 15,
     purchasable: true,
   },
+  {
+    name: "Evil Ring",
+    bonuses: [
+      { type: 'critValue', value: 0.25 }
+    ],
+    buyPrice: 0,
+    sellPrice: 10,
+    purchasable: false,
+  },
+  {
+    name: "Ring of Hope",
+    bonuses: [
+      { type: 'critChance', value: 0.25 }
+    ],
+    buyPrice: 0,
+    sellPrice: 10,
+    purchasable: false,
+  },
 ];

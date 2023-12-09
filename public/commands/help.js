@@ -2,6 +2,18 @@ import { consoleElement } from "../utilities.js";
 
 const commands = [
   {
+    name: "adventure",
+    description: "Go and continue your ongoing adventure",
+  },
+  {
+    name: "explore",
+    description: "Check out your surroundings and gather things",
+  },
+  {
+    name: "cd (argument)",
+    description: "Change into a different directory [~ is return]",
+  },
+  {
     name: "info (argument)",
     description: "Displays information about an item",
   },
@@ -14,16 +26,8 @@ const commands = [
     description: "Unequips an armor item",
   },
   {
-    name: "cd (argument)",
-    description: "Change into a different directory [~ is go back]",
-  },
-  {
     name: "rm (argument)",
     description: "Discard anything in your inventory for 3 Gold",
-  },
-  {
-    name: "sudo (hunt|explore)",
-    description: "Go on a hunt or start an exploration",
   },
   {
     name: "times",
