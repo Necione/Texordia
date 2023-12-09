@@ -5,7 +5,7 @@ export const consumables = [
     purchasable: true,
     buyPrice: 30,
     sellPrice: 10,
-    healRange: [5, 15]
+    healRange: [10, 15]
   },
   {
     name: "Greater Potion",

@@ -5,7 +5,7 @@ export const monsters = [
     encounterRange: [1, 1],
     expRange: [2, 5],
     hpRange: [3, 5],
-    damage: [2, 4],
+    damage: [2, 3],
     drops: [
       {
         item: "Slimeball",
@@ -78,7 +78,7 @@ export const monsters = [
         quantityRange: [1, 1],
       },
     ],
-  },  
+  },
   {
     name: "Zombie",
     naturalEncounter: true,
@@ -131,7 +131,7 @@ export const monsters = [
         item: "Jelly",
         dropChance: 80,
         quantityRange: [1, 2],
-      }
+      },
     ],
   },
   {
@@ -146,7 +146,7 @@ export const monsters = [
         item: "Jelly",
         dropChance: 80,
         quantityRange: [1, 2],
-      }
+      },
     ],
   },
   {
@@ -161,7 +161,7 @@ export const monsters = [
         item: "Shell",
         dropChance: 80,
         quantityRange: [1, 2],
-      }
+      },
     ],
   },
   {
@@ -273,5 +273,5 @@ export const monsters = [
         quantityRange: [1, 1],
       },
     ],
-  }  
+  },
 ];

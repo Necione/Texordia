@@ -9,7 +9,7 @@ export const skillData = {
     level: 0,
     maxLevel: 5,
     bonuses: [1.5, 1.75, 2, 2.5, 3],
-    upgradeCost: 30,
+    upgradeCost: 40,
   },
   Leech: {
     name: "Leech",
@@ -25,7 +25,7 @@ export const skillData = {
 export function unlockSkill(skillName) {
   // Convert skillName to the correct case as defined in skillData
   const formattedSkillName = Object.keys(skillData).find(
-    key => key.toLowerCase() === skillName.toLowerCase()
+    (key) => key.toLowerCase() === skillName.toLowerCase()
   );
 
   // Check if the formatted skill name exists

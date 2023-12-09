@@ -2,6 +2,7 @@ import { gameData, updateGameData } from "./gameData.js";
 import { handleQuest } from "./commands/quests.js";
 import { handleHunting } from "./commands/hunting.js";
 import { showCooldowns } from "./commands/cooldowns.js";
+import { removeItemFromInventory } from "./commands/rm.js";
 import {
   handleShopItems,
   handleSellAll,
@@ -9,7 +10,7 @@ import {
 } from "./commands/shop.js";
 import { startExploration, collectTreasure } from "./commands/explore.js";
 import { showHelp } from "./commands/help.js";
-import { showEquippedWeapon } from "./commands/weapon.js";
+import { handleWeaponCommands } from "./commands/weapon.js";
 import {
   equipArmor,
   unequipArmor,
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const directoryStructure = {
     Root: {
       Shop: {},
+      Blacksmith: {},
       Guild: {},
     },
   };
@@ -151,11 +153,19 @@ document.addEventListener("DOMContentLoaded", function () {
       case "equip":
         equipArmor(argument);
         break;
+      case "rm":
+        removeItemFromInventory(argument);
+        break;
       case "equipment":
         showEquippedArmor(argument);
         break;
       case "weapon":
-        showEquippedWeapon();
+        if (gameData.currentDirectory === "Blacksmith") {
+          handleWeaponCommands(argument);
+        } else {
+          consoleElement.value +=
+            "\nYou need to be in the Blacksmith directory to manage weapons.\n";
+        }
         break;
       case "unequip":
         unequipArmor(argument);
@@ -221,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let newDirectory = "";
 
     if (argument !== "~") {
-      const availableDirectories = ["Shop", "Guild"];
+      const availableDirectories = ["Shop", "Guild", "Blacksmith"];
       const directoryName =
         argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
 

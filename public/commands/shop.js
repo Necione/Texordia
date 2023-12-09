@@ -120,7 +120,7 @@ export function sellAllItems(specificItem) {
   gameData.goldAmount += totalSellPrice;
   consoleElement.value += `\nSold ${
     specificItem ? specificItem : "all items"
-  } for ${totalSellPrice} gold.\n`;
+  } for ${totalSellPrice} Gold.\n`;
   saveGameData();
 }
 

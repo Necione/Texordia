@@ -3,15 +3,8 @@ import { consoleElement, saveGameData } from "../utilities.js";
 import { armors } from "../data/items/armor.js";
 
 export function equipArmor(argument) {
-  // Load armor data if not already loaded
-  if (armors.length === 0) {
-    console.error("Armor data is not loaded.");
-    return;
-  }
-
   const lowercasedArgument = argument.toLowerCase();
 
-  // Find the armor in the user's inventory
   const armor = gameData.userInventory.find(
     (item) =>
       item.item.toLowerCase() === lowercasedArgument &&
@@ -19,11 +12,10 @@ export function equipArmor(argument) {
   );
 
   if (!armor) {
-    consoleElement.value += `\nItem '${argument}' was not found, are you sure this is typed correctly?\n`;
+    consoleElement.value += `\nThis item could not be equipped.\n`;
     return;
   }
 
-  // Find the armor stats from the armor data
   const armorStats = armors.find(
     (a) => a.name.toLowerCase() === lowercasedArgument
   );
@@ -33,13 +25,11 @@ export function equipArmor(argument) {
     return;
   }
 
-  // Check if the armor is already equipped
   if (gameData.equippedArmors.includes(armorStats.name)) {
     consoleElement.value += `\n'${armorStats.name}' is already equipped.\n`;
     return;
   }
 
-  // Find a free armor slot
   const freeSlotIndex = gameData.equippedArmors.findIndex(
     (slot) => slot === null
   );
@@ -49,36 +39,25 @@ export function equipArmor(argument) {
     return;
   }
 
-  // Equip the armor
   gameData.equippedArmors[freeSlotIndex] = armorStats.name;
 
-  // Add stats from the armor
-  gameData.defense += armorStats.defenseIncrease || 0; // Add defense if it exists, otherwise add 0
-  gameData.maxHp += armorStats.hpIncrease || 0; // Add HP if it exists, otherwise add 0
-  gameData.attack += armorStats.attackIncrease || 0; // Add attack if it exists, otherwise add 0
+  // Applying bonuses
+  armorStats.bonuses.forEach((bonus) => {
+    gameData[bonus.type] += bonus.value;
+  });
 
   consoleElement.value += `\nEquipped '${armorStats.name}'.\n`;
 
-  // Remove armor from inventory
   gameData.userInventory = gameData.userInventory.filter(
     (item) => item.item.toLowerCase() !== lowercasedArgument
   );
 
-  // Save game data
   saveGameData();
-  console.log(gameData.maxHp);
 }
 
 export function unequipArmor(argument) {
-  // Load armor data if not already loaded
-  if (armors.length === 0) {
-    console.error("Armor data is not loaded.");
-    return;
-  }
-
   const lowercasedArgument = argument.toLowerCase();
 
-  // Find if the armor is equipped
   const equippedIndex = gameData.equippedArmors.findIndex(
     (slot) => slot && slot.toLowerCase() === lowercasedArgument
   );
@@ -87,7 +66,6 @@ export function unequipArmor(argument) {
     return;
   }
 
-  // Get the armor stats from the armor data
   const armorStats = armors.find(
     (a) => a.name.toLowerCase() === lowercasedArgument
   );
@@ -97,23 +75,13 @@ export function unequipArmor(argument) {
     return;
   }
 
-  // Unequip the armor
   gameData.equippedArmors[equippedIndex] = null;
 
-  // Adjust gameData values based on armor stats
-  if (armorStats.defenseIncrease) {
-    gameData.defense -= armorStats.defenseIncrease;
-  }
+  // Reverting bonuses
+  armorStats.bonuses.forEach((bonus) => {
+    gameData[bonus.type] -= bonus.value;
+  });
 
-  if (armorStats.hpIncrease) {
-    gameData.maxHp -= armorStats.hpIncrease;
-  }
-
-  if (armorStats.attackIncrease) {
-    gameData.attack -= armorStats.attackIncrease;
-  }
-
-  // Add the armor back to inventory
   const inventoryItem = gameData.userInventory.find(
     (item) => item.item.toLowerCase() === lowercasedArgument
   );
@@ -123,52 +91,51 @@ export function unequipArmor(argument) {
     gameData.userInventory.push({ item: armorStats.name, quantity: 1 });
   }
 
-  // Save game data
+  // Adding confirmation message
+  consoleElement.value += `\n'${armorStats.name}' has been unequipped.\n`;
+
   saveGameData();
 }
 
 export function showEquippedArmor() {
-  // Load armor data if not already loaded
-  if (armors.length === 0) {
-    console.error("Armor data is not loaded.");
-    return;
-  }
-
   let equippedArmorDisplay = "\n\nCurrently Equipped:\n\n";
-  let totalDefenseIncrease = 0;
-  let totalHpIncrease = 0;
-  let totalAttackIncrease = 0;
+  const bonusLabels = {
+    maxHp: "Max HP",
+    critValue: "Crit Value",
+    critChance: "Crit Chance",
+    defense: "DEF",
+    attack: "ATK"
+  };
 
-  gameData.equippedArmors.forEach((argument, index) => {
-    if (argument) {
-      const armorStats = armors.find((a) => a.name === argument);
+  gameData.equippedArmors.forEach((armorName, index) => {
+    let slotDisplay = `Slot ${index + 1}: `;
+    if (armorName) {
+      const armorStats = armors.find((a) => a.name === armorName);
       if (armorStats) {
-        // Default to 0 if undefined
-        let defenseIncrease = armorStats.defenseIncrease || 0;
-        let hpIncrease = armorStats.hpIncrease || 0;
-        let attackIncrease = armorStats.attackIncrease || 0;
-
-        equippedArmorDisplay += `Slot ${
-          index + 1
-        }: ${argument} (Defense +${defenseIncrease}, HP +${hpIncrease}, Attack +${attackIncrease})\n`;
-        totalDefenseIncrease += defenseIncrease;
-        totalHpIncrease += hpIncrease;
-        totalAttackIncrease += attackIncrease;
+        let bonusesText = armorStats.bonuses.map((bonus) => {
+          // Determine how to display the bonus value
+          let bonusText;
+          if (bonus.type === "critChance" || bonus.type === "critValue") {
+            bonusText = `${(bonus.value * 100).toFixed(2)}%`;
+          } else {
+            // Append + or - sign for non-percentage values
+            bonusText = (bonus.value >= 0 ? `+${bonus.value}` : `${bonus.value}`);
+          }
+          let bonusLabel = bonusLabels[bonus.type] || bonus.type; // Map bonus type to label, or use type as-is
+          return `${bonusLabel}: ${bonusText}`;
+        }).join(", ");
+        slotDisplay += `${armorName} (${bonusesText})`;
       } else {
-        equippedArmorDisplay += `Slot ${
-          index + 1
-        }: ${argument} (Stats not found)\n`;
+        slotDisplay += `${armorName} (Stats not found)`;
       }
     } else {
-      equippedArmorDisplay += `Slot ${index + 1}: X\n`;
+      slotDisplay += "X";
     }
+    equippedArmorDisplay += slotDisplay + "\n";
   });
 
-  equippedArmorDisplay += `\nTotal Defense Increase: ${totalDefenseIncrease}\n`;
-  equippedArmorDisplay += `Total HP Increase: ${totalHpIncrease}\n`;
-  equippedArmorDisplay += `Total Attack Increase: ${totalAttackIncrease}\n`;
-
   consoleElement.value += equippedArmorDisplay;
-
-  saveGameData();
 }
+
+
+

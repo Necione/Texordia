@@ -22,7 +22,7 @@ export function generateRandomQuests() {
   for (let i = 1; i <= 5; i++) {
     const item = itemNames[Math.floor(Math.random() * itemNames.length)];
     const quantity = Math.floor(Math.random() * 10) + 1;
-    const reward = Math.floor(Math.random() * 21) + 10;
+    const reward = Math.floor(Math.random() * 26) + 15;
     quests.push({
       id: i,
       itemRequirement: `${quantity}x ${item}`,

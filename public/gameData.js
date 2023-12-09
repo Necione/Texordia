@@ -7,6 +7,8 @@ const defaultData = {
   explorationEndTime: "",
   attack: 2,
   hp: 20,
+  critValue: 1.1,
+  critChance: 0.05,
   maxHp: 20,
   defense: 0,
   userInventory: [],

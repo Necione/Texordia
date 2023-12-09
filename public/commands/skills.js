@@ -47,7 +47,7 @@ export function upgradeSkill(skillName) {
     return false;
   }
 
-  const growthRate = 1.5;
+  const growthRate = 1.9;
   const upgradeCost = Math.round(
     skillDetails.upgradeCost * Math.pow(growthRate, skill.level - 1)
   );
@@ -71,28 +71,33 @@ function showSkills() {
   let lockedSkillsDisplay = "\nLocked Skills:\n";
 
   Object.entries(skillData).forEach(([skillName, skillDetails]) => {
-    const isUnlocked =
-      gameData.skills[skillName] && gameData.skills[skillName].unlocked;
+    const isUnlocked = gameData.skills[skillName] && gameData.skills[skillName].unlocked;
     const skillLevel = isUnlocked ? gameData.skills[skillName].level : 1;
     let skillDescription;
 
     if (skillName === "Leech") {
-      skillDescription = `Heals ${
-        skillDetails.bonuses[skillLevel - 1]
-      } HP every 2 attacks.`;
+      skillDescription = `Heals ${skillDetails.bonuses[skillLevel - 1]} HP every 2 attacks.`;
     } else if (skillName === "Vigilance") {
-      skillDescription = `Deal ${
-        skillDetails.bonuses[skillLevel - 1]
-      } more damage on your first attack.`;
+      skillDescription = `Deal ${skillDetails.bonuses[skillLevel - 1]} more damage on your first attack.`;
     }
 
-    const skillCostInfo = skillDetails.cost
-      ? ` (${skillDetails.cost} Gold)`
-      : "";
+    let skillCostInfo = "";
+    if (isUnlocked) {
+      if (skillLevel < skillDetails.maxLevel) {
+        const growthRate = 1.9;
+        const nextLevelCost = Math.round(skillDetails.upgradeCost * Math.pow(growthRate, skillLevel - 1));
+        skillCostInfo = ` (Next Level: ${nextLevelCost} Gold)`;
+      } else {
+        skillCostInfo = " (MAX)";
+      }
+    } else {
+      skillCostInfo = ` (${skillDetails.cost} Gold)`;
+    }
+
     const skillLevelInfo = isUnlocked ? `Lv${skillLevel}` : "";
 
     if (isUnlocked) {
-      unlockedSkillsDisplay += `> ${skillName} [${skillLevelInfo}] - ${skillDescription}\n`;
+      unlockedSkillsDisplay += `> ${skillName} [${skillLevelInfo}] - ${skillDescription}${skillCostInfo}\n`;
     } else {
       lockedSkillsDisplay += `> ${skillName}${skillCostInfo} - ${skillDescription}\n`;
     }

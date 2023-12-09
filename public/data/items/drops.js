@@ -142,5 +142,5 @@ export const drops = [
     sellPrice: 12,
     buyPrice: 0,
     purchasable: false,
-  }
+  },
 ];

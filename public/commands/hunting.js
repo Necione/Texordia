@@ -1,4 +1,4 @@
-import { gameData, updateGameData } from "../gameData.js";
+import { gameData, updateGameData, updateLevel } from "../gameData.js";
 import { saveGameData, consoleElement } from "../utilities.js";
 import { monsters } from "../data/monsters.js";
 import { monsterGroups } from "../data/groupMonster.js";
@@ -210,7 +210,14 @@ export async function handleHunting() {
 }
 
 function playerAttack(isFirstAttack, monster, gameData) {
-  let playerDamage = gameData.attack; // Ensure gameData.attack is a number
+  let playerDamage = gameData.attack;
+  let combatLog = "";
+
+  // Check for critical hit
+  if (Math.random() < gameData.critChance) {
+    playerDamage *= gameData.critValue; // Apply critical damage multiplier
+    combatLog += "(CRIT) ";
+  }
 
   // Apply Vigilance skill bonus
   if (
@@ -218,10 +225,13 @@ function playerAttack(isFirstAttack, monster, gameData) {
     gameData.skills["Vigilance"] &&
     gameData.skills["Vigilance"].unlocked
   ) {
-    const vigilanceLevel = gameData.skills["Vigilance"].level - 1; // Adjust index for 0-based array
+    const vigilanceLevel = gameData.skills["Vigilance"].level - 1;
     const vigilanceBonus = skillData.Vigilance.bonuses[vigilanceLevel];
-    playerDamage *= vigilanceBonus;
+    playerDamage *= vigilanceBonus; // Apply Vigilance bonus
   }
+
+  // Round the player damage to the nearest hundredth
+  playerDamage = parseFloat(playerDamage.toFixed(2));
 
   monster.currentHP -= playerDamage;
   if (monster.currentHP < 0) monster.currentHP = 0;
@@ -232,14 +242,16 @@ function playerAttack(isFirstAttack, monster, gameData) {
     gameData.skills["Leech"].unlocked &&
     gameData.leechCounter % 2 === 0
   ) {
-    const leechLevel = gameData.skills["Leech"].level - 1; // Adjust index for 0-based array
+    const leechLevel = gameData.skills["Leech"].level - 1;
     const leechBonus = skillData.Leech.bonuses[leechLevel];
     gameData.hp = Math.min(gameData.hp + leechBonus, gameData.maxHp);
   }
   gameData.leechCounter++;
 
+  combatLog += `You dealt ${playerDamage} damage to the ${monster.name}.\n`;
+
   return {
-    combatLog: `+ You dealt ${playerDamage} Damage to the ${monster.name}!\n`,
+    combatLog: combatLog,
     isFirstAttack: false,
   };
 }
@@ -250,7 +262,7 @@ function monsterAttack(monster, gameData) {
     monster.damage[0];
   gameData.hp -= monsterAttack;
 
-  return `- The ${monster.name} dealt ${monsterAttack} Damage to you\n`;
+  return `The ${monster.name} dealt ${monsterAttack} Damage to you.\n`;
 }
 
 function handleCombatVictory(monster, remainingMonsters, onAllCombatsComplete) {
@@ -273,6 +285,7 @@ function handleCombatVictory(monster, remainingMonsters, onAllCombatsComplete) {
       (consoleElement.scrollTop = consoleElement.scrollHeight)
     );
 
+    updateLevel();
     saveGameData();
   }
 }
@@ -324,6 +337,8 @@ function applyAccumulatedRewards() {
 
   // Apply the accumulated experience points
   gameData.exp += gameData.accumulatedRewards.exp;
+
+  updateLevel();
 
   // Display the results
   displayAccumulatedRewardsResults();

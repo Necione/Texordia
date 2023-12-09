@@ -18,6 +18,10 @@ const commands = [
     description: "Change into a different directory [~ is go back]",
   },
   {
+    name: "rm (argument)",
+    description: "Discard anything in your inventory for 3 Gold",
+  },
+  {
     name: "sudo (hunt|explore)",
     description: "Go on a hunt or start an exploration",
   },
@@ -32,6 +36,10 @@ const commands = [
   {
     name: "collect",
     description: "Collect earnings from a finished exploration",
+  },
+  {
+    name: "weapon -[buy|catalog|add|remove] (argument)",
+    description: "Manage and build your current weapon",
   },
   {
     name: "items -[list|buy] (argument)",
