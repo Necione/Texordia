@@ -56,17 +56,29 @@ function createTable(data, title) {
   const minNameWidth = 10;
   const nameWidth = Math.max(maxLength, minNameWidth);
   let table = `\n\n${title}\n`;
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
-  table += `| ${"Item Name".padEnd(nameWidth)} | Buy Price    | Sell Price    |\n`;
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15
+  )}+\n`;
+  table += `| ${"Item Name".padEnd(
+    nameWidth
+  )} | Buy Price    | Sell Price    |\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15
+  )}+\n`;
 
-  data.filter(item => item.purchasable).forEach((item) => {
-    const buyPriceDisplay = item.buyPrice.toString();
-    const sellPriceDisplay = item.sellPrice.toString();
-    table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(12)} | ${sellPriceDisplay.padEnd(13)} |\n`;
-  });
+  data
+    .filter((item) => item.purchasable)
+    .forEach((item) => {
+      const buyPriceDisplay = item.buyPrice.toString();
+      const sellPriceDisplay = item.sellPrice.toString();
+      table += `| ${item.name.padEnd(nameWidth)} | ${buyPriceDisplay.padEnd(
+        12
+      )} | ${sellPriceDisplay.padEnd(13)} |\n`;
+    });
 
-  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(15)}+\n`;
+  table += `+${"-".repeat(nameWidth + 2)}+${"-".repeat(14)}+${"-".repeat(
+    15
+  )}+\n`;
   return table;
 }
 
@@ -149,22 +161,34 @@ export function handleShopItems(argument, input) {
 
   const args = input.split(/\s+/); // Split the input by spaces
 
-  if (args[0] === "items" && args[1] === "-list") {
-    const category = args[2];
+  // Check for both 'item' and 'items' commands
+  if (args[0].startsWith("item") && args[1] === "-list") {
+    let category = args[2];
+
+    // Map shorthand to full category name
+    const categoryMap = {
+      e: "equipment",
+      d: "drops",
+      c: "consumable",
+    };
+
+    // Replace shorthand with full category name if applicable
+    category = categoryMap[category] || category;
+
     if (["drops", "equipment", "consumable"].includes(category)) {
       listShopItems(consoleElement, category);
     } else {
-      consoleElement.value += `\nInvalid category. Use: 'items -list [drops|equipment|consumable]'\n`;
+      consoleElement.value += `\nInvalid category. Use: 'item -list [drops|equipment|consumable]'\n`;
     }
-  } else if (args[0] === "items" && args[1] === "-buy") {
+  } else if (args[0].startsWith("item") && args[1] === "-buy") {
     const itemName = extractItemNameFromInput(input);
     if (itemName) {
       attemptToPurchaseItem(itemName, gameData, consoleElement);
     } else {
-      consoleElement.value += '\nInvalid format. Use: items -buy "Item Name"\n';
+      consoleElement.value += '\nInvalid format. Use: item -buy "Item Name"\n';
     }
   } else {
-    consoleElement.value += `\nInvalid command structure. Use: 'items -[list|buy] (argument)'\n`;
+    consoleElement.value += `\nInvalid command structure. Use: 'item -[list|buy] (argument)'\n`;
   }
 }
 

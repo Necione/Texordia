@@ -160,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (command) {
       case "adventure":
+      case "adv":
         if (gameData.currentDirectory === "Guild") {
           gameData.isAsyncCommandRunning = true;
           handleAdventure();
@@ -168,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "\nYou need to be in the Guild directory to go on an adventure.\n";
         }
         break;
+      case "exp":
       case "explore":
         if (gameData.currentDirectory === "Guild") {
           startExploration();
@@ -187,21 +189,25 @@ document.addEventListener("DOMContentLoaded", function () {
       case "quests":
         handleQuest(argument, input);
         break;
+      case "i":
       case "info":
         showItemInfo(argument);
         break;
       case "sellall":
         handleSellAll(argument);
         break;
+      case "itemuse":
       case "useitem":
         handleUseItem(argument);
         break;
+        case "item":
       case "items":
         handleShopItems(argument, input);
         break;
       case "help":
         showHelp();
         break;
+      case "skill":
       case "skills":
         handleSkillsCommands(argument);
         break;
@@ -215,6 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showEquippedArmor(argument);
         break;
       case "weapon":
+      case "weapons":
         if (gameData.currentDirectory === "Blacksmith") {
           handleWeaponCommands(argument);
         } else {
@@ -229,6 +236,9 @@ document.addEventListener("DOMContentLoaded", function () {
         changeDirectory(argument);
         break;
       case "stats":
+      case "things":
+      case "inv":
+      case "gold":
       case "inventory":
       case "cls":
       case "times":
@@ -253,6 +263,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "stats":
         showStats();
         break;
+      case "things":
+      case "inv":
+      case "gold":
       case "inventory":
         showInventory();
         break;
