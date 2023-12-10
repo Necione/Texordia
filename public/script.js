@@ -21,6 +21,7 @@ import { consoleElement, saveGameData } from "./utilities.js";
 import { handleUseItem } from "./commands/useitem.js";
 import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
+import { defaultData } from "./gameData.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   if (
@@ -31,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
     location.reload();
     return;
   }
-
   var promptText = gameData.currentDirectory
     ? `Texordia\\${gameData.currentDirectory}> `
     : "Texordia> ";

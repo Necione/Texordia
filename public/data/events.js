@@ -46,7 +46,8 @@ export const events = [
     ],
   },
   {
-    dialogue: "A hooded figure approaches and asks for gold to hitch a ride to the nearby town.",
+    dialogue:
+      "A hooded figure approaches and asks for gold to hitch a ride to the nearby town.",
     triggerRequirements: {
       minLevel: 1,
       minGold: 5,
@@ -64,7 +65,8 @@ export const events = [
               (item) => item.item === dulledBladeItem.item
             );
             if (existingItemIndex !== -1) {
-              gameData.userInventory[existingItemIndex].quantity += dulledBladeItem.quantity;
+              gameData.userInventory[existingItemIndex].quantity +=
+                dulledBladeItem.quantity;
             } else {
               gameData.userInventory.push(dulledBladeItem);
             }
@@ -75,7 +77,8 @@ export const events = [
             return "You don't have enough gold.";
           }
         },
-        outcome: "The hooded figure nods in thanks and leaves, leaving behind a dulled blade.",
+        outcome:
+          "The hooded figure nods in thanks and leaves, leaving behind a dulled blade.",
       },
       {
         description: "Politely decline and move on",
@@ -83,7 +86,8 @@ export const events = [
           // No change to gameData in this case
           return "You decide not to give the gold and continue on your journey.";
         },
-        outcome: "The hooded figure silently watches you leave, then disappears into the shadows.",
+        outcome:
+          "The hooded figure silently watches you leave, then disappears into the shadows.",
       },
     ],
   },

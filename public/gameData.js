@@ -1,6 +1,6 @@
 import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
-const defaultData = {
+export const defaultData = {
   currentVersion: "0000001",
   registeredName: "",
   isAsyncCommandRunning: false,
