@@ -23,6 +23,15 @@ import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+  if (
+    !gameData.currentVersion ||
+    gameData.currentVersion !== defaultData.currentVersion
+  ) {
+    localStorage.clear();
+    location.reload();
+    return;
+  }
+
   var promptText = gameData.currentDirectory
     ? `Texordia\\${gameData.currentDirectory}> `
     : "Texordia> ";
@@ -54,11 +63,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   consoleElement.addEventListener("keydown", function (e) {
     // Find the position of "Your Response>" in the console text
-    const responsePromptPosition = consoleElement.value.lastIndexOf("Your Response>");
-  
+    const responsePromptPosition =
+      consoleElement.value.lastIndexOf("Your Response>");
+
     // If the prompt is found, add its length to determine the start position for editing
-    const editableStartPosition = responsePromptPosition !== -1 ? responsePromptPosition + "Your Response>".length : 0;
-    
+    const editableStartPosition =
+      responsePromptPosition !== -1
+        ? responsePromptPosition + "Your Response>".length
+        : 0;
+
     var currentLineStart =
       this.value.lastIndexOf(promptText) + promptText.length;
 
@@ -91,7 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
           // Only letters from the alphabet are allowed
           gameData.registeredName = input.trim();
           consoleElement.value +=
-            `\n\nWelcome, ${gameData.registeredName}. May you have a safe journey ahead!\nUse 'help' to get started.\n\n` + promptText;
+            `\n\nWelcome, ${gameData.registeredName}. May you have a safe journey ahead!\nUse 'help' to get started.\n\n` +
+            promptText;
 
           consoleElement.focus();
           consoleElement.setSelectionRange(
@@ -111,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       this.scrollTop = this.scrollHeight;
       this.setSelectionRange(this.value.length, this.value.length);
-    }   else {
+    } else {
       if (consoleElement.selectionStart < currentLineStart) {
         e.preventDefault();
       }
@@ -147,19 +161,21 @@ document.addEventListener("DOMContentLoaded", function () {
     switch (command) {
       case "adventure":
         if (gameData.currentDirectory === "Guild") {
-            gameData.isAsyncCommandRunning = true;
-            handleAdventure();
+          gameData.isAsyncCommandRunning = true;
+          handleAdventure();
         } else {
-            consoleElement.value += "\nYou need to be in the Guild directory to go on an adventure.\n";
+          consoleElement.value +=
+            "\nYou need to be in the Guild directory to go on an adventure.\n";
         }
         break;
-        case "explore":
-            if (gameData.currentDirectory === "Guild") {
-                startExploration();
-            } else {
-                consoleElement.value += "\nYou need to be in the Guild directory to go on an adventure.\n";
-            }
-            break;
+      case "explore":
+        if (gameData.currentDirectory === "Guild") {
+          startExploration();
+        } else {
+          consoleElement.value +=
+            "\nYou need to be in the Guild directory to go on an adventure.\n";
+        }
+        break;
       case "collect":
         if (gameData.currentDirectory === "Guild") {
           collectTreasure();
