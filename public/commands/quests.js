@@ -7,15 +7,6 @@ import {
 import { gameData } from "../gameData.js";
 import { drops } from "../data/items/drops.js";
 
-export function handleQuest(argument, input) {
-  if (gameData.currentDirectory !== "Guild") {
-    consoleElement.value +=
-      "\nYou must be in the Guild directory for quests.\n";
-    return;
-  }
-  handleQuestsCommands(argument, input);
-}
-
 export function generateRandomQuests() {
   const itemNames = drops.map((drop) => drop.name);
   const quests = [];

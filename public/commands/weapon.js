@@ -60,6 +60,8 @@ function getPartData(partType, partName) {
 function addWeaponPart(itemName) {
   const formattedItemName = itemName.toLowerCase();
 
+  const allParts = [...blades, ...hilts, ...handles];
+  
   // Find the item in the user's inventory, ignoring case
   const itemIndex = gameData.userInventory.findIndex(
     (item) => item.item.toLowerCase() === formattedItemName
@@ -75,29 +77,40 @@ function addWeaponPart(itemName) {
   let partData = null;
   if (blades.some((blade) => blade.name.toLowerCase() === formattedItemName)) {
     partType = "Blade";
-    partData = blades.find(
-      (blade) => blade.name.toLowerCase() === formattedItemName
-    );
+    if (gameData.equippedBlade) {
+      consoleElement.value +=
+        "\nA blade is already equipped. Remove it before adding a new one.\n";
+      return;
+    }
   } else if (
     hilts.some((hilt) => hilt.name.toLowerCase() === formattedItemName)
   ) {
     partType = "Hilt";
-    partData = hilts.find(
-      (hilt) => hilt.name.toLowerCase() === formattedItemName
-    );
+    if (gameData.equippedHilt) {
+      consoleElement.value +=
+        "\nA hilt is already equipped. Remove it before adding a new one.\n";
+      return;
+    }
   } else if (
     handles.some((handle) => handle.name.toLowerCase() === formattedItemName)
   ) {
     partType = "Handle";
-    partData = handles.find(
-      (handle) => handle.name.toLowerCase() === formattedItemName
-    );
+    if (gameData.equippedHandle) {
+      consoleElement.value +=
+        "\nA handle is already equipped. Remove it before adding a new one.\n";
+      return;
+    }
   }
 
   if (partType === null) {
     consoleElement.value += `\n'${itemName}' is not a valid weapon part.\n`;
     return;
   }
+
+  // Find the part data
+  partData = allParts.find(
+    (part) => part.name.toLowerCase() === formattedItemName
+  );
 
   // Equip the part and apply its bonuses
   applyWeaponPart(partType, partData);

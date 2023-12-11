@@ -2,7 +2,7 @@ import { loadFromLocalStorage, saveToLocalStorage } from "./utilities.js";
 
 export const defaultData = {
   currentVersion: "0000001",
-  registeredName: "",
+  towns: [],
   isAsyncCommandRunning: false,
   isEventInProgress: false,
   eventResponseHandler: null,

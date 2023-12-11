@@ -1,11 +1,11 @@
 import { gameData, updateGameData } from "./gameData.js";
-import { handleQuest } from "./commands/quests.js";
+import { handleQuestsCommands } from "./commands/quests.js";
 import { handleAdventure } from "./commands/adventure.js";
 import { showCooldowns } from "./commands/cooldowns.js";
 import { removeItemFromInventory } from "./commands/rm.js";
 import {
   handleShopItems,
-  handleSellAll,
+  sellAllItems,
   showItemInfo,
 } from "./commands/shop.js";
 import { startExploration, collectTreasure } from "./commands/explore.js";
@@ -22,6 +22,7 @@ import { handleUseItem } from "./commands/useitem.js";
 import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
 import { defaultData } from "./gameData.js";
+import { generateTowns } from "./townGeneration.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   if (
@@ -36,24 +37,22 @@ document.addEventListener("DOMContentLoaded", function () {
     ? `Texordia\\${gameData.currentDirectory}> `
     : "Texordia> ";
 
+  if (gameData.towns.length === 0) {
+    gameData.towns = generateTowns(10);
+    saveGameData();
+  }
+
   const directoryStructure = {
-    Root: {
-      Shop: {},
-      Blacksmith: {},
-      Guild: {},
-    },
+    Root: {},
   };
 
-  if (!gameData.registeredName) {
-    // Prompt for name input
-    consoleElement.value =
-      "Welcome to Texordia, to get started, please enter your name:\n\nTexordia> ";
-  } else {
-    // Existing welcome message
-    consoleElement.value =
-      `Welcome back to Texordia, ${gameData.registeredName}\nUse 'help' to view all commands.\n\n` +
-      promptText;
-  }
+  gameData.towns.forEach((town) => {
+    directoryStructure.Root[town] = {};
+  });
+
+  consoleElement.value =
+    `Welcome back to Texordia\nUse 'help' to view all commands.\n\n` +
+    promptText;
 
   consoleElement.focus();
   consoleElement.setSelectionRange(
@@ -98,30 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       var input = this.value.substring(currentLineStart).trim();
 
-      // Name checking
-      if (!gameData.registeredName) {
-        if (input.trim().length > 0 && /^[A-Za-z]+$/.test(input.trim())) {
-          // Only letters from the alphabet are allowed
-          gameData.registeredName = input.trim();
-          consoleElement.value +=
-            `\n\nWelcome, ${gameData.registeredName}. May you have a safe journey ahead!\nUse 'help' to get started.\n\n` +
-            promptText;
-
-          consoleElement.focus();
-          consoleElement.setSelectionRange(
-            consoleElement.value.length,
-            consoleElement.value.length
-          );
-
-          saveGameData(); // Save the registered name
-        } else {
-          consoleElement.value +=
-            "\nPlease enter a valid name (letters only).\n\nTexordia> ";
-          return;
-        }
-      } else {
-        processCommand(input);
-      }
+      processCommand(input);
 
       this.scrollTop = this.scrollHeight;
       this.setSelectionRange(this.value.length, this.value.length);
@@ -161,46 +137,31 @@ document.addEventListener("DOMContentLoaded", function () {
     switch (command) {
       case "adventure":
       case "adv":
-        if (gameData.currentDirectory === "Guild") {
-          gameData.isAsyncCommandRunning = true;
-          handleAdventure();
-        } else {
-          consoleElement.value +=
-            "\nYou need to be in the Guild directory to go on an adventure.\n";
-        }
+        gameData.isAsyncCommandRunning = true;
+        handleAdventure();
         break;
       case "exp":
       case "explore":
-        if (gameData.currentDirectory === "Guild") {
-          startExploration();
-        } else {
-          consoleElement.value +=
-            "\nYou need to be in the Guild directory to go on an adventure.\n";
-        }
+        startExploration();
         break;
       case "collect":
-        if (gameData.currentDirectory === "Guild") {
-          collectTreasure();
-        } else {
-          consoleElement.value +=
-            "\nYou need to be in the Guild directory to collect treasures.\n";
-        }
+        collectTreasure();
         break;
       case "quests":
-        handleQuest(argument, input);
+        handleQuestsCommands(argument, input);
         break;
       case "i":
       case "info":
         showItemInfo(argument);
         break;
       case "sellall":
-        handleSellAll(argument);
+        sellAllItems(argument);
         break;
       case "itemuse":
       case "useitem":
         handleUseItem(argument);
         break;
-        case "item":
+      case "item":
       case "items":
         handleShopItems(argument, input);
         break;
@@ -222,17 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
       case "weapon":
       case "weapons":
-        if (gameData.currentDirectory === "Blacksmith") {
-          handleWeaponCommands(argument);
-        } else {
-          consoleElement.value +=
-            "\nYou need to be in the Blacksmith directory to manage weapons.\n";
-        }
+        handleWeaponCommands(argument);
         break;
       case "unequip":
         unequipArmor(argument);
         break;
+      case "goto":
       case "cd":
+      case "travel":
         changeDirectory(argument);
         break;
       case "stats":
@@ -287,15 +245,19 @@ document.addEventListener("DOMContentLoaded", function () {
   function changeDirectory(argument) {
     let newDirectory = "";
 
-    if (argument !== "~") {
-      const availableDirectories = ["Shop", "Guild", "Blacksmith"];
-      const directoryName =
-        argument.charAt(0).toUpperCase() + argument.slice(1).toLowerCase();
+    if (argument === "~") {
+      newDirectory = ""; // Set to empty for root
+    } else {
+      const formattedArgument = argument.toLowerCase();
 
-      if (availableDirectories.includes(directoryName)) {
-        newDirectory = directoryName;
+      const matchedTown = gameData.towns.find(
+        (town) => town.toLowerCase() === formattedArgument
+      );
+
+      if (matchedTown) {
+        newDirectory = matchedTown;
       } else {
-        consoleElement.value += `\nThe system cannot find the path specified: ${directoryName}\n`;
+        consoleElement.value += `\nThe system cannot find the path specified: ${argument}\n`;
         return;
       }
     }

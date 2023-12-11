@@ -195,7 +195,11 @@ export async function handleAdventure() {
         gameData.isAsyncCommandRunning = false;
 
         // Append the next command prompt
-        consoleElement.value += `\nTexordia\\${gameData.currentDirectory}> `;
+        if (gameData.currentDirectory === "") {
+          consoleElement.value += `\nTexordia> `;
+        } else {
+          consoleElement.value += `\nTexordia\\${gameData.currentDirectory}> `;
+        }
         consoleElement.disabled = false;
         consoleElement.focus();
         consoleElement.setSelectionRange(
@@ -283,7 +287,11 @@ function handleCombatVictory(monster, remainingMonsters, onAllCombatsComplete) {
 
     gameData.isAsyncCommandRunning = false;
 
-    consoleElement.value += `\nTexordia\\${gameData.currentDirectory}> `;
+    if (gameData.currentDirectory === "") {
+      consoleElement.value += `\nTexordia> `;
+    } else {
+      consoleElement.value += `\nTexordia\\${gameData.currentDirectory}> `;
+    }
     consoleElement.disabled = false;
     consoleElement.focus();
     consoleElement.setSelectionRange(

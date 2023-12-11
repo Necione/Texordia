@@ -102,13 +102,13 @@ function listShopItems(consoleElement, category) {
   consoleElement.value += output;
 }
 
-export function sellAllItems(specificItem) {
+export function sellAllItems(argument) {
   let totalSellPrice = 0;
-  specificItem = specificItem ? specificItem.toLowerCase() : null;
+  argument = argument ? argument.toLowerCase() : null;
 
   // Check if there are items to sell
   const itemsToSell = gameData.userInventory.filter((itemObj) => {
-    if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
+    if (!argument || itemObj.item.toLowerCase() === argument) {
       return [...drops, ...consumables, ...armors].some(
         (item) => item.name.toLowerCase() === itemObj.item.toLowerCase()
       );
@@ -124,7 +124,7 @@ export function sellAllItems(specificItem) {
 
   // Proceed with selling items
   gameData.userInventory = gameData.userInventory.filter((itemObj) => {
-    if (!specificItem || itemObj.item.toLowerCase() === specificItem) {
+    if (!argument || itemObj.item.toLowerCase() === argument) {
       const itemData = [...drops, ...consumables, ...armors].find(
         (item) => item.name.toLowerCase() === itemObj.item.toLowerCase()
       );
@@ -138,27 +138,12 @@ export function sellAllItems(specificItem) {
 
   gameData.goldAmount += totalSellPrice;
   consoleElement.value += `\nSold ${
-    specificItem ? specificItem : "all items"
+    argument ? argument : "all items"
   } for ${totalSellPrice} Gold.\n`;
   saveGameData();
 }
 
-export function handleSellAll(argument) {
-  if (gameData.currentDirectory !== "Shop") {
-    consoleElement.value +=
-      "\nYou must be in the Shop directory to sell items.\n";
-    return;
-  }
-  sellAllItems(argument);
-}
-
 export function handleShopItems(argument, input) {
-  if (gameData.currentDirectory !== "Shop") {
-    consoleElement.value +=
-      "\nYou must be in the Shop directory to interact with items.\n";
-    return;
-  }
-
   const args = input.split(/\s+/); // Split the input by spaces
 
   // Check for both 'item' and 'items' commands
