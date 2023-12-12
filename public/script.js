@@ -22,7 +22,6 @@ import { handleUseItem } from "./commands/useitem.js";
 import { showStats } from "./commands/stats.js";
 import { handleSkillsCommands } from "./commands/skills.js";
 import { defaultData } from "./gameData.js";
-import { generateTowns } from "./townGeneration.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   if (
@@ -37,18 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ? `Texordia\\${gameData.currentDirectory}> `
     : "Texordia> ";
 
-  if (gameData.towns.length === 0) {
-    gameData.towns = generateTowns(10);
-    saveGameData();
-  }
-
   const directoryStructure = {
     Root: {},
   };
-
-  gameData.towns.forEach((town) => {
-    directoryStructure.Root[town] = {};
-  });
 
   consoleElement.value =
     `Welcome back to Texordia\nUse 'help' to view all commands.\n\n` +
@@ -188,11 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
       case "unequip":
         unequipArmor(argument);
         break;
-      case "goto":
-      case "cd":
-      case "travel":
-        changeDirectory(argument);
-        break;
       case "stats":
       case "things":
       case "inv":
@@ -233,88 +218,13 @@ document.addEventListener("DOMContentLoaded", function () {
       case "times":
         showCooldowns();
         break;
-      case "tree":
-        showDirectoryTree();
-        break;
       default:
         consoleElement.value += `\n'${command}' is not recognized as an internal or external command.\n`;
         break;
     }
   }
 
-  function changeDirectory(argument) {
-    let newDirectory = "";
-
-    if (argument === "~") {
-      newDirectory = ""; // Set to empty for root
-    } else {
-      const formattedArgument = argument.toLowerCase();
-
-      const matchedTown = gameData.towns.find(
-        (town) => town.toLowerCase() === formattedArgument
-      );
-
-      if (matchedTown) {
-        newDirectory = matchedTown;
-      } else {
-        consoleElement.value += `\nThe system cannot find the path specified: ${argument}\n`;
-        return;
-      }
-    }
-
-    updateGameData({ currentDirectory: newDirectory });
-
-    promptText = `Texordia${newDirectory ? "\\" + newDirectory : ""}> `;
-    consoleElement.value += `\nChanged directory to ${
-      newDirectory || "root"
-    }.\n`;
-  }
-
   function clearScreen() {
-    consoleElement.value = "Welcome back to Texordia. [ Ver 0.1 ]\n";
-  }
-
-  function showDirectoryTree() {
-    const tree = displayDirectoryTree(gameData.currentDirectory);
-    consoleElement.value += "\n" + tree;
-  }
-
-  function displayDirectoryTree() {
-    function buildTree(directory, prefix = "") {
-      let tree = "";
-      for (const key in directory) {
-        tree += `${prefix}- ${key}\n`;
-        if (typeof directory[key] === "object") {
-          tree += buildTree(directory[key], prefix + "  ");
-        }
-      }
-      return tree;
-    }
-
-    if (gameData.currentDirectory === "") {
-      return buildTree(directoryStructure.Root);
-    } else {
-      const subdirectory = getSubdirectory(
-        directoryStructure,
-        gameData.currentDirectory.split("\\")
-      );
-      if (subdirectory) {
-        return buildTree(subdirectory, "  ");
-      } else {
-        return `No subdirectories were found.\n`;
-      }
-    }
-  }
-
-  function getSubdirectory(directoryStructure, path) {
-    let current = directoryStructure;
-    for (const dir of path) {
-      if (current[dir]) {
-        current = current[dir];
-      } else {
-        return null;
-      }
-    }
-    return current;
+    consoleElement.value = "I have cleared your screen for you.\n";
   }
 });

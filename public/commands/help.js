@@ -2,10 +2,6 @@ import { consoleElement } from "../utilities.js";
 
 const commands = [
   {
-    name: "cd (argument)",
-    description: "Change into a different directory [~ is return]",
-  },
-  {
     name: "adventure",
     description: "Go and continue your ongoing adventure",
   },
@@ -64,10 +60,6 @@ const commands = [
   {
     name: "stats",
     description: "Display your current stats",
-  },
-  {
-    name: "tree",
-    description: "View all directories you can go to",
   },
   {
     name: "skills -(buy) (argument)",

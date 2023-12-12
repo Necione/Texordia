@@ -26,7 +26,7 @@ export const monsterGroups = [
     monsters: [
       {
         name: "Slime",
-        number: 3,
+        number: 2,
       },
     ],
   },
