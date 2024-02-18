@@ -62,6 +62,10 @@ const commands = [
     description: "Display your current stats",
   },
   {
+    name: "sellall (argument)",
+    description: "Sell everything (or all of something) in your inventory",
+  },
+  {
     name: "skills -(buy) (argument)",
     description: "View your current and unlockable skills",
   },
