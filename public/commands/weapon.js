@@ -45,7 +45,7 @@ export function showEquippedWeapon() {
   }
 
   weaponTable += "+---------+-----------------+----------------------+\n";
-  weaponTable += `Total Bonuses: ATK: +${totalBonuses.ATK}, DEF: +${totalBonuses.DEF}, Crit Damage: +${totalBonuses.CritValue}%, Crit Chance: +${totalBonuses.CritChance}%\n`;
+  weaponTable += `Total Bonuses: ATK: +${totalBonuses.ATK}, DEF: +${totalBonuses.DEF}, Crit Value: +${totalBonuses.CritValue}%, Crit Chance: +${totalBonuses.CritChance}%\n`;
 
   consoleElement.value += weaponTable;
 }

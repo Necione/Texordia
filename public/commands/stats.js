@@ -24,7 +24,7 @@ export function showStats() {
   consoleElement.value += `Crit Chance: ${(gameData.critChance * 100).toFixed(
     2
   )}%\n`;
-  consoleElement.value += `Crit Damage: ${(gameData.critValue * 100).toFixed(
+  consoleElement.value += `Crit Value: ${(gameData.critValue * 100).toFixed(
     2
   )}%\n\n`;
   consoleElement.value += `Level: ${gameData.level} (${gameData.exp}/${gameData.nextLevelExp} EXP)\n`;

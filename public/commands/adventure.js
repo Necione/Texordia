@@ -157,7 +157,7 @@ export async function handleAdventure() {
   setTimeout(() => {
     clearInterval(spinnerInterval);
 
-    const randomChoice = Math.random() < 0.25; // 25% chance
+    const randomChoice = Math.random() < 0.1; // 10% chance
 
     if (randomChoice) {
       triggerRandomEvent();
@@ -247,7 +247,9 @@ function playerAttack(isFirstAttack, monster, gameData) {
   monster.currentHP -= playerDamage;
   if (monster.currentHP < 0) monster.currentHP = 0;
 
-  // Apply Leech skill bonus
+  combatLog += `You dealt ${playerDamage} damage to the ${monster.name}.\n`;
+
+  // Apply Leech skill bonus and log the healing
   if (
     gameData.skills["Leech"] &&
     gameData.skills["Leech"].unlocked &&
@@ -256,10 +258,11 @@ function playerAttack(isFirstAttack, monster, gameData) {
     const leechLevel = gameData.skills["Leech"].level - 1;
     const leechBonus = skillData.Leech.bonuses[leechLevel];
     gameData.hp = Math.min(gameData.hp + leechBonus, gameData.maxHp);
+
+    // Adding Leech skill healing to the combat log
+    combatLog += `Leech skill healed you for ${leechBonus} HP.\n`;
   }
   gameData.leechCounter++;
-
-  combatLog += `You dealt ${playerDamage} damage to the ${monster.name}.\n`;
 
   return {
     combatLog: combatLog,
